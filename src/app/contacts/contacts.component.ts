@@ -31,7 +31,8 @@ export class ContactsComponent {
   ];
 
   selectedContact: Contact | null = null;
-
+  editingContact: boolean = false;
+  addingContact: boolean = false;
   groupedContacts: { letter: string; contacts: Contact[] }[] = [];
 
   constructor() {
@@ -71,5 +72,26 @@ export class ContactsComponent {
     console.log(this.selectedContact);
   }
 
+  deleteContact(): void {
+    if (this.selectedContact) {
+      const index = this.contacts.indexOf(this.selectedContact);
+      if (index > -1) {
+        this.contacts.splice(index, 1);
+        this.selectedContact = null;
+        this.groupContacts();
+      }
+    }
+  }
 
+  editContact(): void {
+    if (this.selectedContact) {
+      console.log('Edit contact:', this.selectedContact);
+      this.editingContact = true;
+    }
+  }
+
+  addContact(): void {
+    console.log('Add new contact');
+    this.addingContact = true;
+  }
 }
