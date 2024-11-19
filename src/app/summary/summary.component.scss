@@ -1,0 +1,144 @@
+@import '../../styles.scss';
+
+section{
+  height: 100%;
+  background-color: $background;
+}
+
+.line{
+  height: 60px;
+  width: 3px;
+  background-color: $blue;
+}
+
+header{
+  @include display(flex, row, flex-start, center);
+  gap: 32px;
+  span{
+    font-size: 24px;
+    font-weight: 500;
+  }
+}
+
+.cardArea{
+  @include display(flex, row, space-between, center);
+  padding-top: 48px;
+  gap: 32px;
+  width:560px;
+}
+
+.card {
+  @include display(flex, row, center, center);
+  gap: 18px;
+  padding: 18px 36px;
+  background-color: white;
+  border-radius: 30px;
+  transition: all 0.125s ease-in-out;
+  &:hover {
+    background-color: $lightgray;
+    cursor: pointer;
+    scale:  1.04;
+    .cardIcon {
+      background-color: white;
+    }
+    mat-icon{
+      color: $darkgray;
+      scale:  1.3;
+    }
+
+    .cardText , .date{
+      color: white;
+    }
+
+    .urgent{
+      background-color: $urgent;
+      mat-icon{
+        color: white;
+    }}
+  }
+}
+
+.done{
+  height: 32px ;
+  width: 32px;
+  font-size: 32px;
+}
+
+mat-icon{
+ color: white
+}
+
+.cardIcon{
+  @include display(flex, row, center, center);
+  height: 64px;
+  width: 64px;
+  border-radius: 100%;
+  background-color: $lightgray;
+}
+
+.cardText{
+  @include display(flex, column, flex-start, center);
+  width: 60px;
+  :nth-child(1){
+    font-size: 64px;
+  }
+  :nth-child(2){
+    font-size: 20px;
+  }
+}
+
+.urgent{
+  background-color: $urgent;  
+    mat-icon{
+      width: 32px;
+      font-size: 32px;
+      height: 32px;
+      rotate: -90deg;
+    }
+}
+
+.secondLine{
+  width: 2px;
+  background-color: lightgray;
+  height: 90px;
+}
+
+.middleArea{
+  width: 100%;
+  @include display(flex, row, space-between, center);
+}
+
+.middleCardLeft{
+  @include display(flex, row, center, center);
+  gap:16px;
+}
+
+.date{
+  @include display(flex, column, center, center);
+  gap: 10px;
+  color: $lightgray;
+  :nth-child(1){
+    font-size: 20px;
+    font-weight: 600;
+    text-align: left;
+    width: 100%;
+  }
+}
+
+.lastCard{
+  @include display(flex, column, center, center);
+  gap: 16px;
+  padding: 20px 26px;
+  span{
+    font-size: 60px;
+  }
+  p{
+    font-size: 20px;
+    text-align: center;
+  }
+  &:hover{
+    span , p{
+      color: white;
+    }
+  }
+}

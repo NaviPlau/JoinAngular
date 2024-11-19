@@ -1,0 +1,96 @@
+@import '../../../../styles.scss';
+
+.sidebar{
+  height: 100%;
+  width: 232px;
+  background-color: $lightgray;
+  @include display(flex, column, flex-start, center);
+}
+
+.links{
+  width: 100%;
+  @include display(flex, column, center, center);
+  gap: 16px;
+}
+
+img{
+  width: 100px;
+  height: 120px;
+  margin: 64px 0px 150px 0px;
+}
+
+mat-icon{
+  color: white;
+  width: 32px;
+  height: 32px;
+  font-size: 32px;
+  font-family: 'Material Icons Outlined';
+}
+
+.icon-wrapper {
+  position: relative;
+  width: 32px;
+  @include display(flex, row, flex-start, center);
+}
+
+a{
+  @include display(flex, row, center, center);
+  width: 100%;
+  gap: 15px;
+  padding: 16px 16px;
+  cursor: pointer;
+  width: 100%;
+  &:hover{
+    background-color: $darkgray;
+  }
+  &:active{
+    background-color: $darkgray;
+  }
+  span{
+    font-size: 20px;
+    color: white;
+    width: 100px;
+    text-align: center;
+  }
+}
+
+.edit{
+  bottom: -10px;
+  left: 6px;
+}
+
+
+.absolute {
+  position: absolute;
+}
+
+.addTask{
+
+  text-align: center
+}
+
+.extraLinks{
+  margin-top: auto;
+  margin-bottom: 32px;
+  width: 100%;
+  a{
+    padding: 16px 16px;
+    cursor: pointer;
+    width: 100%;
+    color: white;
+    &:hover{
+      background-color: $darkgray;
+    }
+    span{
+      font-size: 20px;
+      color: white;
+      width: 100px;
+      text-align: center;
+    }
+  }
+}
+
+.summary , .addtask, .board, .contacts {
+  background-color: $darkgray;
+}
+

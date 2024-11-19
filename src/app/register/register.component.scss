@@ -1,0 +1,41 @@
+@import '../shared/css/login.scss';
+
+a{
+  color: $blue;
+  &:hover{
+    scale: 1.04;
+    user-select: contain;
+  }
+}
+
+
+
+label{
+  justify-content: center !important;
+}
+
+.back-wrapper {
+  position: absolute;
+  left: 50px;
+  top: 50px;
+  @include display(flex, row, center, center);
+  border-radius: 100%;
+  padding: 10px; 
+  transition: transform 0.125s, background-color 0.125s;
+
+  &:hover {
+    cursor: pointer;
+    transform: scale(1.1);
+    background-color: $background;
+  }
+
+  .back {
+    color: $blue;
+    @include display(flex, row, center, center);
+    font-size: 32px;
+    transition: transform 0.125s;
+    .back-wrapper:hover & {
+      transform: scale(0.70); // Adjust scale to maintain icon size when background grows
+    }
+  }
+}

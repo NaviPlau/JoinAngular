@@ -1,0 +1,390 @@
+@import '../../../../../styles.scss';
+
+input, textarea{
+  width: 100%;
+  height: 48px;
+  border-radius: 10px;
+  padding: 0px 16px;
+  font-size: 20px;
+  color: $darkgray;
+  &:focus{
+    outline: none;
+    border-bottom: 3px solid $blue;
+  }
+}
+
+textarea{
+  resize: none;
+  padding: 8px 16px;
+  height: 162px;
+}
+
+.inputTitle{
+  @include display(flex, row, flex-start, center);
+
+  :nth-child(2){
+    margin-left: 10px;
+    margin-top: -10px;
+    color: red;
+   }
+  :nth-child(1){
+    font-size: 20px;
+  }
+}
+
+form{
+  padding:40px 0px ;
+  position: relative;
+  display: flex;
+  gap: 32px;
+}
+
+.leftForm, .rightForm{
+  width: 440px;
+  @include display(flex, column, flex-start, center);
+  gap: 32px;
+}
+
+.inputField{
+  @include display(flex, column, flex-start, flex-start);
+  gap: 8px;
+  width: 100%;
+  position: relative;
+}
+
+.selectContacts {
+  @include display(flex, row, space-between, center);
+  width: 100%;
+  position: relative;
+
+  mat-icon {
+    position: absolute;
+    right: 10px;
+    transition: transform 0.3s ease; 
+  }
+
+  &:focus-within mat-icon {
+    transform: rotate(180deg); 
+  }
+}
+
+.selectedContacts {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  width: 100%;
+}
+
+.contact-initials {
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
+}
+
+.contact-initials span:first-child ,.remaining-contacts {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  color: white;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+app-select-contacts {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 20;
+  width: 100%; 
+  max-height: 300px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.remaining-contacts {
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
+  color: $darkgray;
+  width: 36px;
+  height: 36px;
+  background-color: white;
+}
+
+.separator{
+  width: 2px;
+  background-color: $blue;
+}
+
+.prio-area{
+  @include display(flex, row, space-between, center);
+  gap: 32px;
+  width: 100%;
+  height: 48px;
+  border-radius: 10px;
+}
+
+.urgent, .medium, .low{
+  height: 48px;
+  border-radius: 10px;
+  padding: 0px 16px;
+  gap: 10px;
+  @include display(flex, row, center, center);
+  cursor: pointer;
+  background-color: white;
+  font-size: 20px;
+  font-weight: 400;
+  color: $darkgray;
+  &:hover{  
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  }
+}
+
+.urgent{
+  mat-icon{
+    color: $urgent;
+    transform: rotate(-90deg);
+  }
+}
+
+.selectedUrgent{
+  color: white;
+  background-color: $urgent;
+  mat-icon{
+    color: white;
+  }
+  &:hover{
+    box-shadow: none;
+  }
+}
+
+.medium{
+  mat-icon{
+    color: $medium;
+  }
+}
+
+.selectedMedium{
+  background-color: $medium;
+  color: white;
+  mat-icon{
+    color: white;
+  }
+  &:hover{
+    box-shadow: none;
+  }
+}
+
+.low{
+  mat-icon{
+    color: $low;
+    transform: rotate(90deg);
+  }
+}
+
+.selectedLow{
+  background-color: $low;
+  color: white;
+  mat-icon{
+    color: white;
+  }
+  &:hover{
+    box-shadow: none;
+  }
+}
+
+.select-category{
+  width: 100%;
+  height: 48px;
+  border-radius: 10px;
+  gap: 10px;
+  @include display(flex, row, center, center);
+  cursor: pointer;
+  background-color: white;
+  font-size: 20px;
+  font-weight: 400;
+  color: $darkgray;
+  position: relative;
+  mat-icon{
+    position: absolute;
+    right: 10px;
+  }
+  &:focus-within mat-icon {
+    transform: rotate(180deg);
+  }
+}
+
+.dropdown-options {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #fff;
+  z-index: 10;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.dropdown-option {
+  padding: 10px;
+  cursor: pointer;
+  &:hover {
+    background-color: $lightgray;
+    color: white;
+  }
+}
+
+.subtaskIcons{
+  @include display(flex, row, center, center);
+  position: absolute;
+  margin-right: 10px;
+  gap: 4px;
+  mat-icon{
+    cursor: pointer;
+    pointer-events: auto;
+  }
+}
+
+.iconsSeparator{
+  height: 20px;
+  width: 2px;
+  background-color: $blue;
+}
+
+.subtaskField{
+  @include display(flex, row, flex-end, center);
+  gap: 10px;
+  width: 100%;
+  position: relative;
+  mat-icon{
+    cursor: pointer;
+  }
+  .add{
+    position: absolute;
+    margin-right: 10px;
+  }
+  input{
+    padding: 0px 60px 0px 10px;
+  }
+}
+
+.dot-icon {
+  width: 8px;
+  height: 8px;
+  background-color: black;
+  border-radius: 50%;
+  display: inline-block;
+  margin-left: 10px;
+}
+
+.renderedIcons{
+  display: none;
+  justify-self: flex-end;
+  right: 10px
+}
+
+.rendered-subtasks{
+  @include display(flex, row, flex-start, center);
+  width: 100%;
+  position: relative;
+  gap: 10px;
+  background-color: white;
+  border-radius: 20px;
+  &:hover{
+    background-color: lightgray;
+    input{
+      background-color: lightgray;
+    }
+    .renderedIcons{
+      display: flex;
+      width: 50px;
+    }
+  }
+}
+
+.subtaskTitle{
+  width: 100%;
+}
+
+.subtask-contain{
+  width: 100%;
+  @include display(flex, column, flex-start, space-between);
+  gap: 5px;
+  height: 90px;
+  overflow-y: auto;
+  scrollbar-width: none;
+  margin-top: -20px;
+  input{
+    border: none;
+    font-size: 16px;
+    height: 32px;
+    width: 100%;
+    
+  }
+}
+
+.elipseInput{
+    max-width: 100%;
+    max-width: 80%;
+    overflow: hidden; 
+    white-space: nowrap; 
+    text-overflow: ellipsis; 
+}
+
+.renderedInput:focus{
+  background-color: white;
+}
+
+.rendered-subtasks:focus-within .dot-icon {
+  display: none;
+}
+
+.rendered-subtasks:focus-within{
+  background-color: white;
+  justify-content: flex-start;
+  input {
+    background-color: white;
+  }
+}
+
+.button-area{
+  @include display(flex, row, flex-end, center);
+  max-width: calc(1440px - 492px);
+  gap: 20px;
+}
+
+.clear{
+  font-weight: 300;
+  @include display(flex, row, center, center);
+  gap: 5px;
+  background-color: white;
+  border: 1px solid black;
+  &:hover{
+    color: $blue;
+    border: 1px solid $blue;
+    box-shadow: 0px 3px 0px 0px rgba(0,0,0,0.4);
+    transition: ease-in-out 125ms;
+  }
+}
+
+.create{
+  @include display(flex, row, center, center);
+  gap: 5px;
+  background-color: $lightgray;
+  color: white;
+  border: 1px solid transparent;
+  &:hover{
+    background-color: $blue;
+    box-shadow: 0px 3px 0px 0px rgba(0,0,0,0.4);
+    transition: ease-in-out 125ms;
+  }
+}
+
+
+
+
+

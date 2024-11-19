@@ -1,0 +1,220 @@
+@import '../../styles.scss';
+
+section{
+  height: 100%;
+  background-color: $background;
+}
+
+main{
+  @include display(flex, row, flex-start, flex-start);
+  left: 232px;
+  width: calc(100% - 232px);
+  position: absolute;
+  top: 96px;
+  height: calc(100% - 96px);
+}
+
+
+.right-side{
+  @include display(flex, column, flex-start, flex-start);
+  width: 100%;
+  margin-top:96px ;
+  gap: 32px;
+}
+
+.left-side{
+  width: 456px;
+  @include display(flex, column, center, center);
+  gap: 32px;
+  background-color: white;
+  height: 100%;
+}
+
+.add-icon{
+  transform: scaleX(-1);
+}
+
+.add-contact-button{
+  @include display(flex, row, center, center);
+  gap: 8px;
+  width: 352px;
+  height: 56px;
+  background-color: $lightgray;
+  color: white;
+  border-radius: 10px;
+  border: none;
+  &:hover{
+    cursor: pointer;
+    background-color: $blue;
+    box-shadow: 0px 3px 4px 0px rgba(0,0,0,0.4);
+  }
+}
+
+.button-contain{
+  @include display(flex, row, center, center);
+  height: 100px;
+  width: 456px;
+  padding: 30px 0px;
+  
+}
+
+.contact-list{
+  @include display(flex, column, flex-start, center);
+  width: 100%;
+  max-height: 100%;
+  overflow-y: auto;
+  padding-bottom: 20px;
+}
+
+.contact-contain{
+  @include display(flex, row, flex-start, center);
+  gap: 24px;
+  width: 352px;
+  border-radius: 20px;
+  &:hover{
+    background-color: lightgray;
+    cursor: pointer;
+  }
+}
+
+.initials{
+  @include display(flex, row, center, center);
+  padding: 10px;
+  border-radius: 100%;
+  color: white;
+  font-weight: 600;
+  font-size: 12px;
+  margin-left: 20px;
+}
+
+.contact-info{
+  @include display(flex, column, flex-start, center);
+  gap: 5px;
+  width: 100%;
+  padding: 10px 5px;
+  span, a {
+    width: 100%;
+    font-size: 20px;
+    text-wrap: nowrap;
+  }
+  a{
+    color: $blue;
+    font-size: 14px;
+  }
+}
+
+.contact-letter{
+  font-weight: 600;
+  font-size: 24px;
+  margin-top: 14px;
+  margin-bottom: 10px;
+  border-bottom: 2px $darkgray solid;
+  padding: 10px 32px;
+  &:hover{
+    background-color: white;
+  }
+}
+
+.selected-contact{
+  background-color: $lightgray ;
+  span{
+    color: white;
+  }
+  &:hover{
+    background-color:$darkgray;
+  }
+}
+
+
+
+
+.right-side-header{
+  @include display(flex, row, flex-start, center);
+  padding-left: 54px;
+  gap: 30px;
+  .separator{
+    width: 3px;
+    height: 64px;
+    background-color: $blue;
+  }
+  span{
+    font-size: 20px;
+  }
+}
+
+.right-side-content{
+  @include display(flex, column, center, center);
+  height: 100%;
+  width: 100%;
+ 
+}
+
+.selected-contact-name{
+  @include display(flex, row, flex-start, center);
+  gap: 32px;
+  width: 100%;
+  padding-left:54px;
+}
+
+.selected-initials{
+  @include display(flex, row, flex-start, center);
+  font-size: 48px;
+  color : white;
+  padding: 20px;
+  border-radius: 100%;
+}
+
+.selected-full-name{
+  font-size: 48px;
+}
+
+.icon-contain{
+  @include display(flex, row, flex-start, center);
+  gap: 16px;
+}
+.delete-contain , .edit-contain{
+  @include display(flex, row, center, center);
+  gap: 13px;
+  font-size: 16px;
+ &:hover{
+  cursor: pointer;
+  color: $blue;
+ }
+}
+
+.contact-informations{
+  @include display(flex, column, flex-start, flex-start);
+  gap: 32px;
+  width: 100%;
+  padding-top: 54px;
+  padding-left: 54px;
+  span{
+    font-size: 20px;
+  }
+}
+
+.selected-contact-email, .selected-contact-phone{
+  @include display(flex, column, flex-start, flex-start);
+  width: 100%;
+  gap: 16px;
+  span{
+    font-size: 20px;
+  }
+  a{
+    @include display(flex, row, flex-start, center);
+    gap: 16px;
+    text-decoration: none;
+    color: $blue;
+    font-size: 16px;
+    mat-icon{
+    color: $darkgray;
+    }
+    &:hover{
+      cursor: pointer;
+      mat-icon{
+        color: $blue;
+      };
+    }
+  }
+}
+

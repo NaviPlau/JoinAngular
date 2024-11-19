@@ -1,0 +1,23 @@
+@import '../../styles.scss';
+
+
+div{
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  max-width: 100vw;
+  position: absolute;
+  left: 0;
+  bottom: 50px;
+  gap: 20px;
+  color: gray;
+}
+
+a{
+  &:hover{
+    color: $blue;
+    cursor: pointer;
+    scale: 1.1;
+    font-weight: 600;
+  }
+}

@@ -1,0 +1,34 @@
+<section>
+  <app-logo-login></app-logo-login>
+  <div class="container">
+    <div class="title">
+      <h1>Log in</h1>
+      <div class="line"></div>
+    </div>
+    <form>
+      <div class="inputField">
+        <input type="email" placeholder="Email">
+        <mat-icon>mail_outline</mat-icon>
+      </div>
+      <div class="inputField">
+        <input type="password" placeholder="Password">
+        <mat-icon class="visibility">visibility_off</mat-icon>
+      </div>
+
+      <label for="checkbox" class="custom-checkbox">
+        <input type="checkbox" id="checkbox">
+        <span class="checkmark"></span>
+        Remember me
+      </label>
+      <div class="buttons">
+        <button class="login">Log in</button>
+        <a routerLink="/summary"><button>Guest Log in</button></a>
+      </div>
+    </form>
+  </div>
+  <div class="register">
+    <span>Not a Join User? </span>
+    <button routerLink="/register" class="login">Sign up</button>
+  </div>
+  <app-links-login></app-links-login>
+</section>

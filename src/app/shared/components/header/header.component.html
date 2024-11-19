@@ -1,0 +1,15 @@
+<header>
+  <span>Kanban Project Management Tool</span>
+  <div class="user">
+    <a href=""><mat-icon>help_outlined</mat-icon></a>
+    <div class="initials" #initials (click)="toggleLinks()">
+      <span>IP</span>
+    </div>
+  </div>
+  <div class="links" *ngIf="showLinks" #links>
+    <a href="">Help</a>
+    <a href="">Privacy Policy</a>
+    <a href="">Legal Notice</a>
+    <a href="">Logout</a>
+  </div>
+</header>

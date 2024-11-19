@@ -1,0 +1,21 @@
+<div class="allContacts">
+  <div 
+    *ngFor="let contact of contacts; let i = index" 
+    (click)="toggleContactSelection(i)" 
+    class="contact" 
+    [ngClass]="{'selected-contact': contact.selected}">
+    
+    <div class="contactName">
+      <span>{{ contact.fullName }}</span>
+      <div class="initials" [ngStyle]="{'background-color': contact.initialsColor}">
+        {{ contact.initials }}
+      </div>
+    </div>
+
+    <!-- Custom Checkbox -->
+    <label class="custom-checkbox">
+      <input type="checkbox" [(ngModel)]="contact.selected" (click)="$event.stopPropagation()" />
+      <span class="checkmark"></span>
+    </label>
+  </div>
+</div>

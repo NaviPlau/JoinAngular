@@ -1,0 +1,88 @@
+@import '../../../../../styles.scss';
+
+
+.contact{
+  width: 440px;
+  @include display(flex, row, space-between, center);
+  padding: 10px 16px;
+  border-radius: 20px;
+  &:hover{
+    background-color: $darkgray;
+    color: white;
+    cursor: pointer;
+  }
+}
+
+.initials{
+  height: 32px;
+  width: 32px;
+  border-radius: 50%;
+  @include display(flex, row, center, center);
+  color: white;
+  font-weight: 600;
+  font-size: 16px;
+  margin-right: 16px;
+}
+
+.contactName{
+  @include display(flex, row-reverse, flex-start, center);
+}
+
+.allContacts{
+  background-color: white;
+  @include display(flex, column, flex-start, center);
+  border-radius: 10px;
+}
+
+.selected-contact {
+  background-color: $lightgray;
+  color: white;
+}
+
+
+.custom-checkbox {
+  position: relative;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.custom-checkbox input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.custom-checkbox .checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 20px;
+  width: 20px;
+  background-color: #ccc;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+/* Checkmark when the checkbox is selected */
+.custom-checkbox input[type="checkbox"]:checked + .checkmark {
+  background-color: #4caf50; /* Change color as needed */
+}
+
+.custom-checkbox .checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+  left: 6px;
+  top: 3px;
+  width: 6px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.custom-checkbox input[type="checkbox"]:checked + .checkmark:after {
+  display: block;
+}

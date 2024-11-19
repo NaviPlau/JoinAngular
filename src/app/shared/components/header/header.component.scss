@@ -1,0 +1,64 @@
+@import '../../../../styles.scss';
+
+
+header{
+  position: fixed;
+  width: calc(100% - 232px);
+  left: 232px;
+  height: 96px;
+  background-color: white;
+  @include display(flex, row, space-between, center);
+  padding: 0px 48px 0px 96px;
+  font-size: 20px;
+  z-index: 99;
+  box-shadow: 0px 0px 4px 0px rgba(0,0,0,0.4);
+}
+
+mat-icon{
+  color: gray;
+  &:hover{
+    cursor: pointer;
+  }
+}
+
+.user{
+  @include display(flex, row, center, center);
+  gap: 16px;
+}
+
+.initials{
+  height: 48px;
+  width: 48px;
+  border:3px solid black;
+  border-radius: 100%;
+  font-weight: bold;
+  font-size: 20px;
+  color: $blue;
+  @include display(flex, row, center, center);
+  &:hover{
+    background-color: $background;
+    cursor: pointer
+  }
+}
+
+.links{
+  @include display(flex, column, center, center);
+  width: 230px;
+  background-color: $lightgray;
+  position: absolute;
+  top: 70px;
+  right: 80px;
+  padding: 30px 0px;
+  border-radius: 30px;
+  border-top-right-radius: 0px;
+  
+  a{
+    padding: 10px 0px;
+    color: white;
+    width: 100%;
+    text-align: center;
+    &:hover{
+      background-color: $darkgray;
+    }
+  }
+}

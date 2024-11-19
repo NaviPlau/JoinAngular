@@ -1,0 +1,92 @@
+@font-face {
+  font-family: 'fira';
+  src: url('../public/assets/fonts/FiraCode-Regular.ttf') format('truetype');
+}
+
+@mixin display($display:flex, $direction:row, $justify:center, $align:center) {
+  display: $display;
+  flex-direction: $direction;
+  justify-content: $justify;
+  align-items: $align;
+}
+
+$background: #F6F7F8;
+$blue : #29ABE2;
+$darkgray: #091931;
+$lightgray: #2A3D59;
+$urgent: #FF3D00;
+$medium: #FFA800;
+$low: #7AE229;
+
+html, body { height: 100%;  font-family: 'fira';}
+* {
+   box-sizing: border-box;
+    margin: 0;
+    transition: all 125ms ease-in-out;
+  }
+
+a{
+  text-decoration: none;
+}
+
+input, textarea {
+  line-height: 24px;
+  &::placeholder {
+    color: lightgray; 
+    transition: color 0.125s ease; 
+  }
+  &:focus {
+    &::placeholder {
+      color: $darkgray;
+    }
+  }
+}
+
+mat-icon{
+  font-family: 'Material Icons Outlined';
+}
+
+button{
+  @include display(flex, row, center, center);
+  height: 48px;
+  border-radius: 10px;
+  border: 2px transparent solid;
+  font-size: 20px;
+  font-weight: bold;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: all 0.125s ease;
+}
+
+.mainContent{
+  position: absolute;
+  top: 96px;
+  left: 232px;
+  padding-top: 110px;
+  padding-left: 96px;
+  width: calc(100% - 232px);
+  height: calc(100% - 96px);
+}
+
+h1{
+  font-size: 60px;
+}
+
+::-webkit-scrollbar {
+  width: 8px; 
+}
+
+::-webkit-scrollbar-thumb {
+  background: $lightgray; 
+  border-radius: 6px; 
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: $darkgray; 
+}
+
+::-webkit-scrollbar-track {
+  background: $blue; 
+  border-radius: 6px; 
+}
+

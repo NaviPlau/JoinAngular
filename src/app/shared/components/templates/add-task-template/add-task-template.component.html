@@ -1,0 +1,176 @@
+<h1>Add Task</h1>
+
+<form action="" return="false">
+  <div class="leftForm">
+    <div class="inputField">
+      <div class="inputTitle">
+        <span>Title</span>
+        <span>*</span>
+      </div>
+      <input type="text" placeholder="Enter a Title" name="title" [(ngModel)]="title" required>
+    </div>
+
+    <div class="inputField">
+      <div class="inputTitle">
+        <span>Description</span>
+      </div>
+      <textarea placeholder="Enter a description" name="description" [(ngModel)]="description"></textarea>
+    </div>
+
+    <div class="inputField">
+      <div class="inputTitle">
+        <span>Assigned to</span>
+      </div>
+      <div class="selectContacts" style="position: relative;">
+        <mat-icon matSuffix class="arrow-icon" (click)="openContacts()">arrow_drop_down</mat-icon>
+        <input #contactInput matInput type="text" placeholder="Select contacts to assign" (focus)="openContacts()"
+          readonly />
+        <app-select-contacts *ngIf="contactsOpen" #selectContacts [selectedContacts]="selectedContacts"
+          (selectedContactsChange)="onSelectContactsChange($event)">
+        </app-select-contacts>
+      </div>
+
+    </div>
+    <div class="selectedContacts">
+      <div *ngFor="let contact of selectedContacts | slice:0:5" class="contact-initials">
+        <span [ngStyle]="{'background-color': contact.initialsColor}">
+          {{ contact.initials }}
+        </span>
+      </div>
+      <div *ngIf="remainingContactsCount > 0" class="remaining-contacts">
+        +{{ remainingContactsCount }}
+      </div>
+    </div>
+  </div>
+
+  <div class="separator"></div>
+
+  <div class="rightForm">
+    <div class="inputField">
+      <div class="inputTitle">
+        <span>Due date</span>
+        <span>*</span>
+      </div>
+      <input type="date" [min]="today" name="dueDate" [(ngModel)]="dueDate">
+    </div>
+
+    <div class="inputField">
+      <div class="inputTitle">
+        <span >Priority</span>
+        <span >*</span>
+      </div>
+      <div class="prio-area ">
+        <button class="urgent" [ngClass]="{'selectedUrgent': selectedPriority === 'urgent'}"
+          (click)="setPriority('urgent')">
+          Urgent
+          <mat-icon>double_arrow_outlined</mat-icon>
+        </button>
+
+        <button class="medium" [ngClass]="{'selectedMedium': selectedPriority === 'medium'}"
+          (click)="setPriority('medium')">
+          Medium
+          <mat-icon>drag_handle</mat-icon>
+        </button>
+
+        <button class="low" [ngClass]="{'selectedLow': selectedPriority === 'low'}" (click)="setPriority('low')">
+          Low
+          <mat-icon>double_arrow_outlined</mat-icon>
+        </button>
+      </div>
+    </div>
+
+    <div class="inputField">
+      <div class="inputTitle">
+        <span>Category</span>
+        <span>*</span>
+      </div>
+      <div class="select-category" (click)="toggleDropdown()">
+        <mat-icon class="arrow-icon">arrow_drop_down</mat-icon>
+        <input
+          type="text"
+          [placeholder]="selectedCategory ? '' : 'Select a category'"
+          [value]="selectedCategory"
+          readonly
+        />
+        <div
+          *ngIf="isDropdownOpen"
+          class="dropdown-options"
+          (click)="$event.stopPropagation()"
+        >
+          <div
+            *ngFor="let option of taskCategories"
+            class="dropdown-option"
+            (click)="selectCategory(option, $event)"
+          >
+            {{ option.label }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="inputField">
+      <div class="inputTitle">
+        <span>Add Subtask</span>
+        <span></span>
+      </div>
+      <div class="subtaskField">
+        @if(subtaskFocus){
+          <div class="subtaskIcons">
+            <mat-icon (mousedown)="clearInput()">close</mat-icon>
+            <div class="iconsSeparator"></div>
+            <mat-icon (mousedown)="createSubtask()">done</mat-icon>
+          </div>
+        }
+        @if(!subtaskFocus){
+          <mat-icon class="add" (click)="focusInputSubtask()">add</mat-icon>
+        }
+        
+        <input type="text"  placeholder="Add a subtask" name="subtaskTitle" (focus)="subtaskFocus = true" (blur)="subtaskFocus = false" id="addSubtask" [(ngModel)]="subtaskTitle">
+      </div>
+    </div>
+
+    @if(subTasksArray.length > 0){
+      <div class="subtask-contain">
+        @for (subtask of subTasksArray; track $index) {
+          <div class="rendered-subtasks">
+            <span class="dot-icon"></span>
+            <input 
+              class="subtaskTitle renderedInput elipseInput" 
+              id="renderedSubtask{{$index}}" 
+              [value]="subtask.title"  
+              (focus)="subtaskInputFocused = true"
+              (blur)="onBlurSubtask($index)"
+              name="update"
+              > 
+            @if(!subtaskInputFocused){
+              <div class="subtaskIcons renderedIcons">
+                <mat-icon (click)="focusRenderedSubtask($index)">edit</mat-icon>
+                <div class="iconsSeparator"></div>
+                <mat-icon (mousedown)="deleteSubtask($index)">delete</mat-icon>
+              </div>
+            }
+            @if(subtaskInputFocused){
+              <div class="subtaskIcons renderedIcons">
+                <mat-icon (mousedown)="deleteSubtask($index)">delete</mat-icon>
+                <div class="iconsSeparator"></div>
+                <mat-icon (mousedown)="updateSubtask($index)">done</mat-icon>
+              </div>
+            }
+          </div>
+        }
+      </div>
+    }
+  </div>
+    
+</form>
+
+<div class="button-area">
+    <button class="clear" (click)="clearForm()">
+      <span>Clear</span>
+      <mat-icon>close</mat-icon>
+    </button>
+    <button class="create">
+      <span>Create Task</span>
+      <mat-icon>done</mat-icon>
+    </button>
+</div>

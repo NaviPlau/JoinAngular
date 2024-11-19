@@ -1,0 +1,77 @@
+<section>
+  <app-header></app-header>
+  <app-sidebar></app-sidebar>
+  <main>
+    <div class="left-side">
+        <div class="button-contain"> 
+          <button class="add-contact-button">
+            <span>Add new contact</span>
+            <mat-icon class="add-icon">person_add</mat-icon>
+          </button>
+        </div>
+      <div class="contact-list">
+        @for(group of groupedContacts; let groupIndex = $index; track $index; ) {
+          <div class="contact-contain contact-letter">
+            {{ group.letter }}
+          </div>
+          @for(contact of group.contacts;let contactIndex = $index; track $index; ) {
+            <div class="contact-contain" [ngClass]="{'selected-contact': contact.selected}"  (click)="toggleContactSelection(groupIndex, contactIndex)">
+              <div [ngStyle]="{'background-color': contact.initialsColor}" class="initials">{{contact.initials}}</div>
+              <div class="contact-info">
+                <span>{{ contact.fullName.length > 19 ? (contact.fullName | slice:0:19) + '...' : contact.fullName }}</span>
+                <a class="contact-email" href="mailto:{{contact.email}}">{{ contact.email.length > 24 ? (contact.email | slice:0:28) + '...' : contact.email }}</a>
+              </div>
+            </div>
+          }
+        }
+      </div>
+    </div>
+    <div class="right-side">
+      <div class="right-side-header">
+        <h1>Contacts</h1>
+        <div class="separator"></div>
+        <span>Better with a team</span>
+      </div>
+      @if(selectedContact) {
+        <div class="right-side-content">
+          <div class="selected-contact-name">
+            <div [ngStyle]="{'background-color': selectedContact.initialsColor}" class="selected-initials">{{selectedContact.initials}}</div>
+            <div>
+              <div class="selected-full-name">{{selectedContact.fullName}}</div>
+              <div class="icon-contain">
+                <div class="edit-contain">
+                  <mat-icon>edit</mat-icon>
+                  <span>Edit</span>
+                </div>
+                <div class="delete-contain">
+                  <mat-icon>delete</mat-icon>
+                  <span>Delete</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="contact-informations">
+            <span>Contact informations</span>
+            <div class="selected-contact-email">
+              <span>Email</span>
+              <a class="email-blue" href="mailto:{{selectedContact.email}}">
+                <mat-icon>email</mat-icon>
+                {{selectedContact.email}}</a>
+            </div>
+            <div class="selected-contact-phone">
+              <span>Phone</span>
+              <a href="tel:{{selectedContact.phone}}">
+                <mat-icon>phone</mat-icon>
+                {{selectedContact.phone}}</a>
+            </div>
+          </div>
+        </div>
+      }
+
+    </div>
+  </main>
+</section>
+
+
+
