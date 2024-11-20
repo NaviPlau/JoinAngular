@@ -3,26 +3,28 @@
   <app-sidebar></app-sidebar>
   <main>
     <div class="left-side">
-        <div class="button-contain"> 
-          <button class="add-contact-button" (click)="addContact()">
-            <span>Add new contact</span>
-            <mat-icon class="add-icon">person_add</mat-icon>
-          </button>
-        </div>
+      <div class="button-contain">
+        <button class="add-contact-button" (click)="addContact()">
+          <span>Add new contact</span>
+          <mat-icon class="add-icon">person_add</mat-icon>
+        </button>
+      </div>
       <div class="contact-list">
         @for(group of groupedContacts; let groupIndex = $index; track $index; ) {
-          <div class="contact-contain contact-letter">
-            {{ group.letter }}
+        <div class="contact-contain contact-letter">
+          {{ group.letter }}
+        </div>
+        @for(contact of group.contacts;let contactIndex = $index; track $index; ) {
+        <div class="contact-contain" [ngClass]="{'selected-contact': contact.selected}"
+          (click)="toggleContactSelection(groupIndex, contactIndex)">
+          <div [ngStyle]="{'background-color': contact.initialsColor}" class="initials">{{contact.initials}}</div>
+          <div class="contact-info">
+            <span>{{ contact.fullName.length > 19 ? (contact.fullName | slice:0:19) + '...' : contact.fullName }}</span>
+            <a class="contact-email" href="mailto:{{contact.email}}">{{ contact.email.length > 24 ? (contact.email |
+              slice:0:28) + '...' : contact.email }}</a>
           </div>
-          @for(contact of group.contacts;let contactIndex = $index; track $index; ) {
-            <div class="contact-contain" [ngClass]="{'selected-contact': contact.selected}"  (click)="toggleContactSelection(groupIndex, contactIndex)">
-              <div [ngStyle]="{'background-color': contact.initialsColor}" class="initials">{{contact.initials}}</div>
-              <div class="contact-info">
-                <span>{{ contact.fullName.length > 19 ? (contact.fullName | slice:0:19) + '...' : contact.fullName }}</span>
-                <a class="contact-email" href="mailto:{{contact.email}}">{{ contact.email.length > 24 ? (contact.email | slice:0:28) + '...' : contact.email }}</a>
-              </div>
-            </div>
-          }
+        </div>
+        }
         }
       </div>
     </div>
@@ -33,65 +35,143 @@
         <span>Better with a team</span>
       </div>
       @if(selectedContact) {
-        <div class="right-side-content">
-          <div class="selected-contact-name">
-            <div [ngStyle]="{'background-color': selectedContact.initialsColor}" class="selected-initials">{{selectedContact.initials}}</div>
-            <div>
-              <div class="selected-full-name">{{selectedContact.fullName}}</div>
-              <div class="icon-contain">
-                <div class="edit-contain" (click)="editContact()">
-                  <mat-icon>edit</mat-icon>
-                  <span>Edit</span>
-                </div>
-                <div class="delete-contain" (click)="deleteContact()">
-                  <mat-icon>delete</mat-icon>
-                  <span>Delete</span>
-                </div>
+      <div class="right-side-content">
+        <div class="selected-contact-name">
+          <div [ngStyle]="{'background-color': selectedContact.initialsColor}" class="selected-initials">
+            {{selectedContact.initials}}</div>
+          <div>
+            <div class="selected-full-name">{{selectedContact.fullName}}</div>
+            <div class="icon-contain">
+              <div class="edit-contain" (click)="editContact()">
+                <mat-icon>edit</mat-icon>
+                <span>Edit</span>
+              </div>
+              <div class="delete-contain" (click)="deleteContact()">
+                <mat-icon>delete</mat-icon>
+                <span>Delete</span>
               </div>
             </div>
           </div>
+        </div>
 
-          <div class="contact-informations">
-            <span>Contact informations</span>
-            <div class="selected-contact-email">
-              <span>Email</span>
-              <a class="email-blue" href="mailto:{{selectedContact.email}}">
-                <mat-icon>email</mat-icon>
-                {{selectedContact.email}}</a>
-            </div>
-            <div class="selected-contact-phone">
-              <span>Phone</span>
-              <a href="tel:{{selectedContact.phone}}">
-                <mat-icon>phone</mat-icon>
-                {{selectedContact.phone}}</a>
-            </div>
+        <div class="contact-informations">
+          <span>Contact informations</span>
+          <div class="selected-contact-email">
+            <span>Email</span>
+            <a class="email-blue" href="mailto:{{selectedContact.email}}">
+              <mat-icon>email</mat-icon>
+              {{selectedContact.email}}</a>
+          </div>
+          <div class="selected-contact-phone">
+            <span>Phone</span>
+            <a href="tel:{{selectedContact.phone}}">
+              <mat-icon>phone</mat-icon>
+              {{selectedContact.phone}}</a>
           </div>
         </div>
+      </div>
       }
     </div>
   </main>
+  @if(addingContact || editingContact)  {
+    <div class="form-contain">
+      @if (contactEdited) {
+        <div class="response">Contact edited successfully</div>
+      }
+      @if (newContactAdded) {
+        <div class="response">Contact added successfully</div>
+      }
+      
+      <div class="form">
+        <mat-icon class="close" (click)="closeForm()">close</mat-icon>
+        <div class="form-left">
+          <img src="/assets/img/logo-white.png" alt="">
+          @if(selectedContact){
+          <div>
+            <h1>Edit Contact</h1>
+            <div class="line"></div>
+          </div>
+        }
+          @if(addingContact) {
+          <div class="adding-contact">
+            <h1>Add Contact</h1>
+            <span>Tasks are better with a team</span>
+            <div class="line"></div>
+          </div>
+          }
+        </div>
+        <div class="form-right">
+          @if(selectedContact || addingContact) {
+            @if(selectedContact) {
+              <div class="selected-initials editInitials" [ngStyle]="{'background-color': selectedContact.initialsColor}">{{selectedContact.initials}}</div>
+            }
+            @if(addingContact) {
+              <div class="selected-initials editInitials addInitials">
+                <mat-icon>person</mat-icon>
+              </div>
+            }
+          
+          <form action="" [formGroup]="contactForm">
+            <div class="inputField">
+              <input type="email" placeholder="Username" autocomplete="off" formControlName="fullName"  name="editFullName">
+              <mat-icon>person</mat-icon>
+              <span class="error" *ngIf="contactForm.get('fullName')?.invalid && (contactForm.get('fullName')?.dirty || contactForm.get('fullName')?.touched)">
+                <ng-container *ngIf="contactForm.get('fullName')?.errors?.['required']">Full name is required.</ng-container>
+                <ng-container *ngIf="contactForm.get('fullName')?.errors?.['pattern']">Full name must contain 2 words, each at least 3 letters long.</ng-container>
+              </span>
+            </div>
+            <div class="inputField">
+              <input type="email" autocomplete="off" placeholder="Email"  formControlName="email" name="editEmail">
+              <mat-icon>mail_outline</mat-icon>
+              <span class="error" *ngIf="contactForm.get('email')?.invalid && (contactForm.get('email')?.dirty || contactForm.get('email')?.touched)">
+                <ng-container *ngIf="contactForm.get('email')?.errors?.['required']">Email is required.</ng-container>
+                <ng-container *ngIf="contactForm.get('email')?.errors?.['email'] || contactForm.get('email')?.errors?.['pattern']" >Email is invalid.</ng-container>
+              </span>
+
+            </div>
+            <div class="inputField">
+              <input type="tel" placeholder="Phone" autocomplete="off" formControlName="phone" name="editPhone">
+              <mat-icon>phone</mat-icon>
+              <span class="error" *ngIf="contactForm.get('phone')?.invalid && (contactForm.get('phone')?.dirty || contactForm.get('phone')?.touched)">
+                <ng-container *ngIf="contactForm.get('phone')?.errors?.['required']">Phone is required.</ng-container>
+                <ng-container *ngIf="contactForm.get('phone')?.errors?.['pattern']">Phone is invalid.</ng-container>
+              </span>
+            </div>
+            <div class="buttons-area">
+              <button class="delete" (click)="deleteContact()">
+                <span>Delete</span>
+                <mat-icon>delete</mat-icon>
+              </button>
+              @if(editingContact){
+                <button class="save" [disabled]="contactForm.invalid || contactEdited" (click)="saveContact()">
+                  <span>Save</span>
+                  @if(!contactForm.invalid) {
+                    <mat-icon>done</mat-icon>
+                  }@else{
+                    <mat-icon>close</mat-icon>
+                  }
+                </button>
+              }
+              @if(addingContact){
+                <button class="save" [disabled]="contactForm.invalid" (click)="saveTheNewContact()">
+                  <span>Add</span>
+                  @if(!contactForm.invalid) {
+                    <mat-icon>done</mat-icon>
+                  }@else{
+                    <mat-icon>close</mat-icon>
+                  }
+                </button>
+              }
+
+            </div>
+            @if(contactForm.invalid) {
+              <span class="form-invalid">Invalid Form</span>
+              }
+          </form>
+          }
+        </div>
+      </div>
+    </div>
+  }
+  
 </section>
-
-<form return="false">
-  <div class="form-left">
-    <img src="/assets/img/logo-white.png" alt="">
-    @if(addingContact) {
-      <div>
-        <h1>Edit Contact</h1>
-        <div class="line"></div>
-      </div>
-    }
-      <div class="adding-contact">
-        <h1>Add Contact</h1>
-        <span>Tasks are better with a team</span>
-        <div class="line"></div>
-      </div>
-    
-
-    
-  </div>
-  <div>Form-Right</div>
-</form>
-
-
-

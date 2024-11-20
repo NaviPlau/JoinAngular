@@ -3,6 +3,7 @@
 section{
   height: 100%;
   background-color: $background;
+  position: relative;
 }
 
 main{
@@ -89,7 +90,7 @@ main{
 }
 
 .contact-info{
-  @include display(flex, column, flex-start, center);
+  @include display(flex, column, flex-start, flex-start);
   gap: 5px;
   width: 100%;
   padding: 10px 5px;
@@ -101,6 +102,7 @@ main{
   a{
     color: $blue;
     font-size: 14px;
+    width: fit-content;
   }
 }
 
@@ -220,7 +222,18 @@ main{
 }
 
 
-form{
+.form-contain{
+  @include display(flex, column, center, center);
+  background-color: rgba(0,0,0,0.2);
+  width: calc(100% - 232px);
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 232px;
+}
+
+.form{
+  max-width: 1440px;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -248,6 +261,18 @@ form{
     width: 54px;
     height: 66px;
     }
+    h1{
+      text-wrap: nowrap
+    }
+}
+
+.form-right{
+  @include display(flex, row, center, center);
+  background-color: white;
+  height: 100%;
+  width: 100%;
+  border-bottom-right-radius: 50px;
+  border-top-right-radius: 50px;
 }
 
 .line{
@@ -261,3 +286,155 @@ form{
   gap: 10px;
 }
 
+form{
+  width: 100%;
+  padding: 20px;
+  @include display(flex, column, center, center);
+  gap: 32px;
+}
+
+.inputField{
+  @include display(flex, row, flex-start, center);
+  position: relative;
+  width: 100%;
+  gap: 16px;
+  border-radius: 20px;
+  border: 2px solid lightgray;
+  padding-right: 20px;
+  input{
+    width: 100%;
+    height: 50px;
+    border: none;
+    outline: none;
+    padding:20px;
+    border-radius: 20px;
+    font-size: 20px;
+  }
+  mat-icon{
+    color: lightgray;
+  }
+  &:hover{
+    border: 2px solid $blue;
+    mat-icon{
+      color: $blue;
+    }
+  }
+  &:focus-within{
+    border-bottom: 2px solid $blue;
+    mat-icon{
+      color: $blue;
+    }
+  }
+}
+
+.editInitials{
+  margin-left: 20px;
+}
+
+.buttons-area{
+  @include display(flex, row, flex-start, center);
+  width: 100%;
+  gap: 32px;
+ 
+}
+
+.delete{
+  @include display(flex, row, center, center);
+  gap: 10px;
+  background-color: white;
+  border: 1px solid black;
+  padding: 10px 20px;
+  border-radius: 10px;
+  color: black;
+  font-weight: 300;
+  &:hover{
+    color: $blue;
+    border: 1px solid $blue;
+    box-shadow: 0px 3px 0px 0px rgba(0,0,0,0.4);
+    transition: ease-in-out 125ms;
+  }
+}
+
+.save{
+  @include display(flex, row, center, center);
+  gap: 10px;
+  background-color: $lightgray;
+  border: 1px solid transparent;
+  padding: 10px 20px;
+  border-radius: 10px;
+  color: white;
+  font-weight: 300;
+  &:hover{
+    background-color: $blue;
+    box-shadow: 0px 3px 0px 0px rgba(0,0,0,0.4);
+    transition: ease-in-out 125ms;
+  }
+  &:disabled{
+    background-color: lightgray;
+    color: rgb(243, 10, 10);
+  }
+}
+
+.error{
+  color: red;
+  font-size: 12px;
+  font-weight: 300;
+  position:absolute;
+  top: 100%;
+}
+
+.form-invalid{
+  color: red;
+  font-size: 20px;
+  position:absolute;
+  bottom: 30px;
+}
+
+.close{
+  position: absolute;
+  top: 40px;
+  right: 40px;
+  width: auto;
+  height: auto;
+  font-size: 32px;
+  cursor: pointer;
+  &:hover{
+    color: $blue;
+    font-size: 40px;
+  }
+}
+
+.response{
+  position: absolute;
+  color: white;
+  font-size:24px;
+  font-weight: 400;
+  animation: fadeFromRight 2s ease-in-out;
+  z-index: 10000;
+  background-color: $lightgray;
+  padding: 30px;
+  border-radius: 30px;
+}
+
+@keyframes fadeFromRight{
+  0%{
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  100%{
+    opacity: 1;
+    transform: translateX(50%);
+  }
+}
+
+.addInitials{
+  @include display(flex, row, center, center);
+  background-color: gray;
+  border-radius: 100%;
+  mat-icon{
+    color: white;
+    font-size: 80px;
+    width: auto;
+    height: auto;
+  }
+}

@@ -1,0 +1,16 @@
+@import '../../styles.scss';
+
+section{
+  height: 100%;
+  background-color: $background;
+  position: relative;
+}
+
+main{
+  @include display(flex, row, flex-start, flex-start);
+  left: 232px;
+  width: calc(100% - 232px);
+  position: absolute;
+  top: 96px;
+  height: calc(100% - 96px);
+}

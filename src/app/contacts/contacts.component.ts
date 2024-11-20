@@ -1,14 +1,15 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { HeaderComponent } from "../shared/components/header/header.component";
 import { SidebarComponent } from "../shared/components/sidebar/sidebar.component";
 import { MaterialModule } from '../material/material.module';
 import { Contact } from '../shared/components/templates/select-contacts/select-contacts.component';
 import { CommonModule } from '@angular/common';
+import {  FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-contacts',
   standalone: true,
-  imports: [HeaderComponent, SidebarComponent, MaterialModule, CommonModule],
+  imports: [HeaderComponent,ReactiveFormsModule, SidebarComponent, MaterialModule, CommonModule, FormsModule],
   templateUrl: './contacts.component.html',
   styleUrl: './contacts.component.scss'
 })
@@ -30,29 +31,32 @@ export class ContactsComponent {
     { initials: 'FH', initialsColor: '#3f51b5', fullName: 'Franziska Herzog', selected: false, email: '6VtY0@example.com13', phone: '456-789-0123' }
   ];
 
-  selectedContact: Contact | null = null;
+  selectedContact: Contact | null = null;	
   editingContact: boolean = false;
   addingContact: boolean = false;
+  newContactAdded: boolean = false;
+  contactEdited: boolean = false;
   groupedContacts: { letter: string; contacts: Contact[] }[] = [];
-
-  constructor() {
+  contactForm: FormGroup;
+  constructor(private fb: FormBuilder) {
     this.groupContacts();
+    this.contactForm = this.fb.group({
+      fullName: [this.selectedContact?.fullName || '', [Validators.required, Validators.pattern(/^\b\p{L}{3,}\b \b\p{L}{3,}\b$/u)]],
+      email: [this.selectedContact?.email || '', [Validators.required, Validators.email, Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)]],
+      phone: [this.selectedContact?.phone || '', [Validators.required, Validators.pattern(/^\d{3}-\d{3}-\d{4}$/)]]
+    });
   }
 
   groupContacts(): void {
     const groups: { [key: string]: Contact[] } = {};
-
-    this.contacts.sort((a, b) => a.fullName.localeCompare(b.fullName)); // Sort alphabetically
-
+    this.contacts.sort((a, b) => a.fullName.localeCompare(b.fullName));
     this.contacts.forEach(contact => {
-      const firstLetter = contact.fullName[0].toUpperCase(); // Group by the first letter
+      const firstLetter = contact.fullName[0].toUpperCase(); 
       if (!groups[firstLetter]) {
         groups[firstLetter] = [];
       }
       groups[firstLetter].push(contact);
     });
-
-    
     this.groupedContacts = Object.keys(groups)
       .sort() 
       .map(letter => ({
@@ -68,8 +72,11 @@ export class ContactsComponent {
     const contact = this.groupedContacts[groupIndex].contacts[contactIndex];
     contact.selected = true;
     this.selectedContact = contact;
-  
-    console.log(this.selectedContact);
+    this.contactForm.patchValue({
+      fullName: contact.fullName,
+      email: contact.email,
+      phone: contact.phone,
+    });
   }
 
   deleteContact(): void {
@@ -78,6 +85,7 @@ export class ContactsComponent {
       if (index > -1) {
         this.contacts.splice(index, 1);
         this.selectedContact = null;
+        this.editingContact = false;
         this.groupContacts();
       }
     }
@@ -85,13 +93,103 @@ export class ContactsComponent {
 
   editContact(): void {
     if (this.selectedContact) {
-      console.log('Edit contact:', this.selectedContact);
       this.editingContact = true;
     }
   }
 
   addContact(): void {
-    console.log('Add new contact');
     this.addingContact = true;
+    this.selectedContact = null;
+    this.contactForm.reset();
+    this.contactForm.patchValue({
+      fullName: '',
+      email: '',
+      phone: '',
+    });
   }
+
+  saveTheNewContact(): void {
+    if (this.contactForm.valid) {
+      const formValues = this.contactForm.value;
+      const newContact: Contact = {
+        fullName: formValues.fullName,
+        email: formValues.email,
+        phone: formValues.phone,
+        initials: this.getInitials(formValues.fullName),
+        initialsColor: this.getRandomColor(),
+        selected: false,
+      };
+      this.contacts.push(newContact);
+      this.newContactAdded = true;
+      setTimeout(() => {
+        this.addingContact = false;
+        this.newContactAdded = false;
+      }, 2000);
+      this.groupContacts();
+    }
+  }
+
+  getRandomColor(): string {
+    const colors = ['#00bcd4', '#ff5722', '#9c27b0', '#3f51b5', '#e91e63', '#4caf50', '#ffeb3b', '#673ab7', '#2196f3', '#ff9800', '#009688', '#795548', '#607d8b'];
+    return colors[Math.floor(Math.random() * colors.length)];
+  }
+
+  saveContact(): void {
+    if (this.contactForm.valid) {
+      const updatedContact = this.contactForm.value;
+      if (this.selectedContact) {
+        this.selectedContact.fullName = updatedContact.fullName;
+        this.selectedContact.email = updatedContact.email;
+        this.selectedContact.phone = updatedContact.phone;
+        this.selectedContact.initials = this.getInitials(this.selectedContact.fullName);
+        const index = this.contacts.findIndex(contact => contact.email === this.selectedContact!.email);
+        if (index !== -1) {
+          this.contacts[index] = { ...this.selectedContact };
+        } else {
+          console.error('Selected contact not found in the contacts array');
+        }
+      }
+      this.contactEdited = true;
+      setTimeout(() => {
+        this.editingContact = false;
+        this.addingContact = false;
+        this.contactEdited = false;
+      }, 2000);
+
+      this.groupContacts(); 
+    } else {
+      console.error('Form is invalid');
+    }
+  }
+
+  getInitials(fullName: string): string {
+    if (!fullName) return '';
+    const nameParts = fullName.split(' ');
+    const initials = nameParts
+      .map(part => part.charAt(0).toUpperCase())
+      .join('')
+      .slice(0, 2); 
+    return initials;
+  }
+
+  closeForm(): void {
+    this.editingContact = false;
+    this.addingContact = false;
+    this.selectedContact = null;
+    this.contactForm.reset();
+    this.groupedContacts.forEach(group => {
+      group.contacts.forEach(contact => {
+        contact.selected = false;
+      });
+    });
+  }
+
+  @HostListener('document:keydown.escape', ['$event'])
+  handleEscKey(event: KeyboardEvent): void {
+    if (this.editingContact || this.addingContact) {
+      this.closeForm();
+    }
+  }
+
+
 }
