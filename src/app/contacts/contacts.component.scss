@@ -355,25 +355,7 @@ form{
   }
 }
 
-.save{
-  @include display(flex, row, center, center);
-  gap: 10px;
-  background-color: $lightgray;
-  border: 1px solid transparent;
-  padding: 10px 20px;
-  border-radius: 10px;
-  color: white;
-  font-weight: 300;
-  &:hover{
-    background-color: $blue;
-    box-shadow: 0px 3px 0px 0px rgba(0,0,0,0.4);
-    transition: ease-in-out 125ms;
-  }
-  &:disabled{
-    background-color: lightgray;
-    color: rgb(243, 10, 10);
-  }
-}
+
 
 .error{
   color: red;

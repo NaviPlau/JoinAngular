@@ -143,12 +143,7 @@ app-select-contacts {
   }
 }
 
-.urgent{
-  mat-icon{
-    color: $urgent;
-    transform: rotate(-90deg);
-  }
-}
+
 
 .selectedUrgent{
   color: white;
@@ -161,11 +156,7 @@ app-select-contacts {
   }
 }
 
-.medium{
-  mat-icon{
-    color: $medium;
-  }
-}
+
 
 .selectedMedium{
   background-color: $medium;
@@ -178,12 +169,7 @@ app-select-contacts {
   }
 }
 
-.low{
-  mat-icon{
-    color: $low;
-    transform: rotate(90deg);
-  }
-}
+
 
 .selectedLow{
   background-color: $low;

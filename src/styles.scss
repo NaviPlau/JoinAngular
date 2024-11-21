@@ -17,6 +17,8 @@ $lightgray: #2A3D59;
 $urgent: #FF3D00;
 $medium: #FFA800;
 $low: #7AE229;
+$technical: #0038FF;
+$userStory: #1FD7C1;
 
 html, body { height: 100%;  font-family: 'fira';}
 * {
@@ -88,5 +90,62 @@ h1{
 ::-webkit-scrollbar-track {
   background: $blue; 
   border-radius: 6px; 
+}
+
+
+.save{
+  @include display(flex, row, center, center);
+  gap: 10px;
+  background-color: $lightgray;
+  border: 1px solid transparent;
+  padding: 10px 20px;
+  border-radius: 10px;
+  color: white;
+  font-weight: 300;
+  &:hover{
+    background-color: $blue;
+    box-shadow: 0px 3px 0px 0px rgba(0,0,0,0.4);
+    transition: ease-in-out 125ms;
+  }
+  &:disabled{
+    background-color: lightgray;
+    color: rgb(243, 10, 10);
+  }
+}
+
+.urgent{
+  mat-icon{
+    color: $urgent;
+    transform: rotate(-90deg);
+  }
+}
+
+.medium{
+  mat-icon{
+    color: $medium;
+  }
+}
+
+.low{
+  mat-icon{
+    color: $low;
+    transform: rotate(90deg);
+  }
+}
+
+.technical{
+  background-color: $technical; 
+}
+
+.userStory{
+  background-color: $userStory;
+}
+
+.elipsis{
+  display: -webkit-box; 
+  -webkit-box-orient: vertical; 
+  -webkit-line-clamp: 2; 
+  line-clamp: 2; 
+  text-overflow: ellipsis;
 }
 

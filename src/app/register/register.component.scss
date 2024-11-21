@@ -35,7 +35,7 @@ label{
     font-size: 32px;
     transition: transform 0.125s;
     .back-wrapper:hover & {
-      transform: scale(0.70); // Adjust scale to maintain icon size when background grows
+      transform: scale(0.70); 
     }
   }
 }

@@ -1,9 +1,10 @@
 import { Component, ElementRef, HostListener, Renderer2, ViewChild } from '@angular/core';
-import { Contact, SelectContactsComponent } from '../select-contacts/select-contacts.component';  
+import {  SelectContactsComponent } from '../select-contacts/select-contacts.component';  
 import { MaterialModule } from '../../../../material/material.module';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Subtask } from '../../../interfaces/subtask';
+import { Contact } from '../../../interfaces/contact';
 
 @Component({
   selector: 'app-add-task-template',

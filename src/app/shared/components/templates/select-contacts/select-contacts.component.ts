@@ -2,20 +2,14 @@ import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from '../../../../material/material.module';
 import { FormsModule } from '@angular/forms';
+import { Contact } from '../../../interfaces/contact';
 
-export interface Contact {
-  initials: string;
-  initialsColor: string;
-  fullName: string;
-  selected: boolean;
-  email: string;
-  phone: string;
-}
+
 
 @Component({
   selector: 'app-select-contacts',
   standalone: true,
-  imports: [CommonModule, MaterialModule, FormsModule], 
+  imports: [CommonModule, MaterialModule, FormsModule,], 
   templateUrl: './select-contacts.component.html',
   styleUrls: ['./select-contacts.component.scss']
 })
@@ -45,7 +39,6 @@ export class SelectContactsComponent implements OnInit {
   }
 
   syncSelectedContacts() {
-    // Mark contacts as selected if they are already in selectedContacts
     this.contacts.forEach(contact => {
       contact.selected = !!this.selectedContacts.find(selected => selected.fullName === contact.fullName);
     });

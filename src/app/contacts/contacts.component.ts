@@ -2,9 +2,9 @@ import { Component, HostListener } from '@angular/core';
 import { HeaderComponent } from "../shared/components/header/header.component";
 import { SidebarComponent } from "../shared/components/sidebar/sidebar.component";
 import { MaterialModule } from '../material/material.module';
-import { Contact } from '../shared/components/templates/select-contacts/select-contacts.component';
 import { CommonModule } from '@angular/common';
 import {  FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Contact } from '../shared/interfaces/contact';
 
 @Component({
   selector: 'app-contacts',

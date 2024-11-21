@@ -1,0 +1,63 @@
+@if(task){
+<div class="task">
+  @if(task.category == 'technical-task'){
+  <span class="category technical">Technical Task</span>
+  }
+  @if(task.category == 'user-story'){
+  <span class="category userStory">User Story</span>
+  }
+
+  <p class="title elipsis">{{task.title}}</p>
+  <p class="description elipsis">{{task.description}}</p>
+  @if(task.subtasks.length > 0){
+    <div class="progress-container">
+      <div class="progress-bar-background">
+        <div
+          class="progress-bar-fill"
+          [style.width.%]="(completedSubtasks / totalSubtasks) * 100"
+        ></div>
+      </div>
+      <span class="progress-text">
+        {{ completedSubtasks }}/{{ totalSubtasks }} Subtasks
+      </span>
+    </div>
+  }
+  <div class="priority">
+    <div class="contacts-container " >
+      @if (task.contacts.length < 4) {
+        @for ( contact of task.contacts; track $index) {
+          <div class="contact-initials" [ngStyle]="{'background-color': contact.initialsColor}">
+            {{ contact.initials }}
+          </div>
+        }
+      }
+      @if (task.contacts.length > 4) {
+        @for ( contact of task.contacts.slice(0, 4); track $index) {
+          <div class="contact-initials" [ngStyle]="{'background-color': contact.initialsColor}">
+            {{ contact.initials }}
+          </div>
+        }
+        <div class="remaining-contacts contact-initials">
+          +{{ task.contacts.length - 5 }}
+        </div>
+      }
+    </div>
+    @if(task.priority == 'urgent'){
+    <div class="urgent">
+      <mat-icon>double_arrow_outlined</mat-icon>
+    </div>
+    }
+    @if(task.priority == 'medium'){
+    <div class="medium">
+      <mat-icon>drag_handle</mat-icon>
+    </div>
+    }
+    @if(task.priority == 'low'){
+    <div class="low">
+      <mat-icon>double_arrow_outlined</mat-icon>
+    </div>
+    }
+  </div>
+
+</div>
+}

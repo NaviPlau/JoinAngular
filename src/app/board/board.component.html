@@ -2,6 +2,87 @@
   <app-header></app-header>
   <app-sidebar></app-sidebar>
   <main>
-    <h1>Hallo World</h1>
+    <div class="board-header">
+      <h1>Board</h1>
+      <div class="right-side">
+        <div class="inputField search">
+          <input type="text" placeholder="Find task">
+          <div class="separator"></div>
+          <mat-icon>search</mat-icon>
+        </div>
+        <button class="save">
+          <span>Add task</span>
+          <mat-icon>add</mat-icon>
+        </button>
+      </div>
+    </div>
+
+    <div class="columns-container">
+      <div class="column" id="toDo">
+        <div class="column-title">
+          <span>To do</span>
+          <mat-icon>add</mat-icon>
+        </div>
+        <div class="task-column">
+          @if(toDoTasks.length <= 0){
+            <div class="noTasks">
+              <span>No tasks to do</span>
+            </div>
+          }
+          @for(task of toDoTasks; track $index){
+            <app-task [task]="task"></app-task>
+          }
+          <app-task></app-task>
+        </div>
+      </div>
+      <div class="column" id="inProgress">
+        <div class="column-title">
+          <span>In progress</span>
+          <mat-icon>add</mat-icon>
+        </div>
+        <div class="task-column">
+          @if(inProgressTasks.length <= 0){
+            <div class="noTasks">
+              <span>No tasks in progress</span>
+            </div>
+          }
+          @for(task of inProgressTasks; track $index){
+            <app-task [task]="task"></app-task>
+          }
+        </div>
+      </div>
+      <div class="column" id="awaitFeedback">
+        <div class="column-title">
+          <span>Await feedback</span>
+          <mat-icon>add</mat-icon>
+        </div>
+        <div class="task-column">
+          @if(awaitingFeedbackTasks.length <= 0){
+            <div class="noTasks">
+              <span>No tasks awaiting feedback</span>
+            </div>
+          }
+          @for(task of awaitingFeedbackTasks; track $index){
+            <app-task [task]="task"></app-task>
+          }
+        </div>
+      </div>
+      <div class="column" id="done">
+        <div class="column-title">
+          <span>Done</span>
+        </div>
+        <div class="task-column">
+          @if(doneTasks.length <= 0){
+            <div class="noTasks">
+              <span>No tasks done</span>
+            </div>
+          }
+          @for(task of doneTasks; track $index){
+            <app-task [task]="task"></app-task>
+          }
+        </div>
+      </div>
+    </div>
+
   </main>
 </section>
