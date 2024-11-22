@@ -43,9 +43,6 @@ export class AddTaskTemplateComponent {
     this.isDropdownOpen = false;
   }
 
-
-
-
   constructor(private elementRef: ElementRef, private renderer: Renderer2) {
       const currentDate = new Date();
       this.today = currentDate.toISOString().split('T')[0]; 
@@ -72,7 +69,7 @@ export class AddTaskTemplateComponent {
     this.selectedContacts = selectedContacts;
   }
 
-  private focusInput() {
+  focusInput() {
     if (this.contactsOpen && this.contactInput) {
       this.renderer.selectRootElement(this.contactInput.nativeElement).focus();
     }
