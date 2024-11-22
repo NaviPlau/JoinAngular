@@ -5,11 +5,10 @@ import { AddTaskTemplateComponent } from "../shared/components/templates/add-tas
 import { Task } from '../shared/interfaces/task';
 
 @Component({
-  selector: 'app-addtask',
-  standalone: true,
-  imports: [HeaderComponent, SidebarComponent, AddTaskTemplateComponent],
-  templateUrl: './addtask.component.html',
-  styleUrl: './addtask.component.scss'
+    selector: 'app-addtask',
+    imports: [HeaderComponent, SidebarComponent, AddTaskTemplateComponent],
+    templateUrl: './addtask.component.html',
+    styleUrl: './addtask.component.scss'
 })
 export class AddtaskComponent {
   

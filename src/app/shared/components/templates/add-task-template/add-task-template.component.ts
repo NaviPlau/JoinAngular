@@ -7,11 +7,10 @@ import { Subtask } from '../../../interfaces/subtask';
 import { Contact } from '../../../interfaces/contact';
 
 @Component({
-  selector: 'app-add-task-template',
-  standalone: true,
-  imports: [SelectContactsComponent, MaterialModule, CommonModule, FormsModule, ReactiveFormsModule], 
-  templateUrl: './add-task-template.component.html',
-  styleUrls: ['./add-task-template.component.scss']
+    selector: 'app-add-task-template',
+    imports: [SelectContactsComponent, MaterialModule, CommonModule, FormsModule, ReactiveFormsModule],
+    templateUrl: './add-task-template.component.html',
+    styleUrls: ['./add-task-template.component.scss']
 })
 export class AddTaskTemplateComponent {
   @ViewChild('contactInput') contactInput!: ElementRef;

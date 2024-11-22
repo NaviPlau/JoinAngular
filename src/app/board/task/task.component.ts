@@ -5,11 +5,10 @@ import { MaterialModule } from '../../material/material.module';
 import { OpenedTaskComponent } from "../opened-task/opened-task.component";
 
 @Component({
-  selector: 'app-task',
-  standalone: true,
-  imports: [CommonModule, MaterialModule, OpenedTaskComponent],
-  templateUrl: './task.component.html',
-  styleUrl: './task.component.scss'
+    selector: 'app-task',
+    imports: [CommonModule, MaterialModule, OpenedTaskComponent],
+    templateUrl: './task.component.html',
+    styleUrl: './task.component.scss'
 })
 export class TaskComponent {
   @Input() task!: Task;

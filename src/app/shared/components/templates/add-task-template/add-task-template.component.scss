@@ -1,4 +1,4 @@
-@import '../../../../../styles.scss';
+@use '../../../../../styles' as *;
 
 input, textarea{
   width: 100%;

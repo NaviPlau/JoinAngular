@@ -3,11 +3,10 @@ import { MaterialModule } from '../../../material/material.module';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'app-header',
-  standalone: true,
-  imports: [MaterialModule, CommonModule],
-  templateUrl: './header.component.html',
-  styleUrl: './header.component.scss'
+    selector: 'app-header',
+    imports: [MaterialModule, CommonModule],
+    templateUrl: './header.component.html',
+    styleUrl: './header.component.scss'
 })
 export class HeaderComponent implements AfterViewInit, OnDestroy {
   showLinks = false;

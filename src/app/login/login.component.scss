@@ -1,6 +1,6 @@
 
-@import '../shared/css/login.scss';
-
+@use '../shared/css/login' as *;
+@use '../../styles' as *;
 
 .buttons{
   @include display(flex, row, center, center);

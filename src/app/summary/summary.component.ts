@@ -4,11 +4,10 @@ import { HeaderComponent } from "../shared/components/header/header.component";
 import { MaterialModule } from '../material/material.module';
 
 @Component({
-  selector: 'app-summary',
-  standalone: true,
-  imports: [SidebarComponent, HeaderComponent, MaterialModule],
-  templateUrl: './summary.component.html',
-  styleUrl: './summary.component.scss'
+    selector: 'app-summary',
+    imports: [SidebarComponent, HeaderComponent, MaterialModule],
+    templateUrl: './summary.component.html',
+    styleUrl: './summary.component.scss'
 })
 export class SummaryComponent {
 

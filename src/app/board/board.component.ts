@@ -16,11 +16,10 @@ import {
 type Column = "awaitingFeedback" | "toDo" | "inProgress" | "done";
 
 @Component({
-  selector: 'app-board',
-  standalone: true,
-  imports: [CommonModule ,HeaderComponent, SidebarComponent, MaterialModule, TaskComponent],
-  templateUrl: './board.component.html',
-  styleUrl: './board.component.scss'
+    selector: 'app-board',
+    imports: [CommonModule, HeaderComponent, SidebarComponent, MaterialModule, TaskComponent],
+    templateUrl: './board.component.html',
+    styleUrl: './board.component.scss'
 })
 export class BoardComponent {
   tasks: Task[] = [

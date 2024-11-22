@@ -7,11 +7,10 @@ import { Contact } from '../../../interfaces/contact';
 
 
 @Component({
-  selector: 'app-select-contacts',
-  standalone: true,
-  imports: [CommonModule, MaterialModule, FormsModule,], 
-  templateUrl: './select-contacts.component.html',
-  styleUrls: ['./select-contacts.component.scss']
+    selector: 'app-select-contacts',
+    imports: [CommonModule, MaterialModule, FormsModule,],
+    templateUrl: './select-contacts.component.html',
+    styleUrls: ['./select-contacts.component.scss']
 })
 export class SelectContactsComponent implements OnInit {
   @Input() selectedContacts: Contact[] = [];

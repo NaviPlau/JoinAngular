@@ -7,11 +7,10 @@ import {  FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators }
 import { Contact } from '../shared/interfaces/contact';
 
 @Component({
-  selector: 'app-contacts',
-  standalone: true,
-  imports: [HeaderComponent,ReactiveFormsModule, SidebarComponent, MaterialModule, CommonModule, FormsModule],
-  templateUrl: './contacts.component.html',
-  styleUrl: './contacts.component.scss'
+    selector: 'app-contacts',
+    imports: [HeaderComponent, ReactiveFormsModule, SidebarComponent, MaterialModule, CommonModule, FormsModule],
+    templateUrl: './contacts.component.html',
+    styleUrl: './contacts.component.scss'
 })
 export class ContactsComponent {
   contacts: Contact[] = [

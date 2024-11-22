@@ -1,4 +1,4 @@
-@import '../../../styles.scss';
+@use '../../../styles' as *;
 
 .task{
   @include display(flex, column, flex-start, flex-start);

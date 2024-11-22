@@ -1,4 +1,4 @@
-@import '../../styles.scss';
+@use '../../styles' as *;
 
 section{
   height: 100%;
@@ -87,7 +87,7 @@ mat-icon{
   }
 }
 
-.urgent{
+.urgentSummary{
   background-color: $urgent;  
     mat-icon{
       width: 32px;

@@ -6,11 +6,10 @@ import { LinksLoginComponent } from "../links-login/links-login.component";
 import { RouterLink, RouterLinkActive } from '@angular/router';
 
 @Component({
-  selector: 'app-login',
-  standalone: true,
-  imports: [CommonModule, MaterialModule, LogoLoginComponent, LinksLoginComponent, RouterLink],
-  templateUrl: './login.component.html',
-  styleUrl: './login.component.scss'
+    selector: 'app-login',
+    imports: [CommonModule, MaterialModule, LogoLoginComponent, LinksLoginComponent, RouterLink],
+    templateUrl: './login.component.html',
+    styleUrl: './login.component.scss'
 })
 export class LoginComponent {
 

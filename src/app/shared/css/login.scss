@@ -1,4 +1,4 @@
-@import '../../../styles.scss';
+@use '../../../styles' as *;
 
 section{
   @include display(flex, column, center, center);

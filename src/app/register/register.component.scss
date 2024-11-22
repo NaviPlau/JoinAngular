@@ -1,5 +1,5 @@
-@import '../shared/css/login.scss';
-
+@use '../shared/css/login' as *;
+@use '../../styles' as *;
 a{
   color: $blue;
   &:hover{
