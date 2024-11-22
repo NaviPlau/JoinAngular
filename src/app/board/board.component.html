@@ -71,14 +71,14 @@
         <div class="column-title">
           <span>Done</span>
         </div>
-        <div class="task-column">
+        <div class="task-column" >
           @if(doneTasks.length <= 0){
             <div class="noTasks">
               <span>No tasks done</span>
             </div>
           }
           @for(task of doneTasks; track $index){
-            <app-task [task]="task"></app-task>
+            <app-task draggable="true" [task]="task"></app-task>
           }
         </div>
       </div>

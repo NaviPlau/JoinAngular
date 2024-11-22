@@ -5,6 +5,15 @@ import { MaterialModule } from '../material/material.module';
 import { Task } from '../shared/interfaces/task';
 import { TaskComponent } from "./task/task.component";
 import { CommonModule } from '@angular/common';
+import {
+  CdkDragDrop,
+  moveItemInArray,
+  transferArrayItem,
+  CdkDrag,
+  CdkDropList,
+} from '@angular/cdk/drag-drop';
+
+type Column = "awaitingFeedback" | "toDo" | "inProgress" | "done";
 
 @Component({
   selector: 'app-board',
@@ -130,5 +139,19 @@ export class BoardComponent {
 
   filterTaskByColumn(column: string): Task[] {
     return this.tasks.filter(task => task.column === column);
+  }
+
+  onDrop(event: CdkDragDrop<Task[]>, targetColumn: Column): void {
+    const draggedTask = event.previousContainer.data[event.previousIndex];
+    
+    if (event.previousContainer !== event.container) {
+      draggedTask.column = targetColumn;
+      transferArrayItem(
+        event.previousContainer.data,
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex
+      );
+    }
   }
 }

@@ -1,5 +1,5 @@
 @if(task){
-<div class="task">
+<div class="task" (click)="openTask(task)">
   @if(task.category == 'technical-task'){
   <span class="category technical">Technical Task</span>
   }
@@ -58,6 +58,11 @@
     </div>
     }
   </div>
-
 </div>
+}
+
+@if(openedTask){
+  <div class="openedTask">
+    <app-opened-task [task]="task"></app-opened-task>
+  </div>
 }
