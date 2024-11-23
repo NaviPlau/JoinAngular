@@ -1,8 +1,6 @@
 @use '../../../styles' as *;
 @use '../../shared/css/add-edit-task' as *;
 
-
-
 .task{
   @include display(flex, column, flex-start, flex-start);
   gap: 24px;
@@ -14,6 +12,41 @@
   scrollbar-width: none;
   position: relative;
   max-height: 90%;
+  animation: fade-blur-to-middle 0.4s ease-out forwards
+}
+
+h1{
+  font-size: 45px;
+}
+
+.backwards-animation {
+  animation: fade-blur-to-middle-close 0.4s ease-out forwards;
+}
+
+@keyframes fade-blur-to-middle {
+  0% {
+    opacity: 0;
+    filter: blur(50px);
+    transform: scale(1.2) translateX(-100%);
+  }
+  100% {
+    opacity: 1;
+    filter: blur(0);
+    transform: scale(1) translateX(0);
+  }
+}
+
+@keyframes fade-blur-to-middle-close {
+  0% {
+    opacity: 1;
+    filter: blur(0);
+    transform: scale(1) translateX(0);
+  }
+  100% {
+    opacity: 0;
+    filter: blur(50px);
+    transform: scale(1.2) translateX(-100%);
+  }
 }
 
 .category{
@@ -141,31 +174,7 @@
   }
 }
 
-.close-contain{
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  &:hover{
-    cursor: pointer;
-    mat-icon{
-      color: red;
-      animation: spin-and-color 0.75s ease-in-out infinite; 
-    }
-  }
-}
 
-@keyframes spin-and-color {
-  0% {
-    transform: rotate(0deg);
-    color: red;
-    scale: 1;
-  }
-  100% {
-    transform: rotate(180deg);
-    color: $blue;
-    scale: 1.2;
-  }
-}
 
 .selectedMedium{
   background-color: $medium;

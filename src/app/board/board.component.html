@@ -85,7 +85,12 @@
     </div>
     @if(addingNewTask){
       <div class="overlay" (click)="closeOverlay()">
-        <app-add-task-template [column]="selectedColumn"  (click)="$event.stopPropagation()"></app-add-task-template>
+        <div class="close-contain" (click)="closeOverlay()">
+          <mat-icon>close</mat-icon>
+        </div>
+        <app-add-task-template [column]="selectedColumn"  (click)="$event.stopPropagation()">
+
+        </app-add-task-template>
       </div>
     }
   </main>

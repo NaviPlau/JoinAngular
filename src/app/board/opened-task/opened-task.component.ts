@@ -24,8 +24,9 @@ export class OpenedTaskComponent implements OnInit {
   subtaskFocus: boolean = false;
   subtaskTitle: string = '';
   subtaskInputFocused: boolean = false;
+  isClosing: boolean = false;
 
-  constructor(private renderer: Renderer2) {
+  constructor(private renderer: Renderer2, private elRef: ElementRef) {
     if(this.task){
       this.selectedPriority = this.task.priority;
     }
@@ -42,8 +43,11 @@ export class OpenedTaskComponent implements OnInit {
   }
 
   closeTask() {
-    this.close.emit(); 
-    this.editingTaskChange.emit(false);
+    this.isClosing = true;
+    setTimeout(() => {
+      this.close.emit(); 
+      this.isClosing = false; 
+    }, 400); 
   }
 
 
@@ -67,6 +71,7 @@ export class OpenedTaskComponent implements OnInit {
       setTimeout(() => this.focusInput());
     }
   }
+
   focusInput() {
     if (this.contactsOpen && this.contactInput) {
       this.renderer.selectRootElement(this.contactInput.nativeElement).focus();
@@ -135,8 +140,31 @@ export class OpenedTaskComponent implements OnInit {
     }
   }
 
-  saveTaskChanges(){
-    this.editingTask = false;
-    this.editingTaskChange.emit(false);
+  saveTaskChanges() {
+    this.isClosing = true; 
+    setTimeout(() => {
+      this.editingTask = false; 
+      this.editingTaskChange.emit(false);
+      this.isClosing = false; 
+    }, 400); 
+  }
+
+  @HostListener('document:click', ['$event'])
+  handleClickOutside(event: Event) {
+    const target = event.target as HTMLElement;
+    if (!this.elRef.nativeElement.querySelector('.task')?.contains(target)) {
+      this.closeTask(); 
+    }
+  }
+
+  @HostListener('document:keydown', ['$event'])
+  handleKeydown(event: KeyboardEvent) {
+    if (event.key === 'Escape' || event.key === 'Esc') {
+      if (this.editingTask) {
+        this.saveTaskChanges(); 
+      } else {
+        this.closeTask(); 
+      }
+    }
   }
 }

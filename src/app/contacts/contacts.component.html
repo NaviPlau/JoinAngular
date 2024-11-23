@@ -74,7 +74,7 @@
     </div>
   </main>
   @if(addingContact || editingContact)  {
-    <div class="form-contain">
+    <div class="form-contain" >
       @if (contactEdited) {
         <div class="response">Contact edited successfully</div>
       }
@@ -82,8 +82,10 @@
         <div class="response">Contact added successfully</div>
       }
       
-      <div class="form">
-        <mat-icon class="close" (click)="closeForm()">close</mat-icon>
+      <div class="form" [ngClass]="{'fade-out-to-left': formIsClosing}" >
+        <div class="close-contain" (click)="closeForm()">
+          <mat-icon>close</mat-icon>
+        </div>
         <div class="form-left">
           <img src="/assets/img/logo-white.png" alt="">
           @if(selectedContact){

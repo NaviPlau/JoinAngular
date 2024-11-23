@@ -161,3 +161,57 @@ h1{
   top: 0;
   left: 0;
 }
+
+.close-contain{
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  &:hover{
+    cursor: pointer;
+    mat-icon{
+      color: red;
+      animation: spin-and-color 0.75s ease-in-out infinite; 
+    }
+  }
+}
+
+@keyframes spin-and-color {
+  0% {
+    transform: rotate(0deg);
+    color: red;
+    scale: 1;
+  }
+  100% {
+    transform: rotate(180deg);
+    color: $blue;
+    scale: 1.2;
+  }
+}
+
+@keyframes fade-in-from-left {
+  from {
+    opacity: 0;
+    transform: translate(-150%, -50%); 
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%); 
+  }
+}
+
+
+.fade-out-to-left {
+  animation: none;
+  animation: fade-out-to-left 0.5s ease-in-out;
+}
+
+@keyframes fade-out-to-left {
+  from {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+  to {
+    opacity: 0;
+    transform: translate(-150%, -50%);
+  }
+}

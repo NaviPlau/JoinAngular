@@ -1,6 +1,6 @@
 @if(task && !editingTask){
-<div class="overlay">
-  <div class="task">
+<div class="overlay" (click)="closeTask()">
+  <div class="task"  [ngClass]="{'backwards-animation': isClosing}" (click)="$event.stopPropagation()">
     <div class="close-contain" (click)="closeTask()">
       <mat-icon>close</mat-icon>
     </div>
@@ -89,8 +89,8 @@
 
 
 @if(editingTask){
-<div class="overlay">
-  <div class="task">
+<div class="overlay" >
+  <div class="task" [ngClass]="{'backwards-animation': isClosing}" >
     <div class="close-contain " (click)="closeTask()">
       <mat-icon>close</mat-icon>
     </div>

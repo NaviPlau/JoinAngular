@@ -1,4 +1,4 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, ElementRef, HostListener } from '@angular/core';
 import { HeaderComponent } from "../shared/components/header/header.component";
 import { SidebarComponent } from "../shared/components/sidebar/sidebar.component";
 import { MaterialModule } from '../material/material.module';
@@ -35,9 +35,10 @@ export class ContactsComponent {
   addingContact: boolean = false;
   newContactAdded: boolean = false;
   contactEdited: boolean = false;
+  formIsClosing: boolean = false;
   groupedContacts: { letter: string; contacts: Contact[] }[] = [];
   contactForm: FormGroup;
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private elRef: ElementRef) {
     this.groupContacts();
     this.contactForm = this.fb.group({
       fullName: [this.selectedContact?.fullName || '', [Validators.required, Validators.pattern(/^\b\p{L}{3,}\b \b\p{L}{3,}\b$/u)]],
@@ -172,21 +173,36 @@ export class ContactsComponent {
   }
 
   closeForm(): void {
-    this.editingContact = false;
-    this.addingContact = false;
-    this.selectedContact = null;
-    this.contactForm.reset();
-    this.groupedContacts.forEach(group => {
-      group.contacts.forEach(contact => {
-        contact.selected = false;
+    this.formIsClosing = true;
+    setTimeout(() => {
+      this.editingContact = false;
+      this.addingContact = false;
+      this.selectedContact = null;
+      this.contactForm.reset();
+      this.groupedContacts.forEach(group => {
+        group.contacts.forEach(contact => {
+          contact.selected = false;
+        });
       });
-    });
+  
+      this.formIsClosing = false; 
+    }, 500); 
   }
 
   @HostListener('document:keydown.escape', ['$event'])
   handleEscKey(event: KeyboardEvent): void {
     if (this.editingContact || this.addingContact) {
       this.closeForm();
+    }
+  }
+
+  @HostListener('document:mousedown', ['$event'])
+  handleClickOutside(event: MouseEvent): void {
+    const targetElement = event.target as HTMLElement;
+    if (!this.elRef.nativeElement.querySelector('.form')?.contains(targetElement)) {
+      if (this.editingContact || this.addingContact) {
+        this.closeForm();
+      }
     }
   }
 

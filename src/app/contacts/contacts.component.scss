@@ -245,6 +245,7 @@ main{
   border-radius: 50px;
   box-shadow: 0px 0px 16px 0px rgba(0,0,0,0.4);
   z-index: 10;
+  animation: fade-in-from-left 0.4s ease-out forwards
 }
 
 .form-left{
@@ -419,4 +420,8 @@ form{
     width: auto;
     height: auto;
   }
+}
+
+.form.fade-out-to-left {
+  animation: fade-out-to-left 0.6s ease-in-out;
 }

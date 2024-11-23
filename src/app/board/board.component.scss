@@ -134,28 +134,13 @@ app-add-task-template {
   animation: fade-in-from-left 0.5s ease-in-out; /* Apply the animation */
 }
 
-@keyframes fade-in-from-left {
-  from {
-    opacity: 0;
-    transform: translate(-150%, -50%); 
-  }
-  to {
-    opacity: 1;
-    transform: translate(-50%, -50%); 
-  }
-}
 
-.fade-out-to-left {
-  animation: fade-out-to-left 0.5s ease-in-out;
-}
 
-@keyframes fade-out-to-left {
-  from {
-    opacity: 1;
-    transform: translate(-50%, -50%);
-  }
-  to {
-    opacity: 0;
-    transform: translate(-150%, -50%);
-  }
+
+
+
+.close-contain{
+  right: 120px;
+  top: 120px;
+  z-index: 100;
 }
