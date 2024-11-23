@@ -6,54 +6,54 @@
     </div>
 
     @if(task.category == 'technical-task'){
-      <span class="category {{task.category}}">Technical Task</span>
+    <span class="category {{task.category}}">Technical Task</span>
     }
     @if(task.category == 'user-story'){
-      <span class="category {{task.category}}">User Story</span>
+    <span class="category {{task.category}}">User Story</span>
     }
     <h1 class="title">{{task.title}}</h1>
     <p class="description">{{task.description}}</p>
     <div class="dueDate">
-       <span>Due date:</span>
-       <span> {{task.dueDate | date}}</span> 
+      <span>Due date:</span>
+      <span> {{task.dueDate | date}}</span>
     </div>
     <div class="priority">
       <span class="prio">Priority:</span>
-        @if(task.priority == 'urgent'){
-          <div class="priority-left">
-            <span>Urgent</span>
-            <div class="urgent priority"> 
-              <mat-icon>double_arrow_outlined</mat-icon>
-            </div>
-          </div>
-        }
-        @if(task.priority == 'medium'){
-          <div class="priority-left">
-            <span>Medium</span>
-            <div class="medium priority"> 
-              <mat-icon>drag_handle</mat-icon>
-            </div>
-          </div>
-        }
-        @if(task.priority == 'low'){
-          <div class="priority-left">
-            <span>Low</span>
-            <div class="low priority"> 
-              <mat-icon>double_arrow_outlined</mat-icon>
-            </div>
-          </div>
-        }
+      @if(task.priority == 'urgent'){
+      <div class="priority-left">
+        <span>Urgent</span>
+        <div class="urgent-open priority">
+          <mat-icon>double_arrow_outlined</mat-icon>
+        </div>
+      </div>
+      }
+      @if(task.priority == 'medium'){
+      <div class="priority-left">
+        <span>Medium</span>
+        <div class="medium-open priority">
+          <mat-icon>drag_handle</mat-icon>
+        </div>
+      </div>
+      }
+      @if(task.priority == 'low'){
+      <div class="priority-left">
+        <span>Low</span>
+        <div class="low-open priority">
+          <mat-icon>double_arrow_outlined</mat-icon>
+        </div>
+      </div>
+      }
     </div>
     <div class="contacts">
       <span>Assigned to</span>
       <div class="contacts-container">
         @for ( contact of task.contacts; track $index) {
-          <div class="contact">
-            <div class="contact-initials" [ngStyle]="{'background-color': contact.initialsColor}">
-              {{ contact.initials }}
-            </div>
-            <div>{{ contact.fullName }}</div>
+        <div class="contact">
+          <div class="contact-initials" [ngStyle]="{'background-color': contact.initialsColor}">
+            {{ contact.initials }}
           </div>
+          <div>{{ contact.fullName }}</div>
+        </div>
         }
       </div>
     </div>
@@ -61,13 +61,13 @@
       <span>Subtasks:</span>
       <div class="subtasks-container">
         @for ( subtask of task.subtasks; track $index) {
-          <div class="subtask">
-            <label class="custom-checkbox">
-              <input type="checkbox" />
-              <span class="checkbox"></span>
-              <span class="title">{{ subtask.title }}</span>
-            </label>
-          </div>
+        <div class="subtask">
+          <label class="custom-checkbox">
+            <input type="checkbox"  [(ngModel)]="subtask.completed"/>
+            <span class="checkbox"></span>
+            <span class="title">{{ subtask.title }}</span>
+          </label>
+        </div>
         }
       </div>
     </div>
@@ -86,58 +86,147 @@
 </div>
 }
 
+
+
 @if(editingTask){
-  <div class="overlay">
-    <div class="task">
-      <div class="close-contain" (click)="closeTask()">
-        <mat-icon>close</mat-icon>
-      </div>
-      <div>
-        <span>Title</span>
+<div class="overlay">
+  <div class="task">
+    <div class="close-contain " (click)="closeTask()">
+      <mat-icon>close</mat-icon>
+    </div>
+      <div class="inputField marginTop">
+        <div class="inputTitle">
+          <span>Title</span>
+          <span>*</span>
+        </div>
         <input type="text" [(ngModel)]="task.title">
       </div>
-      <div>
-        <span>Description</span>
-        <textarea name="description" [(ngModel)]="task.description"></textarea>
+      <div class="inputField">
+        <div class="inputTitle">
+          <span>Description</span>
+          <span></span>
+        </div>
+        <textarea type="text" [(ngModel)]="task.description"></textarea>
       </div>
-      <div>
-        <span>Due date</span>
+
+      <div class="inputField">
+        <div class="inputTitle">
+          <span>Due date</span>
+          <span>*</span>
+        </div>
         <input type="date" [ngModel]="task.dueDate | date:'yyyy-MM-dd'">
       </div>
-      <div>
-        <span>Priority</span>
-        <button></button>
-        <button></button>
-        <button></button>
-      </div>
-      <div>
-        <div class="inputField">
-          <div class="inputTitle">
-            <span>Assigned to</span>
-          </div>
-          <div class="selectContacts" style="position: relative;">
-            <mat-icon matSuffix class="arrow-icon" (click)="openContacts()">arrow_drop_down</mat-icon>
-            <input #contactInput matInput type="text" placeholder="Select contacts to assign" (focus)="openContacts()" readonly />
-            @if(contactsOpen){
-              <app-select-contacts #selectContacts [selectedContacts]="task.contacts"></app-select-contacts>
-            }
-          </div>
+
+      <div class="inputField">
+        <div class="inputTitle">
+          <span>Priority</span>
+          <span>*</span>
+        </div>
+        <div class="prio-area ">
+          <button class="urgent" [ngClass]="{'selectedUrgent': selectedPriority === 'urgent'}"
+            (click)="setPriority('urgent')">
+            Urgent
+            <mat-icon>double_arrow_outlined</mat-icon>
+          </button>
+
+          <button class="medium" [ngClass]="{'selectedMedium': selectedPriority === 'medium'}"
+            (click)="setPriority('medium')">
+            Medium
+            <mat-icon>drag_handle</mat-icon>
+          </button>
+
+          <button class="low" [ngClass]="{'selectedLow': selectedPriority === 'low'}" (click)="setPriority('low')">
+            Low
+            <mat-icon>double_arrow_outlined</mat-icon>
+          </button>
         </div>
       </div>
-      <div class="selectedContacts">
-        <div *ngFor="let contact of task.contacts | slice:0:5" class="contact-initials">
-          <span [ngStyle]="{'background-color': contact.initialsColor}">
-            {{ contact.initials }}
-          </span>
+      <div class="inputField">
+        <div class="inputTitle">
+          <span>Assigned to</span>
+          <span></span>
         </div>
-        @if(task.contacts.length > 5){
+        <div class="selectContacts" style="position: relative;">
+          <mat-icon matSuffix class="arrow-icon" (click)="openContacts()">arrow_drop_down</mat-icon>
+          <input #contactInput matInput type="text" placeholder="Select contacts to assign" (focus)="openContacts()"
+            readonly />
+          @if(contactsOpen){
+          <app-select-contacts #selectContacts [selectedContacts]="task.contacts"></app-select-contacts>
+          }
+        </div>
+      </div>
+      
+        <div class="contact">
+          <div *ngFor="let contact of task.contacts | slice:0:5" >
+            <div class="contact-initials" [ngStyle]="{'background-color': contact.initialsColor}">
+              {{ contact.initials }}
+            </div>
+          </div>
+          @if(task.contacts.length > 5){
           <div class="remaining-contacts">
             +{{ remainingContactsCount }}
           </div>
-        }
-      
+          }
+      </div>
+      <div class="inputField">
+        <div class="inputTitle">
+          <span>Add Subtask</span>
+          <span></span>
+        </div>
+        <div class="subtaskField">
+          @if(subtaskFocus){
+            <div class="subtaskIcons">
+              <mat-icon (mousedown)="clearInput()">close</mat-icon>
+              <div class="iconsSeparator"></div>
+              <mat-icon (mousedown)="createSubtask()">done</mat-icon>
+            </div>
+          }
+          @if(!subtaskFocus){
+            <mat-icon class="add" (click)="focusInputSubtask()">add</mat-icon>
+          }
+          
+          <input type="text"  placeholder="Add a subtask" name="subtaskTitle" (focus)="subtaskFocus = true" (blur)="subtaskFocus = false" id="addSubtask" [(ngModel)]="subtaskTitle">
+        </div>
+      </div>
+  
+      @if(task.subtasks.length > 0){
+        <div class="subtask-contain-edit">
+          @for (subtask of task.subtasks; track $index) {
+            <div class="rendered-subtasks">
+              <span class="dot-icon"></span>
+              <input 
+                class="subtaskTitle renderedInput elipseInput" 
+                id="renderedSubtask{{$index}}" 
+                [value]="subtask.title"  
+                (focus)="subtaskInputFocused = true"
+                (blur)="onBlurSubtask($index)"
+                name="update"
+                > 
+              @if(!subtaskInputFocused){
+                <div class="subtaskIcons renderedIcons">
+                  <mat-icon (click)="focusRenderedSubtask($index)">edit</mat-icon>
+                  <div class="iconsSeparator"></div>
+                  <mat-icon (mousedown)="deleteSubtask($index)">delete</mat-icon>
+                </div>
+              }
+              @if(subtaskInputFocused){
+                <div class="subtaskIcons renderedIcons">
+                  <mat-icon (mousedown)="deleteSubtask($index)">delete</mat-icon>
+                  <div class="iconsSeparator"></div>
+                  <mat-icon (mousedown)="updateSubtask($index)">done</mat-icon>
+                </div>
+              }
+            </div>
+          }
+        </div>
+      }
+      <div class="edit-ok">
+        <button class="save" (click)="saveTaskChanges()">
+          <span>Ok</span>
+          <mat-icon>done</mat-icon>
+        </button>
       </div>
     </div>
-  </div>
+    
+</div>
 }
-

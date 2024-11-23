@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, Renderer2, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, Input, OnInit, Renderer2, ViewChild } from '@angular/core';
 import {  SelectContactsComponent } from '../select-contacts/select-contacts.component';  
 import { MaterialModule } from '../../../../material/material.module';
 import { CommonModule } from '@angular/common';
@@ -12,9 +12,9 @@ import { Contact } from '../../../interfaces/contact';
     templateUrl: './add-task-template.component.html',
     styleUrls: ['./add-task-template.component.scss']
 })
-export class AddTaskTemplateComponent {
+export class AddTaskTemplateComponent implements OnInit {
   @ViewChild('contactInput') contactInput!: ElementRef;
-  
+  @Input() column!: string;
   contactsOpen = false;
   selectedContacts: Contact[] = [];
   today: string;
@@ -33,6 +33,12 @@ export class AddTaskTemplateComponent {
     { label: 'Technical Task', value: 'technical-task' },
     { label: 'User Story', value: 'user-story' },
   ];
+
+  ngOnInit(){
+    console.log(this.column);
+    
+  }
+
   toggleDropdown(): void {
     this.isDropdownOpen = !this.isDropdownOpen;
   }

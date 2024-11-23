@@ -2,7 +2,8 @@
 
 
 .contact{
-  width: 440px;
+  max-width: 440px;
+  width: 100%;
   @include display(flex, row, space-between, center);
   padding: 10px 16px;
   border-radius: 20px;
@@ -65,9 +66,8 @@
   transition: background-color 0.3s;
 }
 
-/* Checkmark when the checkbox is selected */
 .custom-checkbox input[type="checkbox"]:checked + .checkmark {
-  background-color: #4caf50; /* Change color as needed */
+  background-color: #4caf50; 
 }
 
 .custom-checkbox .checkmark:after {

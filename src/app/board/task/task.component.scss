@@ -9,6 +9,10 @@
   &:hover{
     cursor: pointer;
     transform: rotate(4deg);
+    scale: 0.9;
+  }
+  &:active{
+    cursor: move;
   }
 }
 

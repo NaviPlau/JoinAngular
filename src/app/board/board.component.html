@@ -10,7 +10,7 @@
           <div class="separator"></div>
           <mat-icon>search</mat-icon>
         </div>
-        <button class="save">
+        <button class="save" (click)="addTask($event); setColumn('toDo')">
           <span>Add task</span>
           <mat-icon>add</mat-icon>
         </button>
@@ -21,7 +21,7 @@
       <div class="column" id="toDo">
         <div class="column-title">
           <span>To do</span>
-          <mat-icon>add</mat-icon>
+          <mat-icon  (click)="addTask($event);setColumn('toDo')">add</mat-icon>
         </div>
         <div class="task-column">
           @if(toDoTasks.length <= 0){
@@ -38,7 +38,7 @@
       <div class="column" id="inProgress">
         <div class="column-title">
           <span>In progress</span>
-          <mat-icon>add</mat-icon>
+          <mat-icon (click)="addTask($event); setColumn('inProgress')">add</mat-icon>
         </div>
         <div class="task-column">
           @if(inProgressTasks.length <= 0){
@@ -54,7 +54,7 @@
       <div class="column" id="awaitFeedback">
         <div class="column-title">
           <span>Await feedback</span>
-          <mat-icon>add</mat-icon>
+          <mat-icon (click)="addTask($event); setColumn('awaitingFeedback')">add</mat-icon>
         </div>
         <div class="task-column">
           @if(awaitingFeedbackTasks.length <= 0){
@@ -83,6 +83,10 @@
         </div>
       </div>
     </div>
-
+    @if(addingNewTask){
+      <div class="overlay" (click)="closeOverlay()">
+        <app-add-task-template [column]="selectedColumn"  (click)="$event.stopPropagation()"></app-add-task-template>
+      </div>
+    }
   </main>
 </section>

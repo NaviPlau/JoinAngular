@@ -1,23 +1,14 @@
 @use '../../../styles' as *;
+@use '../../shared/css/add-edit-task' as *;
 
-.overlay{
-  position: absolute;
-  @include display(flex, column, center, center);
-  gap: 32px;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.2);
-  z-index: 99999;
-  top: 0;
-  left: 0;
-}
+
 
 .task{
   @include display(flex, column, flex-start, flex-start);
   gap: 24px;
   padding: 20px;
   border-radius: 30px;
-  background-color: $background;
+  background-color: white;
   max-width: 525px;
   overflow-y: auto;
   scrollbar-width: none;
@@ -62,7 +53,7 @@
 
 .contact{
   @include display(flex, row, flex-start, center);
-  gap: 20px;
+  gap: 10px;
 }
 
 .contact-initials{
@@ -162,6 +153,7 @@
     }
   }
 }
+
 @keyframes spin-and-color {
   0% {
     transform: rotate(0deg);
@@ -173,4 +165,70 @@
     color: $blue;
     scale: 1.2;
   }
+}
+
+.selectedMedium{
+  background-color: $medium;
+  color: white;
+  mat-icon{
+    color: white;
+  }
+  &:hover{
+    box-shadow: none;
+  }
+}
+
+.selectedUrgent{
+  color: white;
+  background-color: $urgent;
+  mat-icon{
+    color: white;
+  }
+  &:hover{
+    box-shadow: none;
+  }
+}
+
+
+.selectedLow{
+  background-color: $low;
+  color: white;
+  mat-icon{
+    color: white;
+  }
+  &:hover{
+    box-shadow: none;
+  }
+}
+
+
+.marginTop{
+  margin-top: 20px;
+}
+
+.remaining-contacts{
+  background-color: lightgray;
+  padding: 7px;
+  border-radius: 100%;
+}
+
+
+.subtask-contain-edit{
+  width: 100%;
+  @include display(flex, column, flex-start, space-between);
+  gap: 5px;
+  scrollbar-width: none;
+  margin-top: -20px;
+  input{
+    border: none;
+    font-size: 16px;
+    height: 32px;
+    width: 100%;
+  }
+}
+
+
+.edit-ok{
+  width: 100%;
+  @include display(flex, row, flex-end, center);
 }

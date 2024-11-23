@@ -106,7 +106,6 @@ main{
   @include display(flex, column, flex-start, flex-start);
   gap: 20px;
   width: 100%;
-  border: 1px solid lightgray;
   height: 100%;
   overflow-y:auto;
   scrollbar-width: none;
@@ -122,4 +121,41 @@ main{
   padding: 10px 0px;
   border-radius: 10px;
   border: 2px dashed gray;
+}
+
+app-add-task-template {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 40px;
+  border-radius: 50px;
+  animation: fade-in-from-left 0.5s ease-in-out; /* Apply the animation */
+}
+
+@keyframes fade-in-from-left {
+  from {
+    opacity: 0;
+    transform: translate(-150%, -50%); 
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%); 
+  }
+}
+
+.fade-out-to-left {
+  animation: fade-out-to-left 0.5s ease-in-out;
+}
+
+@keyframes fade-out-to-left {
+  from {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+  to {
+    opacity: 0;
+    transform: translate(-150%, -50%);
+  }
 }
