@@ -8,22 +8,26 @@
       <h1>Sign up</h1>
       <div class="line"></div>
     </div>
-    <form>
+    <form [formGroup]="registerForm" >
       <div class="inputField">
-        <input type="email" placeholder="Username">
+        <input type="text" placeholder="Username" formControlName="username">
         <mat-icon>person</mat-icon>
       </div>
       <div class="inputField">
-        <input type="email" placeholder="Email">
+        <input type="email" placeholder="Email" formControlName="email">
         <mat-icon>mail_outline</mat-icon>
       </div>
       <div class="inputField">
-        <input type="password" placeholder="Password">
+        <input type="password" placeholder="Password" formControlName="password">
         <mat-icon>lock_outline</mat-icon>
       </div>
       <div class="inputField">
-        <input type="password" placeholder="Repeat password">
+        <input type="password" placeholder="Repeat password" formControlName="repeatPassword">
         <mat-icon>lock_outline</mat-icon>
+      </div>
+      <div class="inputField">
+        <input type="phone" placeholder="Phone" formControlName="phone">
+        <mat-icon>phone</mat-icon>
       </div>
 
       <label for="checkbox" class="custom-checkbox">
@@ -31,7 +35,7 @@
         <span class="checkmark"></span>
         I accept the <a href="#"> Privacy Policy</a>
       </label>
-      <div class="buttons">
+      <div class="buttons" (click)="createUserJson()">
         <button class="login">Register</button>
       </div>
     </form>

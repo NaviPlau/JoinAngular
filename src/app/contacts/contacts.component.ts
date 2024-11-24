@@ -43,7 +43,7 @@ export class ContactsComponent {
     this.contactForm = this.fb.group({
       fullName: [this.selectedContact?.fullName || '', [Validators.required, Validators.pattern(/^\b\p{L}{3,}\b \b\p{L}{3,}\b$/u)]],
       email: [this.selectedContact?.email || '', [Validators.required, Validators.email, Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)]],
-      phone: [this.selectedContact?.phone || '', [Validators.required, Validators.pattern(/^\d{3}-\d{3}-\d{4}$/)]]
+      phone: [this.selectedContact?.phone || '', [Validators.required, Validators.pattern('^[0-9]{10,15}$')]]
     });
   }
 
