@@ -168,7 +168,18 @@ form{
   }
 }
 
+.close-contain {
+  position: absolute; 
+  top: 32px; 
+  right: 32px; 
+  z-index: 1000; 
+  cursor: pointer;
+}
 
+
+.input-error{
+  border-bottom: 3px solid red;
+}
 
 
 

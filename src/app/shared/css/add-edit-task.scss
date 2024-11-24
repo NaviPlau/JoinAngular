@@ -30,6 +30,7 @@ input, textarea{
   border-radius: 10px;
   padding: 0px 16px;
   font-size: 20px;
+  border: 2px solid $lightgray;
   color: $darkgray;
   &:focus{
     outline: none;

@@ -131,16 +131,7 @@ app-add-task-template {
   background-color: white;
   padding: 40px;
   border-radius: 50px;
-  animation: fade-in-from-left 0.5s ease-in-out; /* Apply the animation */
+  animation: fade-in-from-left 0.5s ease-in-out; 
 }
 
 
-
-
-
-
-.close-contain{
-  right: 120px;
-  top: 120px;
-  z-index: 100;
-}

@@ -1,13 +1,20 @@
 <h1>Add Task</h1>
-
-<form action="" return="false">
+@if(showCloseButton){
+  <div class="close-contain" (click)="closeOverlay()">
+    <mat-icon>close</mat-icon>
+  </div>
+}
+<form #taskForm="ngForm" (ngSubmit)="generateJSON(taskForm)">
   <div class="leftForm">
-    <div class="inputField">
+    <div class="inputField" >
       <div class="inputTitle">
         <span>Title</span>
         <span>*</span>
       </div>
-      <input type="text" placeholder="Enter a Title" name="title" [(ngModel)]="title" required>
+      <input type="text" placeholder="Enter a Title" name="title" [(ngModel)]="title"  #titleField="ngModel" required  [ngClass]="{'input-error': titleField?.touched && titleField?.invalid}"/>
+      <div *ngIf="titleField?.touched && titleField?.invalid" class="error-message">
+        <span *ngIf="titleField?.errors?.['required']">Title is required.</span>
+      </div>
     </div>
 
     <div class="inputField">
@@ -51,7 +58,19 @@
         <span>Due date</span>
         <span>*</span>
       </div>
-      <input type="date" [min]="today" name="dueDate" [(ngModel)]="dueDate">
+      <input 
+      type="date" 
+      [min]="today" 
+      name="dueDate" 
+      [(ngModel)]="dueDate" 
+      #dueDateField="ngModel" 
+      required 
+      [ngClass]="{'input-error': dueDateField?.touched && dueDateField?.invalid}" />
+
+    <div *ngIf="dueDateField?.touched && dueDateField?.invalid" class="error-message">
+      <span *ngIf="dueDateField?.errors?.['required']">Due date is required.</span>
+      <span *ngIf="dueDateField?.errors?.['min']">Due date must be in the future.</span>
+    </div>
     </div>
 
     <div class="inputField">
@@ -91,6 +110,11 @@
           [placeholder]="selectedCategory ? '' : 'Select a category'"
           [value]="selectedCategory"
           readonly
+          name="category"
+          [(ngModel)]="selectedCategory"
+          #categoryField="ngModel"
+          required
+          [ngClass]="{'input-error': categoryField?.touched && categoryField?.invalid}"
         />
         <div
           *ngIf="isDropdownOpen"
@@ -105,6 +129,9 @@
             {{ option.label }}
           </div>
         </div>
+      </div>
+      <div *ngIf="categoryField?.touched && categoryField?.invalid" class="error-message">
+        <span *ngIf="categoryField?.errors?.['required']">Category is required.</span>
       </div>
     </div>
 
@@ -169,7 +196,7 @@
       <span>Clear</span>
       <mat-icon>close</mat-icon>
     </button>
-    <button class="create">
+    <button class="create" (click)="submitForm(taskForm)">
       <span>Create Task</span>
       <mat-icon>done</mat-icon>
     </button>

@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, Input, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output, Renderer2, ViewChild } from '@angular/core';
 import {  SelectContactsComponent } from '../select-contacts/select-contacts.component';  
 import { MaterialModule } from '../../../../material/material.module';
 import { CommonModule } from '@angular/common';
@@ -15,6 +15,10 @@ import { Contact } from '../../../interfaces/contact';
 export class AddTaskTemplateComponent implements OnInit {
   @ViewChild('contactInput') contactInput!: ElementRef;
   @Input() column!: string;
+  @Input() showCloseButton: boolean = false;
+  @Output() closeOverlayEvent = new EventEmitter<void>();
+
+ 
   contactsOpen = false;
   selectedContacts: Contact[] = [];
   today: string;
@@ -35,8 +39,10 @@ export class AddTaskTemplateComponent implements OnInit {
   ];
 
   ngOnInit(){
-    console.log(this.column);
-    
+  }
+
+  closeOverlay() {
+    this.closeOverlayEvent.emit(); 
   }
 
   toggleDropdown(): void {
@@ -53,6 +59,8 @@ export class AddTaskTemplateComponent implements OnInit {
       const currentDate = new Date();
       this.today = currentDate.toISOString().split('T')[0]; 
   }
+
+  
 
   @HostListener('document:mousedown', ['$event'])
   onClickOutside(event: Event) {
@@ -160,6 +168,36 @@ export class AddTaskTemplateComponent implements OnInit {
     this.description = '';
     this.title = '';
     this.dueDate = null;
+  }
+
+  generateJSON(form: any) {
+    if (form.valid) {
+    const formData = {
+      title: this.title,
+      description: this.description,
+      dueDate: this.dueDate,
+      priority: this.selectedPriority,
+      category: this.selectedCategory,
+      assignedTo: this.selectedContacts,
+      subtasks: this.subTasksArray,
+      column: this.column || 'toDo'
+    };
+    
+    console.log(formData); 
+    return formData;
+    }
+    console.log('Form is not valid');
+    
+    return null
+  }
+
+
+  submitForm(form: any) {
+    form.form.markAllAsTouched();
+    if (form.valid) {
+      const formData = this.generateJSON(form);
+    } else {
+    }
   }
 }
 

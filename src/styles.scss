@@ -215,3 +215,11 @@ h1{
     transform: translate(-150%, -50%);
   }
 }
+
+.error-message{
+  color: red;
+  font-size: 12px;
+  font-weight: 300;
+  position:absolute;
+  top: 100%;
+}
