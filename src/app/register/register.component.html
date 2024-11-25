@@ -9,29 +9,70 @@
       <div class="line"></div>
     </div>
     <form [formGroup]="registerForm" >
-      <div class="inputField">
+      <div class="inputField" [ngClass]="{'input-error': registerForm.get('username')?.invalid && (registerForm.get('username')?.dirty || registerForm.get('username')?.touched)}">
         <input type="text" placeholder="Username" formControlName="username">
         <mat-icon>person</mat-icon>
+        @if(registerForm.get('username')?.invalid && (registerForm.get('username')?.dirty || registerForm.get('username')?.touched)){
+          <span class="error-message">
+            @if(registerForm.get('username')?.errors?.['required']){
+              Username is required.
+            }
+            @if(registerForm.get('username')?.errors?.['pattern']){
+              Username must contain 2 words.
+            }
+          </span>
+        }
       </div>
-      <div class="inputField">
-        <input type="email" placeholder="Email" formControlName="email">
+      <div class="inputField" [ngClass]="{'input-error': registerForm.get('email')?.invalid && (registerForm.get('email')?.dirty || registerForm.get('email')?.touched)}">
+        <input type="email" placeholder="Email" formControlName="email" >
         <mat-icon>mail_outline</mat-icon>
+        @if(registerForm.get('email')?.invalid && (registerForm.get('email')?.dirty || registerForm.get('email')?.touched)){
+          <span class="error-message">
+            @if(registerForm.get('email')?.errors?.['required']){
+              Email is required.
+            }
+            @if(registerForm.get('email')?.errors?.['email'] || registerForm.get('email')?.errors?.['pattern']){
+              Email is invalid.
+            }
+          </span>
+        }
       </div>
-      <div class="inputField">
+      <div class="inputField" [ngClass]="{'input-error': registerForm.get('password')?.invalid && (registerForm.get('password')?.dirty || registerForm.get('password')?.touched)}">
         <input type="password" placeholder="Password" formControlName="password">
         <mat-icon>lock_outline</mat-icon>
+        @if(registerForm.get('password')?.invalid && (registerForm.get('password')?.dirty || registerForm.get('password')?.touched)){
+          <span class="error-message">
+            @if(registerForm.get('password')?.errors?.['required']){
+              Password is required.
+            }
+            @if(registerForm.get('password')?.errors?.['minlength']){
+              Password must be at least 8 characters.
+            }
+            @if(registerForm.get('repeatPassword')?.errors?.['mismatch']){
+              Passwords do not match.
+            }
+          </span>
+        }
       </div>
-      <div class="inputField">
+      <div class="inputField" [ngClass]="{'input-error': registerForm.get('repeatPassword')?.invalid && (registerForm.get('repeatPassword')?.dirty || registerForm.get('repeatPassword')?.touched)}">
         <input type="password" placeholder="Repeat password" formControlName="repeatPassword">
         <mat-icon>lock_outline</mat-icon>
+        @if(registerForm.get('repeatPassword')?.invalid && (registerForm.get('repeatPassword')?.dirty || registerForm.get('repeatPassword')?.touched)){
+          <span class="error-message">
+            @if(registerForm.get('repeatPassword')?.errors?.['required']){
+              Repeat password is required.
+            }
+            @if(registerForm.get('repeatPassword')?.errors?.['minlength']){
+              Repeat password must be at least 8 characters.
+            }
+            @if(registerForm.get('repeatPassword')?.errors?.['mismatch']){
+              Passwords do not match.
+            }
+          </span>
+        }
       </div>
-      <div class="inputField">
-        <input type="phone" placeholder="Phone" formControlName="phone">
-        <mat-icon>phone</mat-icon>
-      </div>
-
       <label for="checkbox" class="custom-checkbox">
-        <input type="checkbox" id="checkbox">
+        <input type="checkbox" id="checkbox" formControlName="acceptPolicy">
         <span class="checkmark"></span>
         I accept the <a href="#"> Privacy Policy</a>
       </label>
