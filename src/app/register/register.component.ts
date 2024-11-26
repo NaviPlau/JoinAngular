@@ -19,21 +19,22 @@ export class RegisterComponent {
     this.registerForm = new FormGroup({
       username: new FormControl('', [Validators.required, Validators.pattern(/^\b\p{L}{1,}\b \b\p{L}{1,}\b$/u)]),
       email: new FormControl('', [Validators.required, Validators.email, Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)]),
-      password: new FormControl('', [Validators.required, Validators.minLength(8)]),
-      repeatPassword: new FormControl('', [Validators.required]),
+      password: new FormControl('', [Validators.required, Validators.minLength(8),]),
+      repeatPassword: new FormControl('', [Validators.required, Validators.minLength(8),]),
       acceptPolicy: new FormControl(false, [Validators.requiredTrue])
     }, { validators: this.passwordMatchValidator });
   }
 
   passwordMatchValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
-    const formGroup = control as FormGroup;
-    const password = formGroup.get('password');
-    const repeatPassword = formGroup.get('repeatPassword');
-    if (password && repeatPassword && password.value !== repeatPassword.value) {
-      return { mismatch: true };
-    }
-    return null;
-  };
+    const password = control.get('password')?.value;
+    const repeatPassword = control.get('repeatPassword')?.value;
+
+    return password && repeatPassword && password !== repeatPassword
+      ? { mismatch: true }
+      : null;
+  }
+
+  
 
   onSubmit() {
     if (this.registerForm.valid) {

@@ -36,8 +36,6 @@ export class BoardComponent {
       priority: "urgent",
       category: "technical-task",
       contacts: [
-        { initials: 'SM', initialsColor: '#00bcd4', fullName: 'Sofia Müller', selected: false, email: '6VtY0@example.com1', phone: '123-456-7890' },
-        { initials: 'AM', initialsColor: '#ff5722', fullName: 'Anton Mayer', selected: false, email: '6VtY0@example.com2', phone: '234-567-8901' }
       ],
       column: "toDo"
     },
@@ -53,7 +51,6 @@ export class BoardComponent {
       priority: "medium",
       category: "user-story",
       contacts: [
-        { initials: 'AS', initialsColor: '#9c27b0', fullName: 'Anja Schulz', selected: false, email: '6VtY0@example.com3', phone: '345-678-9012' }
       ],
       column: "inProgress"
     },
@@ -69,7 +66,6 @@ export class BoardComponent {
       priority: "urgent",
       category: "technical-task",
       contacts: [
-        { initials: 'BZ', initialsColor: '#3f51b5', fullName: 'Benedikt Ziegler', selected: false, email: '6VtY0@example.com4', phone: '456-789-0123' }
       ],
       column: "toDo"
     },
@@ -85,8 +81,6 @@ export class BoardComponent {
       priority: "medium",
       category: "technical-task",
       contacts: [
-        { initials: 'DE', initialsColor: '#e91e63', fullName: 'David Eisenberg', selected: false, email: '6VtY0@example.com5', phone: '567-890-1234' },
-        { initials: 'JB', initialsColor: '#4caf50', fullName: 'Julia Braun', selected: false, email: '6VtY0@example.com6', phone: '678-901-2345' }
       ],
       column: "awaitingFeedback"
     },
@@ -102,7 +96,6 @@ export class BoardComponent {
       priority: "low",
       category: "user-story",
       contacts: [
-        { initials: 'LT', initialsColor: '#673ab7', fullName: 'Lena Thomas', selected: false, email: '6VtY0@example.com8', phone: '890-123-4567' }
       ],
       column: "toDo"
     },
@@ -119,13 +112,6 @@ export class BoardComponent {
       priority: "urgent",
       category: "user-story",
       contacts: [
-        { initials: 'RC', initialsColor: '#f44336', fullName: 'Rita Cohen', selected: false, email: 'rc@example.com', phone: '123-456-7890' },
-        { initials: 'MH', initialsColor: '#3f51b5', fullName: 'Michael Harper', selected: false, email: 'mh@example.com', phone: '234-567-8901' },
-        { initials: 'JK', initialsColor: '#4caf50', fullName: 'Jackie Kennedy', selected: false, email: 'jk@example.com', phone: '345-678-9012' },
-        { initials: 'AR', initialsColor: '#e91e63', fullName: 'Alexis Rodriguez', selected: false, email: 'ar@example.com', phone: '456-789-0123' },
-        { initials: 'TN', initialsColor: '#ff9800', fullName: 'Tom Nguyen', selected: false, email: 'tn@example.com', phone: '567-890-1234' },
-        { initials: 'MW', initialsColor: '#00bcd4', fullName: 'Mona Winters', selected: false, email: 'mw@example.com', phone: '678-901-2345' },
-        { initials: 'JS', initialsColor: '#9c27b0', fullName: 'Jennifer Smith', selected: false, email: 'js@example.com', phone: '789-012-3456' }
       ],
       column: "toDo"
     }

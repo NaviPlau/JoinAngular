@@ -40,33 +40,31 @@
       <div class="inputField" [ngClass]="{'input-error': registerForm.get('password')?.invalid && (registerForm.get('password')?.dirty || registerForm.get('password')?.touched)}">
         <input type="password" placeholder="Password" formControlName="password">
         <mat-icon>lock_outline</mat-icon>
-        @if(registerForm.get('password')?.invalid && (registerForm.get('password')?.dirty || registerForm.get('password')?.touched)){
+        @if (registerForm.get('password')?.invalid && (registerForm.get('password')?.dirty || registerForm.get('password')?.touched)) {
           <span class="error-message">
-            @if(registerForm.get('password')?.errors?.['required']){
+            @if (registerForm.get('password')?.errors?.['required']) {
               Password is required.
             }
-            @if(registerForm.get('password')?.errors?.['minlength']){
-              Password must be at least 8 characters.
-            }
-            @if(registerForm.get('repeatPassword')?.errors?.['mismatch']){
-              Passwords do not match.
+            @if (registerForm.get('password')?.errors?.['minlength']) {
+              Min 8 chars.
             }
           </span>
         }
       </div>
+    
       <div class="inputField" [ngClass]="{'input-error': registerForm.get('repeatPassword')?.invalid && (registerForm.get('repeatPassword')?.dirty || registerForm.get('repeatPassword')?.touched)}">
         <input type="password" placeholder="Repeat password" formControlName="repeatPassword">
         <mat-icon>lock_outline</mat-icon>
-        @if(registerForm.get('repeatPassword')?.invalid && (registerForm.get('repeatPassword')?.dirty || registerForm.get('repeatPassword')?.touched)){
+        @if (registerForm.errors?.['mismatch']) {
+          <span class="error-message-missmatch">Passwords do not match.</span>
+        }
+        @if (registerForm.get('repeatPassword')?.invalid && (registerForm.get('repeatPassword')?.dirty || registerForm.get('repeatPassword')?.touched)) {
           <span class="error-message">
-            @if(registerForm.get('repeatPassword')?.errors?.['required']){
+            @if (registerForm.get('repeatPassword')?.errors?.['required']) {
               Repeat password is required.
             }
-            @if(registerForm.get('repeatPassword')?.errors?.['minlength']){
-              Repeat password must be at least 8 characters.
-            }
-            @if(registerForm.get('repeatPassword')?.errors?.['mismatch']){
-              Passwords do not match.
+            @if (registerForm.get('repeatPassword')?.errors?.['minlength']) {
+              Min 8 chars.
             }
           </span>
         }
@@ -75,9 +73,12 @@
         <input type="checkbox" id="checkbox" formControlName="acceptPolicy">
         <span class="checkmark"></span>
         I accept the <a href="#"> Privacy Policy</a>
+        @if (registerForm.get('acceptPolicy')?.invalid && (registerForm.get('acceptPolicy')?.dirty || registerForm.get('acceptPolicy')?.touched)) {
+          <span class="error-message">Acceptance is required.</span>
+        }
       </label>
       <div class="buttons" (click)="createUserJson()">
-        <button class="login">Register</button>
+        <button class="login" [disabled]="registerForm.invalid" >Register</button>
       </div>
     </form>
   </div>

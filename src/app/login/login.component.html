@@ -5,14 +5,37 @@
       <h1>Log in</h1>
       <div class="line"></div>
     </div>
-    <form>
+    <form [formGroup]="loginForm">
       <div class="inputField">
-        <input type="email" placeholder="Email">
+        <input type="email" placeholder="Email" formControlName="email">
         <mat-icon>mail_outline</mat-icon>
+  
+        @if(loginForm.get('email')?.invalid && (loginForm.get('email')?.dirty || loginForm.get('email')?.touched)){
+          <span class="error-message">
+            @if(loginForm.get('email')?.errors?.['required']){
+              Email is required.
+            }
+            @if(loginForm.get('email')?.errors?.['email'] || loginForm.get('email')?.errors?.['pattern']){
+              Email is invalid.
+            }
+          </span>
+        }
       </div>
       <div class="inputField">
-        <input type="password" placeholder="Password">
-        <mat-icon class="visibility">visibility_off</mat-icon>
+        <input  [type]="passwordVisible ? 'text' : 'password'"placeholder="Password" formControlName="password">
+        <mat-icon class="visibility" (click)="togglePasswordVisibility()">
+          {{ passwordVisible ? 'visibility' : 'visibility_off' }}
+        </mat-icon>
+        @if(loginForm.get('password')?.invalid && (loginForm.get('password')?.dirty || loginForm.get('password')?.touched)){
+          <span class="error-message">
+            @if(loginForm.get('password')?.errors?.['required']){
+              Password is required.
+            }
+            @if(loginForm.get('password')?.errors?.['minlength']){
+              Min 8 chars.
+            }
+          </span>
+        }
       </div>
 
       <label for="checkbox" class="custom-checkbox">
@@ -21,7 +44,7 @@
         Remember me
       </label>
       <div class="buttons">
-        <button class="login">Log in</button>
+        <button class="login" [disabled]="loginForm.invalid" (submit)="login()">Log in</button>
         <a routerLink="/summary"><button>Guest Log in</button></a>
       </div>
     </form>

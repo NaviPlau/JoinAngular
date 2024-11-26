@@ -5,4 +5,5 @@ export interface Contact {
   selected: boolean;
   email: string;
   phone: string;
+  id: number;
 }
