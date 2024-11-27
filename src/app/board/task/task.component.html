@@ -1,14 +1,19 @@
 @if(task){
 <div class="task" (click)="openTask(task)">
-  @if(task.category == 'technical-task'){
-  <span class="category {{task.category}}">Technical Task</span>
+  @if(task.category == "Technical Task"){
+  <span class="category technical-task">{{task.category}}</span>
   }
-  @if(task.category == 'user-story'){
-  <span class="category {{task.category}}">User Story</span>
+  @if(task.category == 'User Story'){
+  <span class="category user-story">{{task.category}}</span>
   }
 
   <p class="title elipsis">{{task.title}}</p>
-  <p class="description elipsis">{{task.description}}</p>
+  @if(task.description){
+    <p class="description elipsis">{{task.description}}</p>
+  }@else {
+    <p class="description elipsis">No description</p>
+  }
+
   @if(task.subtasks.length > 0){
     <div class="progress-container">
       <div class="progress-bar-background">
@@ -23,22 +28,22 @@
     </div>
   }
   <div class="priority">
-    <div class="contacts-container " >
-      @if (task.contacts.length < 4) {
-        @for ( contact of task.contacts; track $index) {
+    <div class="contacts-container">
+      @if (task.assignedTo.length <= 4) {
+        @for (contact of task.assignedTo; track $index) {
           <div class="contact-initials" [ngStyle]="{'background-color': contact.initialsColor}">
             {{ contact.initials }}
           </div>
         }
       }
-      @if (task.contacts.length > 4) {
-        @for ( contact of task.contacts.slice(0, 4); track $index) {
+      @if (task.assignedTo.length > 4) { 
+        @for (contact of task.assignedTo.slice(0, 4); track $index) {
           <div class="contact-initials" [ngStyle]="{'background-color': contact.initialsColor}">
             {{ contact.initials }}
           </div>
         }
         <div class="remaining-contacts contact-initials">
-          +{{ task.contacts.length - 5 }}
+          +{{ task.assignedTo.length - 4 }}
         </div>
       }
     </div>

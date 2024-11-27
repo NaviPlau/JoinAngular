@@ -1,10 +1,11 @@
-import { Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output, Renderer2, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, HostListener, inject, Input, OnInit, Output, Renderer2, ViewChild } from '@angular/core';
 import {  SelectContactsComponent } from '../select-contacts/select-contacts.component';  
 import { MaterialModule } from '../../../../material/material.module';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Subtask } from '../../../interfaces/subtask';
 import { Contact } from '../../../interfaces/contact';
+import { TaskServiceService } from '../../../services/task-service/task-service.service';
 
 @Component({
     selector: 'app-add-task-template',
@@ -12,13 +13,13 @@ import { Contact } from '../../../interfaces/contact';
     templateUrl: './add-task-template.component.html',
     styleUrls: ['./add-task-template.component.scss']
 })
-export class AddTaskTemplateComponent implements OnInit {
+export class AddTaskTemplateComponent {
   @ViewChild('contactInput') contactInput!: ElementRef;
   @Input() column!: string;
   @Input() showCloseButton: boolean = false;
   @Output() closeOverlayEvent = new EventEmitter<void>();
-
- 
+  
+  taskService = inject(TaskServiceService);
   contactsOpen = false;
   selectedContacts: Contact[] = [];
   today: string;
@@ -38,8 +39,6 @@ export class AddTaskTemplateComponent implements OnInit {
     { label: 'User Story', value: 'user-story' },
   ];
 
-  ngOnInit(){
-  }
 
   closeOverlay() {
     this.closeOverlayEvent.emit(); 
@@ -178,16 +177,12 @@ export class AddTaskTemplateComponent implements OnInit {
       dueDate: this.dueDate,
       priority: this.selectedPriority,
       category: this.selectedCategory,
-      assignedTo: this.selectedContacts,
+      assignedTo: this.selectedContacts.map(contact => contact.id),
       subtasks: this.subTasksArray,
       column: this.column || 'toDo'
     };
-    
-    console.log(formData); 
     return formData;
     }
-    console.log('Form is not valid');
-    
     return null
   }
 
@@ -196,6 +191,9 @@ export class AddTaskTemplateComponent implements OnInit {
     form.form.markAllAsTouched();
     if (form.valid) {
       const formData = this.generateJSON(form);
+      console.log('Form data:', formData);
+      
+      this.taskService.postTask(formData);
     } else {
     }
   }

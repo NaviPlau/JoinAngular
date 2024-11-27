@@ -23,7 +23,6 @@ export class TaskComponent {
   }
 
   openTask(task: Task) {
-    console.log(task);
     this.openedTask = true;
   }
 

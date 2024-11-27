@@ -5,10 +5,10 @@ import { Subtask } from "./subtask";
 export interface Task {
   title: string;
   description: string;
-  dueDate: Date;
-  subtasks: Subtask[];
+  dueDate: Date | string;
+  subtasks: { title: string; completed: boolean }[];
   priority: 'urgent' | 'medium' | 'low';
-  category: 'technical-task' | 'user-story';
-  contacts: Contact[];
+  category: 'Technical Task' | 'User Story';
+  assignedTo: Contact[];
   column: 'toDo' | 'awaitingFeedback' | 'inProgress' | 'done';
 }

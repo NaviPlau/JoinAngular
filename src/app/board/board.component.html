@@ -29,7 +29,7 @@
               <span>No tasks to do</span>
             </div>
           }
-          @for(task of toDoTasks; track $index){
+          @for(task of toDoTasks(); track $index){
             <app-task [task]="task"></app-task>
           }
           <app-task></app-task>
@@ -46,7 +46,7 @@
               <span>No tasks in progress</span>
             </div>
           }
-          @for(task of inProgressTasks; track $index){
+          @for(task of inProgressTasks(); track $index){
             <app-task [task]="task"></app-task>
           }
         </div>
@@ -62,7 +62,7 @@
               <span>No tasks awaiting feedback</span>
             </div>
           }
-          @for(task of awaitingFeedbackTasks; track $index){
+          @for(task of awaitingFeedbackTasks(); track $index){
             <app-task [task]="task"></app-task>
           }
         </div>
@@ -77,7 +77,7 @@
               <span>No tasks done</span>
             </div>
           }
-          @for(task of doneTasks; track $index){
+          @for(task of doneTasks(); track $index){
             <app-task draggable="true" [task]="task"></app-task>
           }
         </div>

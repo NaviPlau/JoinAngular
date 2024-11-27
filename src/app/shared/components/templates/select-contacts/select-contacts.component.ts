@@ -1,8 +1,9 @@
-import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from '../../../../material/material.module';
 import { FormsModule } from '@angular/forms';
 import { Contact } from '../../../interfaces/contact';
+import { ContactsService } from '../../../services/contacts-service/contacts.service';
 
 
 
@@ -15,12 +16,16 @@ import { Contact } from '../../../interfaces/contact';
 export class SelectContactsComponent implements OnInit {
   @Input() selectedContacts: Contact[] = [];
   @Output() selectedContactsChange = new EventEmitter<Contact[]>();
+  contactsService = inject(ContactsService)
+  constructor() {}
 
-  contacts: Contact[] = [
-  ];
+  contacts: Contact[] = [];
 
-  ngOnInit() {
+  async ngOnInit() {
+    await this.contactsService.getContacts();
+    this.contacts = this.contactsService.contacts;
     this.syncSelectedContacts();
+
   }
 
   syncSelectedContacts() {

@@ -1,10 +1,12 @@
-import { Component, ElementRef, EventEmitter, HostListener, input, Input, OnInit, Output, Renderer2, ViewChild } from '@angular/core';
+import {  Component, ElementRef, EventEmitter, HostListener, inject, input, Input, OnInit, Output, Renderer2, ViewChild } from '@angular/core';
 import { Task } from '../../shared/interfaces/task';
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from '../../material/material.module';
 import { FormsModule } from '@angular/forms';
 import { SelectContactsComponent } from "../../shared/components/templates/select-contacts/select-contacts.component";
 import { Subtask } from '../../shared/interfaces/subtask';
+import { TaskServiceService } from '../../shared/services/task-service/task-service.service';
+import { Contact } from '../../shared/interfaces/contact';
 
 @Component({
     selector: 'app-opened-task',
@@ -18,6 +20,8 @@ export class OpenedTaskComponent implements OnInit {
   @Output() editingTaskChange = new EventEmitter<boolean>();
   @ViewChild('contactInput') contactInput!: ElementRef;
 
+  taskService = inject(TaskServiceService)
+  today = new Date().toISOString().split('T')[0];
   contactsOpen = false
   editingTask: boolean = false;
   selectedPriority = ''
@@ -25,6 +29,7 @@ export class OpenedTaskComponent implements OnInit {
   subtaskTitle: string = '';
   subtaskInputFocused: boolean = false;
   isClosing: boolean = false;
+  selectedContacts: Contact[] = [];
 
   constructor(private renderer: Renderer2, private elRef: ElementRef) {
     if(this.task){
@@ -79,7 +84,7 @@ export class OpenedTaskComponent implements OnInit {
   }
 
   get remainingContactsCount(): number {
-    return this.task.contacts.length > 5 ? this.task.contacts.length - 5 : 0;
+    return this.task.assignedTo.length > 5 ? this.task.assignedTo.length - 5 : 0;
   }
 
   setPriority(priority: 'urgent' | 'medium' | 'low') {
@@ -131,6 +136,11 @@ export class OpenedTaskComponent implements OnInit {
     this.subtaskInputFocused = true
   }
 
+  onSelectContactsChange(selectedContacts: Contact[]) {
+    this.selectedContacts = selectedContacts; // Ensure this is updating the array
+    console.log('Updated selectedContacts:', this.selectedContacts); // Debugging output
+  }
+
   deleteSubtask(index: number): void {
     if (index > -1 && index < this.task.subtasks.length) {
       this.task.subtasks.splice(index, 1); 
@@ -140,14 +150,32 @@ export class OpenedTaskComponent implements OnInit {
     }
   }
 
-  saveTaskChanges() {
-    this.isClosing = true; 
-    setTimeout(() => {
-      this.editingTask = false; 
+  async saveTaskChanges() {
+    this.isClosing = true;
+    try {
+      console.log('Selected contacts:', this.selectedContacts);
+      const updatedAssignedTo = this.selectedContacts.length
+        ? this.selectedContacts
+        : this.task.assignedTo;
+  
+      const taskToSave = {
+        ...this.task,
+        assignedTo: updatedAssignedTo.map((contact: Contact) => contact.id)
+      };
+  
+      console.log('Mapped task to save:', taskToSave); 
+      await this.taskService.updateTask(taskToSave);
+      await this.taskService.getTasksFromDB();
       this.editingTaskChange.emit(false);
-      this.isClosing = false; 
-    }, 400); 
+    } catch (error) {
+      console.error('Error updating task:', error);
+    } finally {
+      this.isClosing = false;
+      this.editingTask = false;
+      this.close.emit();
+    }
   }
+  
 
   @HostListener('document:click', ['$event'])
   handleClickOutside(event: Event) {
@@ -166,5 +194,27 @@ export class OpenedTaskComponent implements OnInit {
         this.closeTask(); 
       }
     }
+  }
+
+  async deleteTask() {
+    await this.taskService.deleteTask(this.task);
+    await this.taskService.getTasksFromDB();
+    this.closeTask();
+  }
+
+  async updateSubtaskCompletion(index: number): Promise<void> {
+    try {
+      const updatedTask = this.prepareUpdatedTask();
+      await this.taskService.updateTask(updatedTask);
+    } catch (error) {
+      console.error('Failed to update subtask completion:', error);
+    }
+  }
+
+  prepareUpdatedTask(){
+    return {
+      ...this.task,
+      assignedTo: this.task.assignedTo.map(contact => contact.id), 
+    };
   }
 }

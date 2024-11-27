@@ -5,11 +5,11 @@
       <mat-icon>close</mat-icon>
     </div>
 
-    @if(task.category == 'technical-task'){
-    <span class="category {{task.category}}">Technical Task</span>
+    @if(task.category == 'Technical Task'){
+    <span class="category technical-task">{{task.category}}</span>
     }
-    @if(task.category == 'user-story'){
-    <span class="category {{task.category}}">User Story</span>
+    @if(task.category == 'User Story'){
+    <span class="category user-story">{{task.category}}</span>
     }
     <h1 class="title">{{task.title}}</h1>
     <p class="description">{{task.description}}</p>
@@ -47,7 +47,7 @@
     <div class="contacts">
       <span>Assigned to</span>
       <div class="contacts-container">
-        @for ( contact of task.contacts; track $index) {
+        @for ( contact of task.assignedTo; track $index) {
         <div class="contact">
           <div class="contact-initials" [ngStyle]="{'background-color': contact.initialsColor}">
             {{ contact.initials }}
@@ -63,7 +63,7 @@
         @for ( subtask of task.subtasks; track $index) {
         <div class="subtask">
           <label class="custom-checkbox">
-            <input type="checkbox"  [(ngModel)]="subtask.completed"/>
+            <input type="checkbox"  [(ngModel)]="subtask.completed" (change)="updateSubtaskCompletion($index)"/>
             <span class="checkbox"></span>
             <span class="title">{{ subtask.title }}</span>
           </label>
@@ -73,7 +73,7 @@
     </div>
 
     <div class="actions">
-      <div class="icons-contain">
+      <div class="icons-contain" (click)="deleteTask()">
         <mat-icon>delete</mat-icon>
         <span>Delete</span>
       </div>
@@ -114,7 +114,7 @@
           <span>Due date</span>
           <span>*</span>
         </div>
-        <input type="date" [ngModel]="task.dueDate | date:'yyyy-MM-dd'">
+        <input type="date" min="{{ today | date: 'yyyy-MM-dd' }}" [ngModel]="task.dueDate | date:'yyyy-MM-dd'">
       </div>
 
       <div class="inputField">
@@ -151,18 +151,18 @@
           <input #contactInput matInput type="text" placeholder="Select contacts to assign" (focus)="openContacts()"
             readonly />
           @if(contactsOpen){
-          <app-select-contacts #selectContacts [selectedContacts]="task.contacts"></app-select-contacts>
+          <app-select-contacts #selectContacts [selectedContacts]="task.assignedTo" (selectedContactsChange)="onSelectContactsChange($event)"></app-select-contacts>
           }
         </div>
       </div>
       
         <div class="contact">
-          <div *ngFor="let contact of task.contacts | slice:0:5" >
+          <div *ngFor="let contact of task.assignedTo | slice:0:5" >
             <div class="contact-initials" [ngStyle]="{'background-color': contact.initialsColor}">
               {{ contact.initials }}
             </div>
           </div>
-          @if(task.contacts.length > 5){
+          @if(task.assignedTo.length > 5){
           <div class="remaining-contacts">
             +{{ remainingContactsCount }}
           </div>
