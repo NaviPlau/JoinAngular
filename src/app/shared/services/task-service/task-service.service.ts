@@ -41,5 +41,4 @@ export class TaskServiceService implements OnInit {
     this.httpService.makeHttpRequest(this.BASE_URL + `/${task.id}`, 'PUT', task).then(() => this.getTasksFromDB());
   }
 
-
 }

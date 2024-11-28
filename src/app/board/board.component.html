@@ -6,7 +6,7 @@
       <h1>Board</h1>
       <div class="right-side">
         <div class="inputField search">
-          <input type="text" placeholder="Find task">
+          <input type="text" placeholder="Find task"  [(ngModel)]="searchQuery" (input)="applyFilter()">
           <div class="separator"></div>
           <mat-icon>search</mat-icon>
         </div>
@@ -18,77 +18,79 @@
     </div>
 
     <div class="columns-container">
-      <div class="column" id="toDo">
+      <div class="column">
         <div class="column-title">
           <span>To do</span>
           <mat-icon  (click)="addTask($event);setColumn('toDo')">add</mat-icon>
         </div>
-        <div class="task-column">
-          @if(toDoTasks.length <= 0){
+        <div class="task-column" id="toDo"
+        (drop)="onDrop($event, 'toDo')"
+        (dragover)="allowDrop($event)">
+          @if(toDoTasks().length <= 0){
             <div class="noTasks">
               <span>No tasks to do</span>
             </div>
           }
           @for(task of toDoTasks(); track $index){
-            <app-task [task]="task"></app-task>
+            <app-task draggable="true"
+            (dragstart)="onDragStart($event, task)" [task]="task"></app-task>
           }
-          <app-task></app-task>
         </div>
       </div>
-      <div class="column" id="inProgress">
+      <div class="column">
         <div class="column-title">
           <span>In progress</span>
           <mat-icon (click)="addTask($event); setColumn('inProgress')">add</mat-icon>
         </div>
-        <div class="task-column">
-          @if(inProgressTasks.length <= 0){
+        <div class="task-column"     id="inProgress"
+        (drop)="onDrop($event, 'inProgress')"
+        (dragover)="allowDrop($event)">
+          @if(inProgressTasks().length <= 0){
             <div class="noTasks">
               <span>No tasks in progress</span>
             </div>
           }
           @for(task of inProgressTasks(); track $index){
-            <app-task [task]="task"></app-task>
+            <app-task  draggable="true"
+            (dragstart)="onDragStart($event, task)" [task]="task"></app-task>
           }
         </div>
       </div>
-      <div class="column" id="awaitFeedback">
+      <div class="column" >
         <div class="column-title">
           <span>Await feedback</span>
           <mat-icon (click)="addTask($event); setColumn('awaitingFeedback')">add</mat-icon>
         </div>
-        <div class="task-column">
-          @if(awaitingFeedbackTasks.length <= 0){
+        <div class="task-column" id="awaitFeedback" (drop)="onDrop($event, 'awaitingFeedback')" (dragover)="allowDrop($event)" >
+          @if(awaitingFeedbackTasks().length <= 0){
             <div class="noTasks">
               <span>No tasks awaiting feedback</span>
             </div>
           }
           @for(task of awaitingFeedbackTasks(); track $index){
-            <app-task [task]="task"></app-task>
+            <app-task draggable="true" (dragstart)="onDragStart($event, task)" [task]="task"></app-task>
           }
         </div>
       </div>
-      <div class="column" id="done">
+      <div class="column">
         <div class="column-title">
           <span>Done</span>
         </div>
-        <div class="task-column" >
-          @if(doneTasks.length <= 0){
-            <div class="noTasks">
+        <div class="task-column" id="done" (drop)="onDrop($event, 'done')" (dragover)="allowDrop($event)" >
+          @if(doneTasks().length <= 0){
+            <div class="noTasks"  >
               <span>No tasks done</span>
             </div>
           }
           @for(task of doneTasks(); track $index){
-            <app-task draggable="true" [task]="task"></app-task>
+            <app-task draggable="true" (dragstart)="onDragStart($event, task)"  [task]="task"></app-task>
           }
         </div>
       </div>
     </div>
     @if(addingNewTask){
       <div class="overlay" (click)="closeOverlay()">
-
-
         <app-add-task-template [column]="selectedColumn" [showCloseButton]="true" (closeOverlayEvent)="closeOverlay()"   (click)="$event.stopPropagation()">
-
         </app-add-task-template>
       </div>
     }

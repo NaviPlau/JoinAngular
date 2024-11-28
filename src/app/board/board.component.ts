@@ -1,68 +1,93 @@
-import { Component, computed, Host, HostListener, inject } from '@angular/core';
+import { Component, computed, HostListener, inject, OnInit } from '@angular/core';
 import { HeaderComponent } from "../shared/components/header/header.component";
 import { SidebarComponent } from "../shared/components/sidebar/sidebar.component";
 import { MaterialModule } from '../material/material.module';
 import { Task } from '../shared/interfaces/task';
 import { TaskComponent } from "./task/task.component";
 import { CommonModule } from '@angular/common';
-import {
-  CdkDragDrop,
-  moveItemInArray,
-  transferArrayItem,
-  CdkDrag,
-  CdkDropList,
-} from '@angular/cdk/drag-drop';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 import { AddTaskTemplateComponent } from "../shared/components/templates/add-task-template/add-task-template.component";
 import { TaskServiceService } from '../shared/services/task-service/task-service.service';
+import { FormsModule } from '@angular/forms';
 
 type Column = "awaitingFeedback" | "toDo" | "inProgress" | "done";
 
 @Component({
     selector: 'app-board',
-    imports: [CommonModule, HeaderComponent, SidebarComponent, MaterialModule, TaskComponent, AddTaskTemplateComponent],
+    imports: [CommonModule,FormsModule, HeaderComponent, SidebarComponent, MaterialModule, TaskComponent, AddTaskTemplateComponent, DragDropModule],
     templateUrl: './board.component.html',
     styleUrl: './board.component.scss'
 })
-export class BoardComponent {
+export class BoardComponent implements OnInit {
   taskService = inject(TaskServiceService)
-
   tasks: Task[] = [];
-
+  searchQuery: string = ''; 
+  selectedColumn: Column  = 'toDo';
   addingNewTask: boolean = false;
+
+  filteredTasks = computed(() =>
+    this.taskService.allTasks().filter((task) => this.taskMatchesQuery(task))
+  );
+
   toDoTasks = computed(() =>
-    this.taskService.allTasks().filter((task) => task.column === 'toDo')
+    this.taskService
+      .allTasks()
+      .filter(
+        (task) =>
+          task.column === 'toDo' 
+      )
   );
 
   inProgressTasks = computed(() =>
-    this.taskService.allTasks().filter((task) => task.column === 'inProgress')
+    this.taskService
+      .allTasks()
+      .filter(
+        (task) =>
+          task.column === 'inProgress' 
+      )
   );
 
   awaitingFeedbackTasks = computed(() =>
-    this.taskService.allTasks().filter((task) => task.column === 'awaitingFeedback')
+    this.taskService
+      .allTasks()
+      .filter(
+        (task) =>
+          task.column === 'awaitingFeedback' 
+      )
   );
 
   doneTasks = computed(() =>
-    this.taskService.allTasks().filter((task) => task.column === 'done')
+    this.taskService
+      .allTasks()
+      .filter(
+        (task) =>
+          task.column === 'done' 
+      )
   );
 
-  selectedColumn: Column  = 'toDo';
+  taskMatchesQuery(task: Task) {
+    const query = this.searchQuery.trim().toLowerCase();
+    return (
+      !query ||
+      task.title.toLowerCase().includes(query) ||
+      (task.description && task.description.toLowerCase().includes(query))
+    );
+  }
+
+  applyFilter(): void {
+    const query = this.searchQuery.trim().toLowerCase();
+    if (query) {
+      const filtered = this.taskService
+        .allTasks()
+        .filter((task) => this.taskMatchesQuery(task));
+      this.taskService.allTasks.set(filtered); 
+    } else {
+      this.taskService.getTasksFromDB();
+    }
+  }
 
   filterTaskByColumn(column: string): Task[] {
     return this.tasks.filter(task => task.column === column);
-  }
-
-  onDrop(event: CdkDragDrop<Task[]>, targetColumn: Column): void {
-    const draggedTask = event.previousContainer.data[event.previousIndex];
-    
-    if (event.previousContainer !== event.container) {
-      draggedTask.column = targetColumn;
-      transferArrayItem(
-        event.previousContainer.data,
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex
-      );
-    }
   }
 
   addTask(event: Event): void {
@@ -103,5 +128,33 @@ export class BoardComponent {
   async ngOnInit(): Promise<void> {
     await this.taskService.getTasksFromDB();
   }
+
+  onDragStart(event: DragEvent, task: Task): void {
+    event.dataTransfer?.setData('text/plain', JSON.stringify(task));
+  }
+  
+  allowDrop(event: DragEvent): void {
+    event.preventDefault(); 
+  }
+  
+  onDrop(event: DragEvent, targetColumn: string): void {
+    event.preventDefault();
+    const taskData = event.dataTransfer?.getData('text/plain');
+    if (taskData) {
+      const task = JSON.parse(taskData);
+      if (!task.id) {
+        console.error('Task ID is undefined!');
+        return;
+      }
+      task.assignedTo = task.assignedTo.map((contact: any) => contact.id);
+      task.column = targetColumn;
+      this.taskService.updateTask(task).then(() => {
+      }).catch((error) => {
+        console.error('Failed to update task:', error);
+      });
+    }
+  }
 }
+
+
 

@@ -8,10 +8,11 @@
   border-radius: 30px;
   background-color: white;
   max-width: 525px;
+  width: 100%;
   overflow-y: auto;
   scrollbar-width: none;
   position: relative;
-  max-height: 90%;
+  max-height: 85%;
   animation: fade-blur-to-middle 0.4s ease-out forwards
 }
 

@@ -30,6 +30,7 @@ export class OpenedTaskComponent implements OnInit {
   subtaskInputFocused: boolean = false;
   isClosing: boolean = false;
   selectedContacts: Contact[] = [];
+  dueDate = new Date().toISOString().split('T')[0];
 
   constructor(private renderer: Renderer2, private elRef: ElementRef) {
     if(this.task){
@@ -137,8 +138,7 @@ export class OpenedTaskComponent implements OnInit {
   }
 
   onSelectContactsChange(selectedContacts: Contact[]) {
-    this.selectedContacts = selectedContacts; // Ensure this is updating the array
-    console.log('Updated selectedContacts:', this.selectedContacts); // Debugging output
+    this.task.assignedTo = selectedContacts; 
   }
 
   deleteSubtask(index: number): void {
@@ -153,15 +153,18 @@ export class OpenedTaskComponent implements OnInit {
   async saveTaskChanges() {
     this.isClosing = true;
     try {
-      console.log('Selected contacts:', this.selectedContacts);
       const updatedAssignedTo = this.selectedContacts.length
         ? this.selectedContacts
         : this.task.assignedTo;
   
       const taskToSave = {
         ...this.task,
-        assignedTo: updatedAssignedTo.map((contact: Contact) => contact.id)
+        assignedTo: updatedAssignedTo.map((contact: Contact) => contact.id),
+        priority: this.selectedPriority,
+        dueDate: this.dueDate
       };
+      
+
   
       console.log('Mapped task to save:', taskToSave); 
       await this.taskService.updateTask(taskToSave);
@@ -214,7 +217,10 @@ export class OpenedTaskComponent implements OnInit {
   prepareUpdatedTask(){
     return {
       ...this.task,
-      assignedTo: this.task.assignedTo.map(contact => contact.id), 
+      assignedTo: this.task.assignedTo.map(contact => contact.id),
+
+      
+      priority: this.selectedPriority
     };
   }
 }

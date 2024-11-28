@@ -2,63 +2,68 @@
   <app-header></app-header>
   <app-sidebar></app-sidebar>
   <div class="mainContent">
-    <header>
-      <h1>Join 360</h1>
-      <div class="line"></div>
-      <span>Key Metrics at a Glance</span>
-    </header>
-    <div>
-      <div class="cardArea">
-        <div class="card">
-          <div class="cardIcon">
-            <mat-icon>edit</mat-icon>
-          </div>
-          <div class="cardText">
-            <span>1</span>
-            <span>To-do</span>
-          </div>
-        </div>
-        <div class="card">
-          <div class="cardIcon">
-            <mat-icon class="done">done</mat-icon>
-          </div>
-          <div class="cardText">
-            <span>1</span>
-            <span>To-do</span>
-          </div>
-        </div>
-      </div>
-      <div class="cardArea">
-        <div class="card middleArea">
-          <div class="middleCardLeft">
-            <div class="cardIcon  urgentSummary">
-              <mat-icon>double_arrow_outlined</mat-icon>
+      <header>
+        <h1>Join 360</h1>
+        <div class="line"></div>
+        <span>Key Metrics at a Glance</span>
+      </header>
+      <div class="summary">
+      <div>
+        <div class="cardArea">
+          <div class="card">
+            <div class="cardIcon">
+              <mat-icon>edit</mat-icon>
             </div>
             <div class="cardText">
-              <span>1</span>
-              <span>Urgent</span>
+              <span>{{toDoTasksLength()}}</span>
+              <span>To-do</span>
             </div>
           </div>
-          <div class="secondLine"></div>
-          <div class="date">
-            <span>11.09.2001</span>
-            <span>Upcoming Deadline</span>
+          <div class="card">
+            <div class="cardIcon">
+              <mat-icon class="done">done</mat-icon>
+            </div>
+            <div class="cardText">
+              <span>{{doneTasksLength()}}</span>
+              <span>Done</span>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="cardArea">
+        <div class="cardArea">
+          <div class="card middleArea">
+            <div class="middleCardLeft">
+              <div class="cardIcon  urgentSummary">
+                <mat-icon>double_arrow_outlined</mat-icon>
+              </div>
+              <div class="cardText">
+                <span>{{urgentTasksLength()}}</span>
+                <span>Urgent</span>
+              </div>
+            </div>
+            <div class="secondLine"></div>
+            <div class="date">
+              <span>{{upcomingDeadline()}}</span>
+              <span>Upcoming Deadline</span>
+            </div>
+          </div>
+        </div>
+        <div class="cardArea">
           <div class="card lastCard">
-            <span>1</span>
+            <span>{{allTasksInBoard()}}</span>
             <p>Tasks in <br> Board</p>
           </div>
           <div class="card lastCard">
-            <span>1</span>
+            <span>{{inProgressTasksLength()}}</span>
             <p>Tasks in <br> Progress</p>
           </div>
           <div class="card lastCard">
-            <span>1</span>
+            <span>{{awaitingFeedbackTasksLength()}}</span>
             <p>Awaiting <br> Feedback</p>
           </div>
+        </div>
+      </div>
+      <div>
+        <h1>{{setResponsebasedOnDaytime()}}</h1>
       </div>
     </div>
   </div>
