@@ -1,11 +1,12 @@
 <div class="sidebar">
   <img src="/assets/img/logo-white.png" alt="">
   <div class="links">
+    @if(isGuestUser || userIsLoggedIn){
     <a  routerLinkActive="summary" routerLink="/summary">
         <mat-icon>space_dashboard_outlined</mat-icon>
         <span>Summary</span>
     </a>
-    <a routerLinkActive="addtask" routerLink="/addtask">
+    <a routerLinkActive="addtask"  routerLink="/addtask">
       <div class="icon-wrapper">
         <mat-icon class="absolute edit">edit</mat-icon>
         <mat-icon class="absolute ">square</mat-icon>
@@ -20,6 +21,7 @@
       <mat-icon>contacts_outlined</mat-icon>
       <span>Contacts</span>
     </a>
+  }
   </div>
   <div class="extraLinks">
     <a>Privacy Policy</a>

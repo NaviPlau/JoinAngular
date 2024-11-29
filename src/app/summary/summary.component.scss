@@ -111,6 +111,12 @@ mat-icon{
 .middleArea{
   width: 100%;
   @include display(flex, row, space-between, center);
+  &:hover{
+    mat-icon{
+      color: $urgent
+    }
+  }
+
 }
 
 .middleCardLeft{
@@ -145,5 +151,19 @@ mat-icon{
     span , p{
       color: white;
     }
+  }
+}
+
+.userName{
+  color : $blue;
+  animation: fade 2s ease-in-out;
+}
+
+@keyframes fade {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
   }
 }

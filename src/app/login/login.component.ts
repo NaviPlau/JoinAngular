@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MaterialModule } from '../material/material.module';
 import { LogoLoginComponent } from "../logo-login/logo-login.component";
 import { LinksLoginComponent } from "../links-login/links-login.component";
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AuthService } from '../shared/services/auth-service/auth.service';
 
 @Component({
     selector: 'app-login',
@@ -15,6 +16,7 @@ import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 export class LoginComponent {
     passwordVisible = false;
 
+    authService = inject(AuthService);
 
 
 
@@ -26,7 +28,7 @@ export class LoginComponent {
         password: new FormControl('', [
           Validators.required, 
           Validators.minLength(8) 
-        ])
+        ]),
       });
 
 
@@ -34,7 +36,19 @@ export class LoginComponent {
         this.passwordVisible = !this.passwordVisible;
       }
 
-      login() {
-        console.log(this.loginForm.value);
+     async  login() {
+        if (this.loginForm.valid) {
+          const email = this.loginForm.get('email')?.value;
+          const password = this.loginForm.get('password')?.value;
+          this.authService.loginData = { email, password };
+          await this.authService.loginUser();
+        } else {
+          console.error('Form is invalid');
+        }
+      }
+      
+
+      guestLogin() {
+        this.authService.guestLogin();
       }
 }

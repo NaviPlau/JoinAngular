@@ -52,34 +52,39 @@
         }
       </div>
     
-      <div class="inputField" [ngClass]="{'input-error': registerForm.get('repeatPassword')?.invalid && (registerForm.get('repeatPassword')?.dirty || registerForm.get('repeatPassword')?.touched)}">
-        <input type="password" placeholder="Repeat password" formControlName="repeatPassword">
+      <div class="inputField" [ngClass]="{'input-error': registerForm.get('confirmPassword')?.invalid && (registerForm.get('confirmPassword')?.dirty || registerForm.get('confirmPassword')?.touched)}">
+        <input type="password" placeholder="Repeat password" formControlName="confirmPassword">
         <mat-icon>lock_outline</mat-icon>
         @if (registerForm.errors?.['mismatch']) {
           <span class="error-message-missmatch">Passwords do not match.</span>
         }
-        @if (registerForm.get('repeatPassword')?.invalid && (registerForm.get('repeatPassword')?.dirty || registerForm.get('repeatPassword')?.touched)) {
+        @if (registerForm.get('confirmPassword')?.invalid && (registerForm.get('confirmPassword')?.dirty || registerForm.get('confirmPassword')?.touched)) {
           <span class="error-message">
-            @if (registerForm.get('repeatPassword')?.errors?.['required']) {
+            @if (registerForm.get('confirmPassword')?.errors?.['required']) {
               Repeat password is required.
             }
-            @if (registerForm.get('repeatPassword')?.errors?.['minlength']) {
+            @if (registerForm.get('confirmPassword')?.errors?.['minlength']) {
               Min 8 chars.
             }
           </span>
         }
       </div>
       <label for="checkbox" class="custom-checkbox">
-        <input type="checkbox" id="checkbox" formControlName="acceptPolicy">
+        <input type="checkbox" id="checkbox" formControlName="policyAccepted">
         <span class="checkmark"></span>
         I accept the <a href="#"> Privacy Policy</a>
-        @if (registerForm.get('acceptPolicy')?.invalid && (registerForm.get('acceptPolicy')?.dirty || registerForm.get('acceptPolicy')?.touched)) {
+        @if (registerForm.get('policyAccepted')?.invalid && (registerForm.get('policyAccepted')?.dirty || registerForm.get('policyAccepted')?.touched)) {
           <span class="error-message">Acceptance is required.</span>
         }
       </label>
       <div class="buttons" (click)="createUserJson()">
         <button class="login" [disabled]="registerForm.invalid" >Register</button>
       </div>
+      @if(registerError){
+        <div class="register-error">
+          {{ registerError }}
+        </div>
+      }
     </form>
   </div>
   <app-links-login></app-links-login>

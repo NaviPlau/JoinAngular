@@ -3,6 +3,8 @@ import { SidebarComponent } from "../shared/components/sidebar/sidebar.component
 import { HeaderComponent } from "../shared/components/header/header.component";
 import { MaterialModule } from '../material/material.module';
 import { TaskServiceService } from '../shared/services/task-service/task-service.service';
+import { AuthService } from '../shared/services/auth-service/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-summary',
@@ -10,8 +12,10 @@ import { TaskServiceService } from '../shared/services/task-service/task-service
     templateUrl: './summary.component.html',
     styleUrl: './summary.component.scss'
 })
-export class SummaryComponent {
+export class SummaryComponent  {
     taskService = inject(TaskServiceService)
+    authService = inject(AuthService)
+    router: Router = inject(Router);
     toDoTasksLength = computed(() => this.taskService.allTasks().filter((task) => task.column === 'toDo').length)
     inProgressTasksLength = computed(() => this.taskService.allTasks().filter((task) => task.column === 'inProgress').length)
     awaitingFeedbackTasksLength = computed(() => this.taskService.allTasks().filter((task) => task.column === 'awaitingFeedback').length)
@@ -30,7 +34,22 @@ export class SummaryComponent {
    
     async ngOnInit(): Promise<void> {
         await this.taskService.getTasksFromDB();
+        if (!this.authService.isGuestUser() && !this.authService.userIsLoggedIn()) {	
+            this.router.navigate(['/']);
+        }
     }
+
+    get isGuestUser() {
+        return this.authService.isGuestUser();
+      }
+
+    get userIsLoggedIn() {
+        return this.authService.userIsLoggedIn();
+      }
+    
+    get userName() {
+        return this.authService.userData().username;
+      }
 
 
     setResponsebasedOnDaytime() {

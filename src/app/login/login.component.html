@@ -38,14 +38,9 @@
         }
       </div>
 
-      <label for="checkbox" class="custom-checkbox">
-        <input type="checkbox" id="checkbox">
-        <span class="checkmark"></span>
-        Remember me
-      </label>
       <div class="buttons">
-        <button class="login" [disabled]="loginForm.invalid" (submit)="login()">Log in</button>
-        <a routerLink="/summary"><button>Guest Log in</button></a>
+        <button class="login" [disabled]="loginForm.invalid" (click)="login()">Log in</button>
+        <a (click)="guestLogin()"><button>Guest Log in</button></a>
       </div>
     </form>
   </div>

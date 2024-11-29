@@ -59,6 +59,7 @@ mat-icon{
     text-align: center;
     &:hover{
       background-color: $darkgray;
+      cursor: pointer;
     }
   }
 }
