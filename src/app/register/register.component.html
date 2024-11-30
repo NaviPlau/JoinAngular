@@ -78,7 +78,7 @@
         }
       </label>
       <div class="buttons" (click)="createUserJson()">
-        <button class="login" [disabled]="registerForm.invalid" >Register</button>
+        <button class="login" [disabled]="registerForm.invalid || registerSuccess" >Register</button>
       </div>
       @if(registerError){
         <div class="register-error">
@@ -87,5 +87,12 @@
       }
     </form>
   </div>
+  @if(registerSuccess){
+    <div class="response">
+        <span>You registered successfully</span>
+        <span>Please log in</span>
+    </div>
+  }
+  
   <app-links-login></app-links-login>
 </section>

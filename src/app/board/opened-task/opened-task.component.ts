@@ -122,7 +122,6 @@ export class OpenedTaskComponent implements OnInit {
       const newTitle = inputElement.value.trim(); 
       if (newTitle) {
         this.task.subtasks[index].title = newTitle;
-        console.log(`Subtask ${index} updated:`, this.task.subtasks[index]);
       } else {
         console.error('Subtask title cannot be empty.');
       }
@@ -144,7 +143,6 @@ export class OpenedTaskComponent implements OnInit {
   deleteSubtask(index: number): void {
     if (index > -1 && index < this.task.subtasks.length) {
       this.task.subtasks.splice(index, 1); 
-      console.log('Subtask deleted:', index, this.task.subtasks);
     } else {
       console.error('Invalid index:', index);
     }
@@ -153,32 +151,28 @@ export class OpenedTaskComponent implements OnInit {
   async saveTaskChanges() {
     this.isClosing = true;
     try {
-      const updatedAssignedTo = this.selectedContacts.length
-        ? this.selectedContacts
-        : this.task.assignedTo;
-  
+      const updatedAssignedTo = this.selectedContacts.length? this.selectedContacts : this.task.assignedTo;
       const taskToSave = {
         ...this.task,
         assignedTo: updatedAssignedTo.map((contact: Contact) => contact.id),
         priority: this.selectedPriority,
         dueDate: this.dueDate
       };
-      
-
-  
-      console.log('Mapped task to save:', taskToSave); 
       await this.taskService.updateTask(taskToSave);
       await this.taskService.getTasksFromDB();
       this.editingTaskChange.emit(false);
     } catch (error) {
       console.error('Error updating task:', error);
     } finally {
-      this.isClosing = false;
-      this.editingTask = false;
-      this.close.emit();
+      this.closeAfterChanges();
     }
   }
   
+  closeAfterChanges(){
+    this.isClosing = false;
+    this.editingTask = false;
+    this.close.emit();
+  }
 
   @HostListener('document:click', ['$event'])
   handleClickOutside(event: Event) {

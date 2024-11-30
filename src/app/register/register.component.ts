@@ -23,6 +23,10 @@ export class RegisterComponent {
     return this.authService.errorMessage();
   }
 
+  get registerSuccess() {
+    return this.authService.registerSuccess();
+  }
+
   constructor() {
     this.registerForm = new FormGroup({
       username: new FormControl('', [Validators.required, Validators.pattern(/^\b\p{L}{1,}\b \b\p{L}{1,}\b$/u)]),
@@ -31,7 +35,12 @@ export class RegisterComponent {
       confirmPassword: new FormControl('', [Validators.required, Validators.minLength(8),]),
       policyAccepted: new FormControl(false, [Validators.requiredTrue])
     }, { validators: this.passwordMatchValidator });
+
+    this.registerForm.valueChanges.subscribe(() => {
+        this.authService.errorMessage.set(''); 
+    });
   }
+  
 
   passwordMatchValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
     const password = control.get('password')?.value;
@@ -42,25 +51,17 @@ export class RegisterComponent {
       : null;
   }
 
-  
-
-  onSubmit() {
-    if (this.registerForm.valid) {
-      console.log(this.registerForm.value);
-    } else {
-      console.log('Form is invalid');
-    }
-  }
-
-
   createUserJson() {
     if(this.registerForm.valid){
       const formData = { ...this.registerForm.value };
       delete formData.policyAccepted;
       this.authService.registerdata = formData;
       this.authService.registerUser();
+      setTimeout(() => {
+        this.authService.errorMessage.set('');
+      }, 1000);
     }else{
-      console.log('Form is invalid');
+      console.error('Form is invalid');
     }
   }
 

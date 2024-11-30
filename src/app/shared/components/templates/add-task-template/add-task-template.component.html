@@ -191,12 +191,18 @@
     
 </form>
 
+@if(response() != '') {
+  <div class="response">
+    <span>{{response()}}</span>
+  </div>
+}
+
 <div class="button-area">
     <button class="clear" (click)="clearForm()">
       <span>Clear</span>
       <mat-icon>close</mat-icon>
     </button>
-    <button class="create" (click)="submitForm(taskForm)">
+    <button class="create" [disabled]="response() != ''"  (click)="submitForm(taskForm)">
       <span>Create Task</span>
       <mat-icon>done</mat-icon>
     </button>

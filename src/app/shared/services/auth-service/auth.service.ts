@@ -22,39 +22,34 @@ export class AuthService {
   headerInitials = signal(''); 
   userData = signal<any>(null);
   errorMessage = signal('');
-  userRegistered = signal(false);
+  registerSuccess = signal(false);
 
 
   async registerUser() {
     try {
-      const response = await this.httpService.makeHttpRequest(this.REGISTER_URL, 'POST', this.registerdata);
-      await this.handleHttpErrors(response);
-      this.userRegistered.set(true);
+      await this.httpService.makeHttpRequest(this.REGISTER_URL, 'POST', this.registerdata);
+      this.registerSuccess.set(true);
+      this.redirectAfterRegister();
     } catch (error: any) {
       this.errorMessage.set(error.message);
+      this.registerSuccess.set(false);
     }
   }
 
   async loginUser() {
     try {
-      const response = await this.httpService.makeHttpRequest(this.LOGIN_URL, 'POST', this.loginData);
-      this.handleHttpErrors(response);
-
-      const userData = await response.json();
+      const userData = await this.httpService.makeHttpRequest(this.LOGIN_URL, 'POST', this.loginData);
+      console.log('Login response data:', userData);
       this.setUserData(userData, false);
-      console.log('User logged in successfully', userData);
-    } catch (error) {
-      console.error('Login error:', error);
+    } catch (error: any) {
+      this.errorMessage.set(error.message || 'Wrong email or password.');
     }
   }
 
   async guestLogin() {
     try {
-      const response = await this.httpService.makeHttpRequest(this.GUEST_LOGIN_URL, 'POST');
-      this.handleHttpErrors(response);
-      const guestData = await response.json();
+      const guestData = await this.httpService.makeHttpRequest(this.GUEST_LOGIN_URL, 'POST');
       this.setUserData(guestData, true);
-      console.log('Guest logged in successfully', guestData);
     } catch (error) {
       console.error('Guest login error:', error);
     }
@@ -62,7 +57,18 @@ export class AuthService {
 
   logoutUser() {
     this.clearUserData();
+    this.goToLogin();
+  }
+
+  goToLogin(){
     this.router.navigate(['/']);
+  }
+
+  redirectAfterRegister(){
+    setTimeout(() => {
+      this.registerSuccess.set(false);
+      this.goToLogin();
+    }, 2000);
   }
 
   initializeState() {
@@ -141,22 +147,5 @@ export class AuthService {
     this.headerInitials.set(isGuest ? 'GU' : '');
   }
 
-  private async handleHttpErrors(response: Response) {
-    if (!response.ok) {
-        let errorDetails: any;
-        try {
-            errorDetails = await response.json();
-            console.log("Error details:", errorDetails); 
-        } catch (e) {
-            throw new Error("Failed to parse error details. An unknown error occurred.");
-        }
-
-        if (errorDetails.email) {
-            throw new Error(errorDetails.email[0]);
-        }
-
-        throw new Error(errorDetails.message || "An unknown error occurred.");
-    }
-  }
 }
 

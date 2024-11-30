@@ -18,6 +18,9 @@ export class LoginComponent {
 
     authService = inject(AuthService);
 
+    get errrormessage () {
+        return this.authService.errorMessage();
+    }
 
 
     loginForm = new FormGroup({
@@ -30,6 +33,12 @@ export class LoginComponent {
           Validators.minLength(8) 
         ]),
       });
+
+      constructor() {
+        this.loginForm.valueChanges.subscribe(() => {
+          this.authService.errorMessage.set(''); 
+        });
+      }
 
 
       togglePasswordVisibility() {

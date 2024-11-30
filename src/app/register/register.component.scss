@@ -57,3 +57,27 @@ label{
   font-size: 16px;
   font-weight: 300;
 }
+
+.response{
+  @include display(flex, column, center, center);
+  position: absolute;
+  gap: 10px;
+  font-size: 26px;
+  font-weight: 300;
+  color: white;
+  background-color: $lightgray;
+  border-radius: 30px;
+  padding: 10px 20px;
+  animation: move-from-left 2s ease-in-out;
+}
+
+@keyframes move-from-left {
+  0% {
+    opacity: 0;
+    transform: translateY(150%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

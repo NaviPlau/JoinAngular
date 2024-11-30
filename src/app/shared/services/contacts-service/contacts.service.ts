@@ -28,17 +28,12 @@ export class ContactsService {
 
   async addContactInDB(): Promise<void> {
     if (this.contactForm.valid) {
-      const formValues = this.contactForm.value;
-      const newContact: Contact = this.setDataForNewContactInDb(formValues);
+      const newContact: Contact = this.setDataForNewContactInDb(this.contactForm.value);
       try {
-        const response = await this.httpService.makeHttpRequest(this.BASE_URL, 'POST', newContact);
-        if (response.ok) {
-          await this.getContacts();
-        } else {
-          console.error('Failed to add contact. Status:', response.status);
-        }
-      } catch (error) {
-        console.error('Error adding contact:', error);
+        await this.httpService.makeHttpRequest( this.BASE_URL, 'POST', newContact );
+        await this.getContacts(); 
+      } catch (error: any) {
+        console.error('Error adding contact:', error.message);
       }
     }
   }
@@ -69,24 +64,20 @@ export class ContactsService {
   async deleteContact(): Promise<void> {
     if (this.selectedContact) {
       try {
-        const response = await this.httpService.makeHttpRequest(this.BASE_URL + `/${this.selectedContact.id}`, 'DELETE');
-        if (response.ok) {
-          console.log('Contact deleted successfully');
-          await this.getContacts();
-          this.deleteContactUpdateUI()
-        } else {
-          console.error('Failed to delete contact. Status:', response.status);
-        }
-      } catch (error) {
-        console.error('Error deleting contact:', error);
+        await this.httpService.makeHttpRequest( `${this.BASE_URL}/${this.selectedContact.id}`, 'DELETE');
+        await this.getContacts();
+        this.deleteContactUpdateUI();
+      } catch (error: any) {
+        console.error('Error deleting contact:', error.message);
       }
+    } else {
+      console.warn('No contact selected for deletion.');
     }
   }
 
   groupContacts(): void {
     const groups: { [key: string]: Contact[] } = {};
     this.contacts.sort((a, b) => a.fullName.localeCompare(b.fullName));
-    console.log(this.contacts);
     this.contacts.forEach(contact => {
       const firstLetter = contact.fullName[0].toUpperCase();
       if (!groups[firstLetter]) {
@@ -183,19 +174,16 @@ export class ContactsService {
 
   async saveContact(): Promise<void> {
     if (this.contactForm.valid && this.selectedContact) {
-      const updatedContact = this.contactForm.value;
-      this.getUpdatedContact(updatedContact);
+      const payload = { ...this.contactForm.value, initialsColor: this.selectedContact.initialsColor, initials: this.selectedContact.initials,};
+      this.getUpdatedContact(payload); 
       try {
-        const response = await this.httpService.makeHttpRequest( this.BASE_URL + `/${this.selectedContact.id}`, 'PUT', this.selectedContact);
-        if (response.ok) {
-         await this.refreshContacts()
-        } else {
-          console.error('Failed to update contact. Status:', response.status);
-        }
-      } catch (error) {
-        console.error('Error updating contact:', error);
-      }} 
-    this.timeOutEditContact();
+        await this.httpService.makeHttpRequest( `${this.BASE_URL}/${this.selectedContact.id}`, 'PUT',payload);
+        await this.refreshContacts(); 
+      } catch (error: any) {
+        console.error('Error updating contact:', error.message);
+      }
+    }
+    this.timeOutEditContact(); 
   }
 
   getRandomColor(): string {
@@ -219,5 +207,4 @@ export class ContactsService {
       phone: '',
     });
   }
-
 }

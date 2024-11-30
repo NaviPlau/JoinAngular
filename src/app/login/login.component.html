@@ -42,6 +42,9 @@
         <button class="login" [disabled]="loginForm.invalid" (click)="login()">Log in</button>
         <a (click)="guestLogin()"><button>Guest Log in</button></a>
       </div>
+      @if(errrormessage){
+        <span class="error-message">{{errrormessage}}</span>
+      }
     </form>
   </div>
   <div class="register">

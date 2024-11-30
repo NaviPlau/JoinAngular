@@ -14,12 +14,11 @@ export class TaskServiceService implements OnInit {
 
   async getTasksFromDB(): Promise<Task[]> {
     try {
-      const response = await fetch(this.BASE_URL);
-      const tasks = await response.json();
+      const tasks = await this.httpService.makeHttpRequest(this.BASE_URL, 'GET');
       this.allTasks.set(tasks);
       return tasks;
-    } catch (error) {
-      console.error('Error fetching tasks:', error);
+    } catch (error: any) {
+      console.error('Error fetching tasks:', error.message);
       return [];
     }
   }

@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, HostListener, inject, Input, OnInit, Output, Renderer2, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, HostListener, inject, Input, OnInit, Output, Renderer2, signal, ViewChild } from '@angular/core';
 import {  SelectContactsComponent } from '../select-contacts/select-contacts.component';  
 import { MaterialModule } from '../../../../material/material.module';
 import { CommonModule } from '@angular/common';
@@ -6,6 +6,7 @@ import { FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Subtask } from '../../../interfaces/subtask';
 import { Contact } from '../../../interfaces/contact';
 import { TaskServiceService } from '../../../services/task-service/task-service.service';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-add-task-template',
@@ -39,6 +40,7 @@ export class AddTaskTemplateComponent {
     { label: 'User Story', value: 'user-story' },
   ];
 
+  response = signal('');
 
   closeOverlay() {
     this.closeOverlayEvent.emit(); 
@@ -54,7 +56,7 @@ export class AddTaskTemplateComponent {
     this.isDropdownOpen = false;
   }
 
-  constructor(private elementRef: ElementRef, private renderer: Renderer2) {
+  constructor(private elementRef: ElementRef, private renderer: Renderer2, private router : Router) {
       const currentDate = new Date();
       this.today = currentDate.toISOString().split('T')[0]; 
   }
@@ -130,7 +132,6 @@ export class AddTaskTemplateComponent {
   deleteSubtask(index: number): void {
     if (index > -1 && index < this.subTasksArray.length) {
       this.subTasksArray.splice(index, 1); 
-      console.log('Subtask deleted:', index, this.subTasksArray);
     } else {
       console.error('Invalid index:', index);
     }
@@ -142,7 +143,6 @@ export class AddTaskTemplateComponent {
       const newTitle = inputElement.value.trim(); 
       if (newTitle) {
         this.subTasksArray[index].title = newTitle;
-        console.log(`Subtask ${index} updated:`, this.subTasksArray[index]);
       } else {
         console.error('Subtask title cannot be empty.');
       }
@@ -190,11 +190,17 @@ export class AddTaskTemplateComponent {
   submitForm(form: any) {
     form.form.markAllAsTouched();
     if (form.valid) {
-      const formData = this.generateJSON(form);
-      console.log('Form data:', formData);
-      
-      this.taskService.postTask(formData);
-    } else {
+      this.response.set(`Task added to ${this.column || 'Board'}`);
+      setTimeout(() => {
+        const formData = this.generateJSON(form);
+        this.taskService.postTask(formData);
+        this.closeOverlayEvent.emit();
+        this.router.navigate(['board']);
+        this.response.set('');
+      }, 2000);
+    }
+    else{
+      return
     }
   }
 }
