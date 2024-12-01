@@ -6,7 +6,7 @@ import { AuthService } from '../../services/auth-service/auth.service';
 
 @Component({
     selector: 'app-header',
-    imports: [MaterialModule, CommonModule],
+    imports: [MaterialModule, CommonModule, RouterLink],
     templateUrl: './header.component.html',
     styleUrl: './header.component.scss'
 })

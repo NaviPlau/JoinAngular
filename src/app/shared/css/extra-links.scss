@@ -1,0 +1,50 @@
+@use '../../../styles' as *;
+
+section{
+  height: 100%;
+  background-color: $background;
+}
+
+.mainContent{
+  padding-right: 60px;
+  @include display(flex, column, flex-start, flex-start);
+  gap: 20px;
+  overflow-y: scroll;
+  padding-bottom: 60px;
+}
+
+b{
+  color : $blue;
+}
+
+p{
+  font-size: 20px;
+}
+
+strong{
+  font-size: 24px;
+}
+
+h2{
+  font-size: 28px;
+}
+
+mat-icon{
+  color: $blue;
+  position: fixed;
+  right: 60px;
+  top: 200px;
+  font-size: 32px;
+  height: auto;
+  width: auto;
+  border-radius: 100%;
+  &:hover{
+    cursor: pointer;
+    scale: 1.1;
+    background-color: lightgray;
+  }
+}
+
+li{
+  font-size: 20px;
+}

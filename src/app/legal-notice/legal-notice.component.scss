@@ -1,0 +1,10 @@
+@use '../../styles' as *;
+@use '../shared/css/extra-links' as *;
+
+.portfolio-link{
+  font-size: 32px;
+  &:hover{
+    scale: 1.1;
+    font-weight: 600;
+  }
+}

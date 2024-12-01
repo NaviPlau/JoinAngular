@@ -72,7 +72,7 @@
       <label for="checkbox" class="custom-checkbox">
         <input type="checkbox" id="checkbox" formControlName="policyAccepted">
         <span class="checkmark"></span>
-        I accept the <a href="#"> Privacy Policy</a>
+        I accept the <a routerLink="/privacy-policy"> Privacy Policy</a>
         @if (registerForm.get('policyAccepted')?.invalid && (registerForm.get('policyAccepted')?.dirty || registerForm.get('policyAccepted')?.touched)) {
           <span class="error-message">Acceptance is required.</span>
         }

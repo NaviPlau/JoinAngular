@@ -1,15 +1,15 @@
 <header>
   <span>Kanban Project Management Tool</span>
   <div class="user">
-    <a href=""><mat-icon>help_outlined</mat-icon></a>
+    <a routerLink="/help"><mat-icon>help_outlined</mat-icon></a>
     <div class="initials" #initials (click)="toggleLinks()">
       <span>{{headerInitials}}</span>
     </div>
   </div>
   <div class="links" *ngIf="showLinks" #links>
-    <a href="">Help</a>
-    <a href="">Privacy Policy</a>
-    <a href="">Legal Notice</a>
+    <a routerLink="/help">Help</a>
+    <a routerLink="/privacy-policy">Privacy Policy</a>
+    <a routerLink="/legal-notice">Legal Notice</a>
     <a (click)="authService.logoutUser()">Logout</a>
   </div>
 </header>

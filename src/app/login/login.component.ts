@@ -8,56 +8,61 @@ import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { AuthService } from '../shared/services/auth-service/auth.service';
 
 @Component({
-    selector: 'app-login',
-    imports: [CommonModule, MaterialModule, LogoLoginComponent, LinksLoginComponent, RouterLink, FormsModule, ReactiveFormsModule],
-    templateUrl: './login.component.html',
-    styleUrl: './login.component.scss'
+  selector: 'app-login',
+  imports: [CommonModule, MaterialModule, LogoLoginComponent, LinksLoginComponent, RouterLink, FormsModule, ReactiveFormsModule],
+  templateUrl: './login.component.html',
+  styleUrl: './login.component.scss'
 })
 export class LoginComponent {
-    passwordVisible = false;
+  passwordVisible = false;
 
-    authService = inject(AuthService);
+  authService = inject(AuthService);
 
-    get errrormessage () {
-        return this.authService.errorMessage();
+  get errrormessage() {
+    return this.authService.errorMessage();
+  }
+
+
+  loginForm = new FormGroup({
+    email: new FormControl('', [
+      Validators.required,
+      Validators.email, Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)
+    ]),
+    password: new FormControl('', [
+      Validators.required,
+      Validators.minLength(8)
+    ]),
+  });
+
+  constructor() {
+    this.loginForm.valueChanges.subscribe(() => {
+      this.authService.errorMessage.set('');
+    });
+  }
+
+
+  ngOnInit(){
+    this.authService.initializeState();
+  }
+
+
+  togglePasswordVisibility() {
+    this.passwordVisible = !this.passwordVisible;
+  }
+
+  async login() {
+    if (this.loginForm.valid) {
+      const email = this.loginForm.get('email')?.value;
+      const password = this.loginForm.get('password')?.value;
+      this.authService.loginData = { email, password };
+      await this.authService.loginUser();
+    } else {
+      console.error('Form is invalid');
     }
+  }
 
 
-    loginForm = new FormGroup({
-        email: new FormControl('', [
-          Validators.required, 
-          Validators.email, Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)
-        ]),
-        password: new FormControl('', [
-          Validators.required, 
-          Validators.minLength(8) 
-        ]),
-      });
-
-      constructor() {
-        this.loginForm.valueChanges.subscribe(() => {
-          this.authService.errorMessage.set(''); 
-        });
-      }
-
-
-      togglePasswordVisibility() {
-        this.passwordVisible = !this.passwordVisible;
-      }
-
-     async  login() {
-        if (this.loginForm.valid) {
-          const email = this.loginForm.get('email')?.value;
-          const password = this.loginForm.get('password')?.value;
-          this.authService.loginData = { email, password };
-          await this.authService.loginUser();
-        } else {
-          console.error('Form is invalid');
-        }
-      }
-      
-
-      guestLogin() {
-        this.authService.guestLogin();
-      }
+  guestLogin() {
+    this.authService.guestLogin();
+  }
 }
