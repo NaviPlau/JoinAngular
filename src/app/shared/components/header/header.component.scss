@@ -12,6 +12,26 @@ header{
   font-size: 20px;
   z-index: 99;
   box-shadow: 0px 0px 4px 0px rgba(0,0,0,0.4);
+
+  @media (max-width:1440px){
+    left: 0px;
+    width: 100%;
+    padding: 0px 48px 0px 48px;
+  }
+  @media(max-width: 800px){
+    .title{
+      display: none;
+    }
+  }
+}
+
+img{
+  display: none;
+  @media (max-width:1440px){
+    width: 50px;
+    height: 70px;
+    display: flex;
+  }
 }
 
 mat-icon{
@@ -61,5 +81,20 @@ mat-icon{
       background-color: $darkgray;
       cursor: pointer;
     }
+  }
+}
+
+@media (max-height: 800px){
+  header{
+    height: 60px;
+  }
+
+  img{
+    height: 48px;
+    width: 36px;
+  }
+
+  .links{
+    top: 50px;
   }
 }

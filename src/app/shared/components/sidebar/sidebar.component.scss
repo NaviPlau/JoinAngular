@@ -5,18 +5,27 @@
   width: 232px;
   background-color: $lightgray;
   @include display(flex, column, flex-start, center);
+
 }
 
 .links{
   width: 100%;
   @include display(flex, column, center, center);
   gap: 16px;
+  @media (max-width:1440px){
+    @include display(flex, row, center, center);
+    gap: 0px;
+  }
+ 
 }
 
 img{
   width: 100px;
   height: 120px;
   margin: 64px 0px 150px 0px;
+  @media (max-width:1440px){
+    display: none;
+  }
 }
 
 mat-icon{
@@ -31,6 +40,10 @@ mat-icon{
   position: relative;
   width: 32px;
   @include display(flex, row, flex-start, center);
+  @media (max-width:1440px){
+    margin-top: 18px;
+    margin-bottom: 10px;
+  }
 }
 
 a{
@@ -51,6 +64,10 @@ a{
     color: white;
     width: 100px;
     text-align: center;
+  }
+  @media (max-width:1440px){
+    @include display(flex, column, center, center);
+    height: 100px;
   }
 }
 
@@ -88,9 +105,68 @@ a{
       text-align: center;
     }
   }
+  @media (max-width:1440px){
+    display: none;
+  }
 }
 
 .summary , .addtask, .board, .contacts {
   background-color: $darkgray;
 }
+
+@media (max-width:1440px){
+  .sidebar{
+    position: fixed;
+    bottom: 0;
+    height: fit-content;
+    width: 100vw;
+    z-index: 9999;
+    @include display(flex, row, flex-start, center);
+  }
+}
+
+@media (max-height: 800px){
+  a{
+    gap: 10px;
+    padding: 10px 5px;
+    height: fit-content;
+  }
+}
+
+@media (max-width:600px){
+  a{
+    padding: 10px 5px;
+    gap: 5px;
+    height: fit-content;
+    span{
+      width: 100%;
+      font-size: 16px;
+    }
+  }
+}
+
+@media(max-height : 500px){
+  .links{
+   height: 65px;
+  }
+  a{
+    gap: 5px;
+    span{
+      font-size: 16px;
+    }
+    mat-icon{
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+    }
+    .edit{
+      bottom: -5px;
+      left: 4px;
+    }
+  }
+
+}
+
+
+
 

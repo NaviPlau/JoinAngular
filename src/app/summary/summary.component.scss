@@ -159,6 +159,10 @@ mat-icon{
   animation: fade 2s ease-in-out;
 }
 
+.mobile-line{
+  display: none;  
+}
+
 @keyframes fade {
   0% {
     opacity: 0;
@@ -167,3 +171,101 @@ mat-icon{
     opacity: 1;
   }
 }
+
+
+@media(max-width: 1150px){
+  .summary{
+    padding: 0px 50px;
+  }
+  .greetings{
+    display: none;
+  }
+}
+
+@media (max-width: 800px){
+  header{
+    @include display(flex, column, center, center);
+    gap: 10px;
+    .line{
+      display: none;
+    }
+    .mobile-line{
+      display: flex;
+      width: 100%;
+      height: 3px;
+      background-color: $blue;
+    }
+  }
+
+  .summary{
+    padding: 0px 20px 0px 20px
+  }
+}
+
+@media(max-width: 600px){
+  .cardArea{
+    width: 100%;
+    gap: 10px;
+  }
+  .card{
+    padding: 10px 16px;
+  }
+}
+
+
+@media(max-width: 450px){
+  .card{
+    padding: 10px 8px;
+    gap: 8px;
+    border-radius: 10px;
+  }
+  .cardText, .lastCard{
+    :nth-child(1){
+      font-size: 32px;
+    }
+    :nth-child(2){
+      font-size: 16px;
+    }
+    
+  }
+
+  .cardIcon{
+    height: 48px;
+    width: 48px;
+  }
+
+  mat-icon{
+    width: 24px !important;
+    font-size: 24px !important;
+    height: 24px !important;
+  }
+}
+
+@media(max-width: 360px){
+  header{
+    .mobile-line{
+      width: 80%;
+    }
+  }
+
+  .title{
+    text-align: center;
+  }
+
+  .lastCard{
+    :nth-child(2){
+      font-size: 14px;
+    }
+  }
+}
+
+@media (max-height:500px){
+  .mainContent{
+    top: 50px;
+    padding-top: 20px;
+    height: 100%;
+    padding-bottom: 70px;
+  }
+
+}
+

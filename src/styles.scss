@@ -68,7 +68,17 @@ button{
   padding-top: 110px;
   padding-left: 96px;
   width: calc(100% - 232px);
-  height: calc(100% - 96px);
+  height: calc(100% - 196px);
+  @media (max-width:1440px){
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    padding-left: 0px;
+    padding-top: 50px;
+    @include display(flex, column, flex-start, center);
+    overflow-y: scroll;
+    scrollbar-width: none;
+  }
 }
 
 h1{
