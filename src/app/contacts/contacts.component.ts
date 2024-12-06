@@ -5,19 +5,19 @@ import { MaterialModule } from '../material/material.module';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Contact } from '../shared/interfaces/contact';
-import { HttpRequestService } from '../shared/services/http/http-request.service';
 import { ContactsService } from '../shared/services/contacts-service/contacts.service';
 
 @Component({
   selector: 'app-contacts',
   imports: [HeaderComponent, ReactiveFormsModule, SidebarComponent, MaterialModule, CommonModule, FormsModule],
   templateUrl: './contacts.component.html',
-  styleUrl: './contacts.component.scss'
+  styleUrls: ['./contacts.component.scss', './contacts-media.scss']
 })
 export class ContactsComponent implements OnInit {
   contacts: Contact[] = [];
   contactForm: FormGroup;
   contactsService = inject(ContactsService);
+  isMobile: boolean;
   
   constructor(private fb: FormBuilder, private elRef: ElementRef) {
     this.contactForm = this.fb.group({
@@ -27,6 +27,10 @@ export class ContactsComponent implements OnInit {
     });
     this.contactsService.contactForm = this.contactForm;
     this.contacts = this.contactsService.contacts;
+    this.isMobile = window.innerWidth <= 800;
+    window.addEventListener('resize', () => {
+      this.isMobile = window.innerWidth <= 800;
+    });
   }
 
   async ngOnInit() {

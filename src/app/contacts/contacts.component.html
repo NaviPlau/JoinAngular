@@ -2,7 +2,13 @@
   <app-header></app-header>
   <app-sidebar></app-sidebar>
   <main>
-    <div class="left-side">
+
+    <button class="mobile-add-new" (click)="contactsService.addContact()">
+      <span></span>
+      <mat-icon class="add-icon">person_add</mat-icon>
+    </button>
+
+    <div class="left-side" [ngClass]="{'hidden': isMobile && contactsService.selectedContact}" >
       <div class="button-contain">
         <button class="add-contact-button" (click)="contactsService.addContact()">
           <span>Add new contact</span>
@@ -28,7 +34,13 @@
         }
       </div>
     </div>
-    <div class="right-side">
+
+
+    <div class="right-side" [ngClass]="{'full-width': isMobile && contactsService.selectedContact}" [ngClass]="{'hidden':isMobile && !contactsService.selectedContact}">
+      @if(isMobile && contactsService.selectedContact) {
+        <mat-icon (click)="contactsService.selectedContact = null" class="back-icon">arrow_back</mat-icon>
+      }
+
       <div class="right-side-header">
         <h1>Contacts</h1>
         <div class="separator"></div>

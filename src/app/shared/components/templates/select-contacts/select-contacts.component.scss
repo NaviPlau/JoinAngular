@@ -86,3 +86,9 @@
 .custom-checkbox input[type="checkbox"]:checked + .checkmark:after {
   display: block;
 }
+
+@media (max-width:1050px){
+  .contact{
+    max-width: unset;
+  }
+}

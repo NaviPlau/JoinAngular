@@ -1,12 +1,11 @@
 @use '../../styles.scss' as *;
-
-section{
+section {
   height: 100%;
   background-color: $background;
   position: relative;
 }
 
-main{
+main {
   @include display(flex, row, flex-start, flex-start);
   left: 232px;
   width: calc(100% - 232px);
@@ -16,27 +15,27 @@ main{
 }
 
 
-.right-side{
+.right-side {
   @include display(flex, column, flex-start, flex-start);
   width: 100%;
-  margin-top:96px ;
+  margin-top: 96px;
   gap: 32px;
 }
 
-.left-side{
+.left-side {
   width: 456px;
   @include display(flex, column, flex-start, center);
   gap: 32px;
   background-color: white;
   height: 100%;
-  box-shadow: 0px 3px 4px 0px rgba(0,0,0,0.4);
+  box-shadow: 0px 3px 4px 0px rgba(0, 0, 0, 0.4);
 }
 
-.add-icon{
+.add-icon {
   transform: scaleX(-1);
 }
 
-.add-contact-button{
+.add-contact-button {
   @include display(flex, row, center, center);
   gap: 8px;
   width: 352px;
@@ -45,22 +44,22 @@ main{
   color: white;
   border-radius: 10px;
   border: none;
-  &:hover{
+  &:hover {
     cursor: pointer;
     background-color: $blue;
-    box-shadow: 0px 3px 4px 0px rgba(0,0,0,0.4);
+    box-shadow: 0px 3px 4px 0px rgba(0, 0, 0, 0.4);
   }
 }
 
-.button-contain{
+.button-contain {
   @include display(flex, row, center, center);
   height: 100px;
   width: 456px;
   padding: 30px 0px;
-  
+
 }
 
-.contact-list{
+.contact-list {
   @include display(flex, column, flex-start, center);
   width: 100%;
   max-height: 100%;
@@ -68,18 +67,18 @@ main{
   padding-bottom: 20px;
 }
 
-.contact-contain{
+.contact-contain {
   @include display(flex, row, flex-start, center);
   gap: 24px;
   width: 352px;
   border-radius: 20px;
-  &:hover{
+  &:hover {
     background-color: lightgray;
     cursor: pointer;
   }
 }
 
-.initials{
+.initials {
   @include display(flex, row, center, center);
   padding: 10px;
   border-radius: 100%;
@@ -89,142 +88,145 @@ main{
   margin-left: 20px;
 }
 
-.contact-info{
+.contact-info {
   @include display(flex, column, flex-start, flex-start);
   gap: 5px;
   width: 100%;
   padding: 10px 5px;
-  span, a {
+  span,
+  a {
     width: 100%;
     font-size: 20px;
     text-wrap: nowrap;
   }
-  a{
+  a {
     color: $blue;
     font-size: 14px;
     width: fit-content;
   }
 }
 
-.contact-letter{
+.contact-letter {
   font-weight: 600;
   font-size: 24px;
   margin-top: 14px;
   margin-bottom: 10px;
   border-bottom: 2px $darkgray solid;
   padding: 10px 32px;
-  &:hover{
+  &:hover {
     background-color: white;
   }
 }
 
-.selected-contact{
+.selected-contact {
   background-color: $lightgray ;
-  span{
+  span {
     color: white;
   }
-  &:hover{
-    background-color:$darkgray;
+  &:hover {
+    background-color: $darkgray;
   }
 }
 
-
-
-
-.right-side-header{
+.right-side-header {
   @include display(flex, row, flex-start, center);
   padding-left: 54px;
   gap: 30px;
-  .separator{
+  .separator {
     width: 3px;
     height: 64px;
     background-color: $blue;
   }
-  span{
+  span {
     font-size: 20px;
   }
 }
 
-.right-side-content{
+.right-side-content {
   @include display(flex, column, center, center);
   height: 100%;
   width: 100%;
- 
 }
 
-.selected-contact-name{
+.selected-contact-name {
   @include display(flex, row, flex-start, center);
   gap: 32px;
   width: 100%;
-  padding-left:54px;
+  padding-left: 54px;
 }
 
-.selected-initials{
+.selected-initials {
   @include display(flex, row, flex-start, center);
   font-size: 48px;
-  color : white;
+  color: white;
   padding: 20px;
   border-radius: 100%;
 }
 
-.selected-full-name{
+.selected-full-name {
   font-size: 48px;
+  width: 20ch; 
+  overflow: hidden; 
+  white-space: nowrap; 
+  text-overflow: ellipsis; 
+  text-wrap: wrap
 }
 
-.icon-contain{
+.icon-contain {
   @include display(flex, row, flex-start, center);
   gap: 16px;
 }
-.delete-contain , .edit-contain{
+
+.delete-contain, .edit-contain {
   @include display(flex, row, center, center);
   gap: 13px;
   font-size: 16px;
- &:hover{
-  cursor: pointer;
-  color: $blue;
- }
+  &:hover {
+    cursor: pointer;
+    color: $blue;
+  }
 }
 
-.contact-informations{
+.contact-informations {
   @include display(flex, column, flex-start, flex-start);
   gap: 32px;
   width: 100%;
   padding-top: 54px;
   padding-left: 54px;
-  span{
+  span {
     font-size: 20px;
   }
 }
 
-.selected-contact-email, .selected-contact-phone{
+.selected-contact-email, .selected-contact-phone {
   @include display(flex, column, flex-start, flex-start);
   width: 100%;
   gap: 16px;
-  span{
+  span {
     font-size: 20px;
   }
-  a{
+  a {
     @include display(flex, row, flex-start, center);
     gap: 16px;
     text-decoration: none;
     color: $blue;
     font-size: 16px;
-    mat-icon{
-    color: $darkgray;
+    mat-icon {
+      color: $darkgray;
     }
-    &:hover{
+    &:hover {
       cursor: pointer;
-      mat-icon{
+      mat-icon {
         color: $blue;
-      };
+      }
     }
   }
 }
 
 
-.form-contain{
+.form-contain {
   @include display(flex, column, center, center);
-  background-color: rgba(0,0,0,0.2);
+  background-color: rgba(0, 0, 0, 0.2);
   width: calc(100% - 232px);
   height: 100%;
   position: absolute;
@@ -232,7 +234,7 @@ main{
   left: 232px;
 }
 
-.form{
+.form {
   max-width: 1440px;
   position: absolute;
   top: 50%;
@@ -243,12 +245,12 @@ main{
   height: 80%;
   max-height: 600px;
   border-radius: 50px;
-  box-shadow: 0px 0px 16px 0px rgba(0,0,0,0.4);
+  box-shadow: 0px 0px 16px 0px rgba(0, 0, 0, 0.4);
   z-index: 10;
   animation: fade-in-from-left 0.4s ease-out forwards
 }
 
-.form-left{
+.form-left {
   @include display(flex, column, center, flex-start);
   background-color: $lightgray;
   height: 100%;
@@ -258,16 +260,16 @@ main{
   border-bottom-left-radius: 50px;
   border-top-left-radius: 50px;
   gap: 20px;
-  img{
+  img {
     width: 54px;
     height: 66px;
-    }
-    h1{
-      text-wrap: nowrap
-    }
+  }
+  h1 {
+    text-wrap: nowrap
+  }
 }
 
-.form-right{
+.form-right {
   @include display(flex, row, center, center);
   background-color: white;
   height: 100%;
@@ -276,70 +278,68 @@ main{
   border-top-right-radius: 50px;
 }
 
-.line{
+.line {
   width: 90px;
   height: 3px;
   background-color: $blue;
 }
 
-.adding-contact{
+.adding-contact {
   @include display(flex, column, center, flex-start);
   gap: 10px;
 }
 
-form{
+form {
   width: 100%;
   padding: 20px;
   @include display(flex, column, center, center);
   gap: 32px;
 }
 
-.inputField{
+.inputField {
   @include display(flex, row, flex-start, center);
   position: relative;
   width: 100%;
-  gap: 16px;
   border-radius: 20px;
   border: 2px solid lightgray;
   padding-right: 20px;
-  input{
+  input {
     width: 100%;
     height: 50px;
     border: none;
     outline: none;
-    padding:20px;
+    padding: 20px;
     border-radius: 20px;
     font-size: 20px;
   }
-  mat-icon{
+  mat-icon {
     color: lightgray;
   }
-  &:hover{
+  &:hover {
     border: 2px solid $blue;
-    mat-icon{
+    mat-icon {
       color: $blue;
     }
   }
-  &:focus-within{
+  &:focus-within {
     border-bottom: 2px solid $blue;
-    mat-icon{
+    mat-icon {
       color: $blue;
     }
   }
 }
 
-.editInitials{
+.editInitials {
   margin-left: 20px;
 }
 
-.buttons-area{
+.buttons-area {
   @include display(flex, row, flex-start, center);
   width: 100%;
   gap: 32px;
- 
 }
 
-.delete{
+.delete {
   @include display(flex, row, center, center);
   gap: 10px;
   background-color: white;
@@ -348,32 +348,30 @@ form{
   border-radius: 10px;
   color: black;
   font-weight: 300;
-  &:hover{
+  &:hover {
     color: $blue;
     border: 1px solid $blue;
-    box-shadow: 0px 3px 0px 0px rgba(0,0,0,0.4);
+    box-shadow: 0px 3px 0px 0px rgba(0, 0, 0, 0.4);
     transition: ease-in-out 125ms;
   }
 }
 
-
-
-.error{
+.error {
   color: red;
   font-size: 12px;
   font-weight: 300;
-  position:absolute;
+  position: absolute;
   top: 100%;
 }
 
-.form-invalid{
+.form-invalid {
   color: red;
   font-size: 20px;
-  position:absolute;
+  position: absolute;
   bottom: 30px;
 }
 
-.close{
+.close {
   position: absolute;
   top: 40px;
   right: 40px;
@@ -381,16 +379,16 @@ form{
   height: auto;
   font-size: 32px;
   cursor: pointer;
-  &:hover{
+  &:hover {
     color: $blue;
     font-size: 40px;
   }
 }
 
-.response{
+.response {
   position: absolute;
   color: white;
-  font-size:24px;
+  font-size: 24px;
   font-weight: 400;
   animation: fadeFromRight 2s ease-in-out;
   z-index: 10000;
@@ -399,22 +397,22 @@ form{
   border-radius: 30px;
 }
 
-@keyframes fadeFromRight{
-  0%{
+@keyframes fadeFromRight {
+  0% {
     opacity: 0;
     transform: translateX(100%);
   }
-  100%{
+  100% {
     opacity: 1;
     transform: translateX(50%);
   }
 }
 
-.addInitials{
+.addInitials {
   @include display(flex, row, center, center);
   background-color: gray;
   border-radius: 100%;
-  mat-icon{
+  mat-icon {
     color: white;
     font-size: 80px;
     width: auto;
@@ -424,4 +422,14 @@ form{
 
 .form.fade-out-to-left {
   animation: fade-out-to-left 0.6s ease-in-out;
+}
+
+.hidden {
+  display: none;
+}
+
+.full-width {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
 }

@@ -5,3 +5,18 @@ section{
   background-color: $background;
 }
 
+
+
+@media (max-width: 1440px){
+  .mainContent{
+    padding-top:10px;
+    padding-bottom:20px;
+  }
+
+}
+
+@media (max-width: 1050px){
+  app-add-task-template{
+    width: 100%;
+  }
+} 

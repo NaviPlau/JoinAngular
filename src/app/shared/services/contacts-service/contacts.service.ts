@@ -18,6 +18,7 @@ export class ContactsService {
   selectedContact: Contact | null = null;
   groupedContacts: { letter: string; contacts: Contact[] }[] = [];
   constructor() {}
+  isMobile: boolean = window.innerWidth < 800 ? true : false;
 
   BASE_URL: string = 'http://127.0.0.1:8000/api/join_app/contacts';
   async getContacts() {

@@ -216,5 +216,60 @@ form{
   }
 }
 
+@media (max-width:1050px){
+  form{
+    flex-direction: column;
+    width: 90%;
+    max-width: unset;
+    left: 50%;
+    transform: translate(-50%);
+  }
+
+  .leftForm, .rightForm{
+    width: 100%;
+  }
+  .separator{
+    display: none;
+  }
+  h1{
+    position: relative;
+    width:fit-content;
+    left: 50%;
+    transform: translate(-50%);
+  }
+  .button-area{
+    justify-content: center;
+  }
+}
+
+@media (max-width:500px){
+  .prio-area{
+    gap: 10px;
+  }
+}
+
+@media (max-width:450px){
+  .prio-area{
+
+    button{
+      padding: 2px;
+      gap: 2px;
+    }
+  }
+}
+
+@media(max-width:400px){
+  form{
+    width: 100%;
+  }
+  .button-area{
+    button{
+      gap: 5px;
+      padding: 5px 5px;
+    }
+
+  }
+}
+
 
 

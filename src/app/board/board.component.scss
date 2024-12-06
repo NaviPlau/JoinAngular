@@ -127,6 +127,9 @@ app-add-task-template {
   position: absolute;
   top: 50%;
   left: 50%;
+  max-height: 90vh;
+  overflow-y: auto;
+  scrollbar-width: none;
   transform: translate(-50%, -50%);
   background-color: white;
   padding: 40px;
@@ -201,7 +204,13 @@ app-task{
     width: 100%;
     max-width: 100%;
   }
+  app-add-task-template{
+    padding: 4px;
+    padding-bottom: 30px;
+  }
 }
+
+
 
 @media (max-width: 500px){
   main{
@@ -214,6 +223,7 @@ app-task{
       }
     }
   }
+
 }
 
 @media (max-height:800px){

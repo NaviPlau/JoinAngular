@@ -242,3 +242,19 @@ h1{
   width: 100%;
   @include display(flex, row, flex-end, center);
 }
+
+@media (max-width:500px){
+  .prio-area{
+    gap: 5px;
+    button{
+      gap: 3px;
+      padding: 0px 5px;
+    }
+  }
+}
+
+@media (max-width:350px){
+  .task{
+    padding: 10px;
+  }
+}

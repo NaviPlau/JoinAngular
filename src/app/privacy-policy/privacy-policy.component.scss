@@ -1,2 +1,20 @@
 @use '../../styles' as *;
 @use '../shared/css/extra-links' as *;
+
+@media (max-width: 1440px){
+  .mainContent{
+    padding-left: 60px !important;
+  }
+}
+
+@media (max-width:500px){
+  .mainContent{
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+  }
+
+  mat-icon{
+    right: 10px;
+    top: 35px;
+  }
+}
