@@ -30,3 +30,24 @@
     font-weight: 600;
   }
 }
+
+@media (max-width: 550px){
+  .register{
+    flex-direction: column;
+  }
+}
+
+@media (max-width:400px){
+  .register{
+    right: 10px;
+    top: 10px;
+  }
+}
+
+@media (max-width:350px){
+  .buttons{
+    gap: 10px;
+  }
+}
+
+

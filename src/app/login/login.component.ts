@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, HostListener, inject } from '@angular/core';
 import { MaterialModule } from '../material/material.module';
 import { LogoLoginComponent } from "../logo-login/logo-login.component";
 import { LinksLoginComponent } from "../links-login/links-login.component";
@@ -15,7 +15,7 @@ import { AuthService } from '../shared/services/auth-service/auth.service';
 })
 export class LoginComponent {
   passwordVisible = false;
-
+  isHeightTooSmall: boolean = false;
   authService = inject(AuthService);
 
   get errrormessage() {
@@ -43,6 +43,7 @@ export class LoginComponent {
 
   ngOnInit(){
     this.authService.initializeState();
+    this.checkDeviceHeight();
   }
 
 
@@ -65,4 +66,15 @@ export class LoginComponent {
   guestLogin() {
     this.authService.guestLogin();
   }
+
+  @HostListener('window:resize', [])
+  onResize() {
+    this.checkDeviceHeight();
+  }
+
+  checkDeviceHeight() {
+    this.isHeightTooSmall = window.innerHeight < 600;
+  }
+
+
 }

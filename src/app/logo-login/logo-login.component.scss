@@ -5,3 +5,17 @@ img{
   top: 50px;
   left: 50px;
 }
+
+@media (max-width: 550px){
+  img{
+    top: 10px;
+    left: 10px;
+  }
+}
+
+@media(max-height:800px){
+  img{
+    height: 60px;
+    width: 50px;
+  };
+}

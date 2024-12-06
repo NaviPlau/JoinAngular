@@ -138,3 +138,21 @@ form{
     cursor: not-allowed;
   }	
 }
+
+@media (max-width: 750px){
+  section{
+    .container{
+      padding: 48px 20px;
+    }
+  }
+}
+
+@media (max-width:550px){
+  .inputField{
+    width: 100%;
+    input{
+      width: 100%;
+    }
+  }
+}
+

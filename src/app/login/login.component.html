@@ -1,3 +1,6 @@
+@if(!isHeightTooSmall){
+
+
 <section>
   <app-logo-login></app-logo-login>
   <div class="container">
@@ -53,3 +56,10 @@
   </div>
   <app-links-login></app-links-login>
 </section>
+}
+
+@if(isHeightTooSmall){
+  <div class="height-warning">
+    <p>Please turn your phone for a better experience.</p>
+  </div>
+}
