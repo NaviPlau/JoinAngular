@@ -71,6 +71,18 @@ label{
   animation: move-from-left 2s ease-in-out;
 }
 
+.mobile-logo{
+  position: relative;
+  padding-bottom: 20px;
+  ::ng-deep{
+    img{
+      position:relative;
+      top: 0px;
+      left: 0px;
+    }
+  }
+}
+
 @keyframes move-from-left {
   0% {
     opacity: 0;
@@ -79,5 +91,33 @@ label{
   100% {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@media (max-width:550px){
+  .back-wrapper{
+    top: 10px;
+  }
+}
+
+@media(max-height: 1020px){
+
+
+  section{
+    height: unset !important;
+    min-height: 100vh !important;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding-top: 30px;
+
+  }
+
+  app-links-login{
+    ::ng-deep{
+      div{
+        position: relative;
+        padding-top: 20px;
+      }
+    }
   }
 }

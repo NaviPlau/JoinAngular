@@ -9,6 +9,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { AddTaskTemplateComponent } from "../shared/components/templates/add-task-template/add-task-template.component";
 import { TaskServiceService } from '../shared/services/task-service/task-service.service';
 import { FormsModule } from '@angular/forms';
+import { AuthService } from '../shared/services/auth-service/auth.service';
 
 type Column = "awaitingFeedback" | "toDo" | "inProgress" | "done";
 
@@ -20,14 +21,20 @@ type Column = "awaitingFeedback" | "toDo" | "inProgress" | "done";
 })
 export class BoardComponent implements OnInit {
   taskService = inject(TaskServiceService)
+  authService = inject (AuthService)
   tasks: Task[] = [];
   searchQuery: string = ''; 
   selectedColumn: Column  = 'toDo';
   addingNewTask: boolean = false;
+  dragover: { [key: string]: boolean } = {};
 
   filteredTasks = computed(() =>
     this.taskService.allTasks().filter((task) => this.taskMatchesQuery(task))
   );
+
+  get userIsLoggedIn() {
+    return this.authService.userIsLoggedIn();
+  } 
 
   toDoTasks = computed(() =>
     this.taskService
@@ -133,12 +140,14 @@ export class BoardComponent implements OnInit {
     event.dataTransfer?.setData('text/plain', JSON.stringify(task));
   }
   
-  allowDrop(event: DragEvent): void {
-    event.preventDefault(); 
+  allowDrop(event: DragEvent, column: string): void {
+    event.preventDefault();
+    this.dragover[column] = true;
   }
   
   onDrop(event: DragEvent, targetColumn: string): void {
     event.preventDefault();
+    this.dragover[targetColumn] = false;
     const taskData = event.dataTransfer?.getData('text/plain');
     if (taskData) {
       const task = JSON.parse(taskData);
@@ -154,7 +163,10 @@ export class BoardComponent implements OnInit {
       });
     }
   }
+
+  onDragLeave(event: DragEvent, column: string): void {
+    this.dragover[column] = false; 
+  }
+
 }
-
-
 

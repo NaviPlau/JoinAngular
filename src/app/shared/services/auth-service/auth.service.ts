@@ -23,6 +23,7 @@ export class AuthService {
   userData = signal<any>(null);
   errorMessage = signal('');
   registerSuccess = signal(false);
+  userLoggedIn = signal(false);
 
 
   async registerUser() {
@@ -41,6 +42,7 @@ export class AuthService {
       const userData = await this.httpService.makeHttpRequest(this.LOGIN_URL, 'POST', this.loginData);
       console.log('Login response data:', userData);
       this.setUserData(userData, false);
+      this.userIsLoggedIn.set(true);
     } catch (error: any) {
       this.errorMessage.set(error.message || 'Wrong email or password.');
     }
@@ -50,12 +52,14 @@ export class AuthService {
     try {
       const guestData = await this.httpService.makeHttpRequest(this.GUEST_LOGIN_URL, 'POST');
       this.setUserData(guestData, true);
+      this.userIsLoggedIn.set(true);
     } catch (error) {
       console.error('Guest login error:', error);
     }
   }
 
   logoutUser() {
+    this.userIsLoggedIn.set(false);
     this.clearUserData();
     this.goToLogin();
   }
@@ -109,17 +113,13 @@ export class AuthService {
     });
     this.userIsLoggedIn.set(true);
     this.isGuestUser.set(isGuest);
-
     const initials = isGuest ? 'GU' : userData.initials || '';
     this.headerInitials.set(initials);
-
     const tokenKey = isGuest ? 'guestToken' : 'authToken';
     this.httpService.setAuthToken(userData.token);
-
     localStorage.setItem(tokenKey, userData.token);
     localStorage.setItem('userInitials', initials); 
     localStorage.setItem('userData', JSON.stringify(this.userData())); 
-
     this.redirectUser();
   }
 
@@ -133,14 +133,14 @@ export class AuthService {
   }
 
 
-  private clearState() {
+  clearState() {
     this.userIsLoggedIn.set(false);
     this.isGuestUser.set(false);
     this.headerInitials.set('');
     this.userData.set(null);
   }
 
-  private setTokenAndState(token: string, isGuest: boolean) {
+  setTokenAndState(token: string, isGuest: boolean) {
     this.httpService.setAuthToken(token);
     this.userIsLoggedIn.set(true);
     this.isGuestUser.set(isGuest);

@@ -1,5 +1,12 @@
 <section>
-  <app-logo-login></app-logo-login>
+  @if(!windowTooSmall){
+    <app-logo-login></app-logo-login>
+  }
+
+  @if(windowTooSmall){
+    <app-logo-login class="mobile-logo"></app-logo-login>
+  }
+  
   <div class="container">
     <div class="back-wrapper">
       <a routerLink=""><mat-icon class="back">arrow_back</mat-icon></a>

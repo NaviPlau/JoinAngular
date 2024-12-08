@@ -23,16 +23,17 @@
           <span>To do</span>
           <mat-icon  (click)="addTask($event);setColumn('toDo')">add</mat-icon>
         </div>
-        <div class="task-column" id="toDo"
+        <div class="task-column" id="toDo" [ngClass]="{'dashed-border': dragover['toDo']} "
         (drop)="onDrop($event, 'toDo')"
-        (dragover)="allowDrop($event)">
+        (dragover)="allowDrop($event, 'toDo')" 
+        (dragleave)="onDragLeave($event, 'toDo')">
           @if(toDoTasks().length <= 0){
             <div class="noTasks">
               <span>No tasks to do</span>
             </div>
           }
           @for(task of toDoTasks(); track $index){
-            <app-task draggable="true"
+            <app-task draggable="true" 
             (dragstart)="onDragStart($event, task)" [task]="task"></app-task>
           }
         </div>
@@ -43,8 +44,7 @@
           <mat-icon (click)="addTask($event); setColumn('inProgress')">add</mat-icon>
         </div>
         <div class="task-column"     id="inProgress"
-        (drop)="onDrop($event, 'inProgress')"
-        (dragover)="allowDrop($event)">
+        (drop)="onDrop($event, 'inProgress')" [ngClass]="{'dashed-border': dragover['inProgress']}" (dragover)="allowDrop($event, 'inProgress')" (dragleave)="onDragLeave($event, 'inProgress')">
           @if(inProgressTasks().length <= 0){
             <div class="noTasks">
               <span>No tasks in progress</span>
@@ -61,14 +61,16 @@
           <span>Await feedback</span>
           <mat-icon (click)="addTask($event); setColumn('awaitingFeedback')">add</mat-icon>
         </div>
-        <div class="task-column" id="awaitFeedback" (drop)="onDrop($event, 'awaitingFeedback')" (dragover)="allowDrop($event)" >
+        <div class="task-column" id="awaitFeedback" [ngClass]="{'dashed-border': dragover['awaitingFeedback']}" 
+        (dragleave)="onDragLeave($event, 'awaitingFeedback')" (drop)="onDrop($event, 'awaitingFeedback')" (dragover)="allowDrop($event, 'awaitingFeedback')"  >
           @if(awaitingFeedbackTasks().length <= 0){
             <div class="noTasks">
               <span>No tasks awaiting feedback</span>
             </div>
           }
           @for(task of awaitingFeedbackTasks(); track $index){
-            <app-task draggable="true" (dragstart)="onDragStart($event, task)" [task]="task"></app-task>
+            <app-task draggable="true" (dragstart)="onDragStart($event, task)"
+             [task]="task"></app-task>
           }
         </div>
       </div>
@@ -76,14 +78,15 @@
         <div class="column-title">
           <span>Done</span>
         </div>
-        <div class="task-column" id="done" (drop)="onDrop($event, 'done')" (dragover)="allowDrop($event)" >
+        <div class="task-column" id="done" (drop)="onDrop($event, 'done')" (dragover)="allowDrop($event , 'done')" (dragleave)="onDragLeave($event, 'done')"  [ngClass]="{'dashed-border': dragover['done']}">
           @if(doneTasks().length <= 0){
             <div class="noTasks"  >
               <span>No tasks done</span>
             </div>
           }
           @for(task of doneTasks(); track $index){
-            <app-task draggable="true" (dragstart)="onDragStart($event, task)"  [task]="task"></app-task>
+            <app-task draggable="true" (dragstart)="onDragStart($event, task)"
+              [task]="task"></app-task>
           }
         </div>
       </div>

@@ -20,7 +20,6 @@ export class SummaryComponent  {
     inProgressTasksLength = computed(() => this.taskService.allTasks().filter((task) => task.column === 'inProgress').length)
     awaitingFeedbackTasksLength = computed(() => this.taskService.allTasks().filter((task) => task.column === 'awaitingFeedback').length)
     doneTasksLength = computed(() => this.taskService.allTasks().filter((task) => task.column === 'done').length)
-    
     urgentTasksLength = computed(() => this.taskService.allTasks().filter((task) => task.priority === 'urgent').length)
     upcomingDeadline = computed(() => {
         const tasksWithDueDates = this.taskService.allTasks().filter((task) => task.dueDate);
@@ -31,6 +30,8 @@ export class SummaryComponent  {
       });
 
     allTasksInBoard = computed(() => this.taskService.allTasks().length);
+
+
    
     async ngOnInit(): Promise<void> {
         await this.taskService.getTasksFromDB();

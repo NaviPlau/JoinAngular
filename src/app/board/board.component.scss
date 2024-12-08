@@ -155,6 +155,10 @@ app-task{
   border-radius: 4px;
 }
 
+.dashed-border{
+  box-shadow: inset 0px 0px 0px 2px lightgray;
+}
+
 @media(max-width: 1440px){
   main{
     left: 0px;

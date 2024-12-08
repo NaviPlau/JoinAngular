@@ -1,3 +1,5 @@
+@if(!showLogo){
+
 @if(!isHeightTooSmall){
 
 
@@ -63,3 +65,7 @@
     <p>Please turn your phone for a better experience.</p>
   </div>
 }
+}
+<div class="start-animation" *ngIf="showLogo">
+  <img src="/assets/img/logo-gray.png" alt="Logo" class="logo" />
+</div>

@@ -17,6 +17,7 @@ export class LoginComponent {
   passwordVisible = false;
   isHeightTooSmall: boolean = false;
   authService = inject(AuthService);
+  showLogo = true;
 
   get errrormessage() {
     return this.authService.errorMessage();
@@ -44,7 +45,17 @@ export class LoginComponent {
   ngOnInit(){
     this.authService.initializeState();
     this.checkDeviceHeight();
+    let hasVisited = sessionStorage.getItem('hasVisited');
+    if (hasVisited) {
+      this.showLogo = false;
+    } else {
+      sessionStorage.setItem('hasVisited', 'true');
+      setTimeout(() => {
+        this.showLogo = false;
+      }, 1400);
+    }
   }
+  
 
 
   togglePasswordVisibility() {

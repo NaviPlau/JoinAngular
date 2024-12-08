@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, HostListener, inject } from '@angular/core';
 import { LinksLoginComponent } from "../links-login/links-login.component";
 import { LogoLoginComponent } from "../logo-login/logo-login.component";
 import { MaterialModule } from '../material/material.module';
@@ -18,6 +18,7 @@ export class RegisterComponent {
   registerForm: FormGroup;
   authService  = inject(AuthService);
   userRegistered: boolean = false;
+  windowTooSmall: boolean = window.innerHeight < 1000;
 
   get registerError() {
     return this.authService.errorMessage();
@@ -63,6 +64,11 @@ export class RegisterComponent {
     }else{
       console.error('Form is invalid');
     }
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize() {
+    this.windowTooSmall = window.innerHeight < 1000;
   }
 
 

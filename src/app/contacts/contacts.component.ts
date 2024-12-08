@@ -6,6 +6,8 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Contact } from '../shared/interfaces/contact';
 import { ContactsService } from '../shared/services/contacts-service/contacts.service';
+import { AuthService } from '../shared/services/auth-service/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-contacts',
@@ -16,8 +18,14 @@ import { ContactsService } from '../shared/services/contacts-service/contacts.se
 export class ContactsComponent implements OnInit {
   contacts: Contact[] = [];
   contactForm: FormGroup;
+  authService = inject(AuthService);
   contactsService = inject(ContactsService);
   isMobile: boolean;
+  router: Router = inject(Router);
+
+  get userIsLoggedIn() {
+    return this.authService.userIsLoggedIn();
+  }
   
   constructor(private fb: FormBuilder, private elRef: ElementRef) {
     this.contactForm = this.fb.group({
@@ -34,9 +42,13 @@ export class ContactsComponent implements OnInit {
   }
 
   async ngOnInit() {
+    if(!this.userIsLoggedIn){
+      this.router.navigate([''])
+    } 
     await this.contactsService.getContacts();
     this.contactsService.groupContacts();
     await this.contactsService.deselectAllContacts();
+    
   }
 
   @HostListener('document:keydown.escape', ['$event'])
