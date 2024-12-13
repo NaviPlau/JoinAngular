@@ -7,6 +7,7 @@ import { SelectContactsComponent } from "../../shared/components/templates/selec
 import { Subtask } from '../../shared/interfaces/subtask';
 import { TaskServiceService } from '../../shared/services/task-service/task-service.service';
 import { Contact } from '../../shared/interfaces/contact';
+import { UserProfile } from '../../shared/interfaces/user-profile';
 
 @Component({
     selector: 'app-opened-task',
@@ -29,7 +30,7 @@ export class OpenedTaskComponent implements OnInit {
   subtaskTitle: string = '';
   subtaskInputFocused: boolean = false;
   isClosing: boolean = false;
-  selectedContacts: Contact[] = [];
+  selectedContacts: UserProfile[] = [];
   dueDate = new Date().toISOString().split('T')[0];
 
   constructor(private renderer: Renderer2, private elRef: ElementRef) {
@@ -42,9 +43,12 @@ export class OpenedTaskComponent implements OnInit {
     this.subtaskTitle = ""
   }
 
-  ngOnInit(){
+ async ngOnInit(){
     if(this.task){
       this.selectedPriority = this.task.priority;
+      this.selectedContacts = this.task.assignedTo
+      console.log(this.selectedContacts);
+      
     }
   }
 
@@ -136,7 +140,7 @@ export class OpenedTaskComponent implements OnInit {
     this.subtaskInputFocused = true
   }
 
-  onSelectContactsChange(selectedContacts: Contact[]) {
+  onSelectContactsChange(selectedContacts: UserProfile[]) {
     this.task.assignedTo = selectedContacts; 
   }
 
@@ -158,7 +162,7 @@ export class OpenedTaskComponent implements OnInit {
         priority: this.selectedPriority,
         dueDate: this.dueDate
       };
-      await this.taskService.updateTask(taskToSave);
+      // await this.taskService.updateTask(taskToSave);
       await this.taskService.getTasksFromDB();
       this.editingTaskChange.emit(false);
     } catch (error) {
@@ -194,7 +198,7 @@ export class OpenedTaskComponent implements OnInit {
   }
 
   async deleteTask() {
-    await this.taskService.deleteTask(this.task);
+    // await this.taskService.deleteTask(this.task);
     await this.taskService.getTasksFromDB();
     this.closeTask();
   }
@@ -202,7 +206,7 @@ export class OpenedTaskComponent implements OnInit {
   async updateSubtaskCompletion(index: number): Promise<void> {
     try {
       const updatedTask = this.prepareUpdatedTask();
-      await this.taskService.updateTask(updatedTask);
+      // await this.taskService.updateTask(updatedTask);
     } catch (error) {
       console.error('Failed to update subtask completion:', error);
     }

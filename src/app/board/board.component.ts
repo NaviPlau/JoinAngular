@@ -157,10 +157,10 @@ export class BoardComponent implements OnInit {
       }
       task.assignedTo = task.assignedTo.map((contact: any) => contact.id);
       task.column = targetColumn;
-      this.taskService.updateTask(task).then(() => {
-      }).catch((error) => {
-        console.error('Failed to update task:', error);
-      });
+      // this.taskService.updateTask(task).then(() => {
+      // }).catch((error) => {
+      //   console.error('Failed to update task:', error);
+      // });
     }
   }
 

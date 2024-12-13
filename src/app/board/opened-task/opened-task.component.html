@@ -52,7 +52,7 @@
           <div class="contact-initials" [ngStyle]="{'background-color': contact.initialsColor}">
             {{ contact.initials }}
           </div>
-          <div>{{ contact.fullName }}</div>
+          <div>{{ contact.fullname }}</div>
         </div>
         }
       </div>
@@ -157,9 +157,9 @@
       </div>
       
         <div class="contact">
-          <div *ngFor="let contact of task.assignedTo | slice:0:5" >
-            <div class="contact-initials" [ngStyle]="{'background-color': contact.initialsColor}">
-              {{ contact.initials }}
+          <div *ngFor="let userProfile of task.assignedTo | slice:0:5" >
+            <div class="contact-initials" [ngStyle]="{'background-color': userProfile.initialsColor}">
+              {{ userProfile.initials }}
             </div>
           </div>
           @if(task.assignedTo.length > 5){

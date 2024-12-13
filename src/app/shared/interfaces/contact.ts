@@ -1,8 +1,7 @@
 export interface Contact {
   initials: string;
   initialsColor: string;
-  fullName: string;
-  selected: boolean;
+  fullname: string;
   email: string;
   phone: string;
   id: number;

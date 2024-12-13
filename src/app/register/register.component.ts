@@ -60,7 +60,7 @@ export class RegisterComponent {
       this.authService.registerUser();
       setTimeout(() => {
         this.authService.errorMessage.set('');
-      }, 1000);
+      }, 3000);
     }else{
       console.error('Form is invalid');
     }

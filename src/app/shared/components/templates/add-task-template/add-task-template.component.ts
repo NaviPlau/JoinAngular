@@ -7,6 +7,7 @@ import { Subtask } from '../../../interfaces/subtask';
 import { Contact } from '../../../interfaces/contact';
 import { TaskServiceService } from '../../../services/task-service/task-service.service';
 import { Router } from '@angular/router';
+import { UserProfile } from '../../../interfaces/user-profile';
 
 @Component({
     selector: 'app-add-task-template',
@@ -22,7 +23,7 @@ export class AddTaskTemplateComponent {
   
   taskService = inject(TaskServiceService);
   contactsOpen = false;
-  selectedContacts: Contact[] = [];
+  selectedContacts: UserProfile[] = [];
   today: string;
   showPlaceholder: boolean = true;
   subtaskFocus: boolean = false;
@@ -80,7 +81,7 @@ export class AddTaskTemplateComponent {
     this.focusInput();
   }
 
-  onSelectContactsChange(selectedContacts: Contact[]) {
+  onSelectContactsChange(selectedContacts: UserProfile[]) {
     this.selectedContacts = selectedContacts;
   }
 
@@ -91,7 +92,7 @@ export class AddTaskTemplateComponent {
   }
 
   get selectedContactsNames(): string {
-    return this.selectedContacts.map(contact => contact.fullName).join(', ');
+    return this.selectedContacts.map(contact => contact.fullname).join(', ');
   }
   get remainingContactsCount(): number {
     return this.selectedContacts.length > 5 ? this.selectedContacts.length - 5 : 0;
@@ -177,7 +178,7 @@ export class AddTaskTemplateComponent {
       dueDate: this.dueDate,
       priority: this.selectedPriority,
       category: this.selectedCategory,
-      assignedTo: this.selectedContacts.map(contact => contact.id),
+      assignedTo: this.selectedContacts.map(contact => contact),
       subtasks: this.subTasksArray,
       column: this.column || 'toDo'
     };
@@ -193,7 +194,8 @@ export class AddTaskTemplateComponent {
       this.response.set(`Task added to ${this.column || 'Board'}`);
       setTimeout(() => {
         const formData = this.generateJSON(form);
-        this.taskService.postTask(formData);
+       
+         this.taskService.postTask(formData);
         this.closeOverlayEvent.emit();
         this.router.navigate(['board']);
         this.response.set('');

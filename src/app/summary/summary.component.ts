@@ -34,6 +34,8 @@ export class SummaryComponent  {
 
    
     async ngOnInit(): Promise<void> {
+      console.log(this.authService.userData());
+      
         await this.taskService.getTasksFromDB();
         if (!this.authService.isGuestUser() && !this.authService.userIsLoggedIn()) {	
             this.router.navigate(['/']);
@@ -49,7 +51,7 @@ export class SummaryComponent  {
       }
     
     get userName() {
-        return this.authService.userData().username;
+        return this.authService.userData().fullname;
       }
 
 

@@ -1,6 +1,7 @@
 
 import { Contact } from "./contact";
 import { Subtask } from "./subtask";
+import { UserProfile } from "./user-profile";
 
 export interface Task {
   title: string;
@@ -9,6 +10,6 @@ export interface Task {
   subtasks: { title: string; completed: boolean }[];
   priority: 'urgent' | 'medium' | 'low';
   category: 'Technical Task' | 'User Story';
-  assignedTo: Contact[];
+  assignedTo: UserProfile[];
   column: 'toDo' | 'awaitingFeedback' | 'inProgress' | 'done';
 }

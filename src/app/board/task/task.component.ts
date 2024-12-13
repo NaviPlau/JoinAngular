@@ -3,6 +3,7 @@ import { Task } from '../../shared/interfaces/task';
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from '../../material/material.module';
 import { OpenedTaskComponent } from "../opened-task/opened-task.component";
+import { TaskServiceService } from '../../shared/services/task-service/task-service.service';
 
 @Component({
     selector: 'app-task',
@@ -18,6 +19,12 @@ export class TaskComponent {
   @Input() task!: Task;
   openedTask: boolean = false;
   editingTask: boolean = false;
+
+  constructor(private taskService: TaskServiceService) { }
+
+  ngOnInit() {
+    console.log(this.task);
+  }
 
   get completedSubtasks(): number {
     return this.task.subtasks.filter(subtask => subtask.completed).length;

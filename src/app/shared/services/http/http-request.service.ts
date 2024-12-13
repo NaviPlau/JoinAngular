@@ -1,48 +1,55 @@
-import { Injectable } from '@angular/core';
-
+import { inject, Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { AuthService } from '../auth-service/auth.service';
 @Injectable({
   providedIn: 'root'
 })
 export class HttpRequestService {
-  authToken: string | null = null;
-  setAuthToken(token: string | null) {
-    this.authToken = token;
+  
+  
+
+  getHeaders(authToken?: string): HttpHeaders {
+    const headersConfig: { [header: string]: string } = {
+      'Content-Type': 'application/json',
+    };
+
+    if (authToken) {
+      headersConfig['Authorization'] = `Token ${authToken}`; // Add token if available
+    }
+
+    return new HttpHeaders(headersConfig);
   }
 
-  constructor() { }
+  constructor(private http: HttpClient) {}
+  get<T>(url: string, token?: string, params?: { [key: string]: any }): Observable<T> {
+    const headers = this.getHeaders(token);
+    return this.http.get<T>(url, { headers, params });
+  }
 
-  async makeHttpRequest(url: string, method: string, body?: any) {
-    const headers = { 'Content-Type': 'application/json', ...(this.authToken ? { Authorization: `Token ${this.authToken}` } : {}),};
-    try {
-      const response = await fetch(url, { method, headers,body: body ? JSON.stringify(body) : undefined, });
-      let responseData = null;
-      const contentType = response.headers.get('Content-Type');
-      if (contentType && contentType.includes('application/json')) {
-        responseData = await response.json();
-      } 
-      if (!response.ok) {
-        this.handleHttpErrors(response, responseData); 
-      }
-      return responseData; 
-    } catch (error) {
-      if (error instanceof SyntaxError) {
-        throw new Error('Server returned an invalid response.');
-      }
-      throw error;
-    }
+  // POST request
+  post<T>(url: string, body: any, token?: string): Observable<T> {
+    const headers = this.getHeaders(token);
+    return this.http.post<T>(url, body, { headers });
   }
-  handleHttpErrors(response: Response, errorDetails: any) {
-    if (!response.ok) {
-      if (response.status === 400 && errorDetails.error === "Invalid email or password") {
-        throw new Error("Invalid email or password");
-      }
-  
-      if (errorDetails.email) {
-        throw new Error(errorDetails.email[0]);
-      }
-  
-      throw new Error(errorDetails.message || "An unknown error occurred.");
-    }
+
+  // PUT request
+  put<T>(url: string, body: any, token?: string): Observable<T> {
+    const headers = this.getHeaders(token);
+    return this.http.put<T>(url, body, { headers });
   }
+
+  // PATCH request
+  patch<T>(url: string, body: any, token?: string): Observable<T> {
+    const headers = this.getHeaders(token);
+    return this.http.patch<T>(url, body, { headers });
+  }
+
+  // DELETE request
+  delete<T>(url: string, token?: string): Observable<T> {
+    const headers = this.getHeaders(token);
+    return this.http.delete<T>(url, { headers });
+  }
+  
 }
 

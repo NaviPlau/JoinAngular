@@ -16,19 +16,19 @@
         </button>
       </div>
       <div class="contact-list">
-        @for(group of contactsService.groupedContacts; let groupIndex = $index; track $index; ) {
+        @for(group of contactsService.groupedContacts(); let groupIndex = $index; track $index; ) {
         <div class="contact-contain contact-letter">
           {{ group.letter }}
         </div>
         @for(contact of group.contacts;let contactIndex = $index; track $index; ) {
-        <div class="contact-contain" [ngClass]="{'selected-contact': contact.selected}"
+        <div class="contact-contain" [ngClass]="{'selected-contact': contactsService.selectedContact && contactsService.selectedContact.id === contact.id}"
           (click)="contactsService.toggleContactSelection(groupIndex, contactIndex)">
           <div [ngStyle]="{'background-color': contact.initialsColor}" class="initials">{{contact.initials}}</div>
           <div class="contact-info">
-            <span>{{ contact.fullName.length > 19 ? (contact.fullName | slice:0:19) + '...' : contact.fullName }}</span>
+            <span>{{ contact.fullname.length > 19 ? (contact.fullname | slice:0:19) + '...' : contact.fullname }}</span>
             <a class="contact-email" href="mailto:{{contact.email}}">{{ contact.email.length > 24 ? (contact.email |
               slice:0:28) + '...' : contact.email }}</a>
-          </div>
+          </div> 
         </div>
         }
         }
@@ -52,11 +52,11 @@
           <div [ngStyle]="{'background-color': contactsService.selectedContact.initialsColor}" class="selected-initials">
             {{contactsService.selectedContact.initials}}</div>
           <div>
-            <div class="selected-full-name">{{contactsService.selectedContact.fullName}}</div>
+            <div class="selected-full-name">{{contactsService.selectedContact.fullname}}</div>
             <div class="icon-contain">
               <div class="edit-contain" (click)="contactsService.editContact()">
-                <mat-icon>edit</mat-icon>
-                <span>Edit</span>
+                  <mat-icon>edit</mat-icon>
+                  <span>Edit</span>
               </div>
               <div class="delete-contain" (click)="contactsService.deleteContact()">
                 <mat-icon>delete</mat-icon>
@@ -127,11 +127,11 @@
           
           <form action="" [formGroup]="contactForm">
             <div class="inputField">
-              <input type="email" placeholder="Username" autocomplete="off" formControlName="fullName"  name="editFullName">
+              <input type="text" placeholder="Username" autocomplete="off" formControlName="fullname"  name="editFullName" [value]="contactsService.selectedContact?.fullname" >
               <mat-icon>person</mat-icon>
-              <span class="error" *ngIf="contactForm.get('fullName')?.invalid && (contactForm.get('fullName')?.dirty || contactForm.get('fullName')?.touched)">
-                <ng-container *ngIf="contactForm.get('fullName')?.errors?.['required']">Full name is required.</ng-container>
-                <ng-container *ngIf="contactForm.get('fullName')?.errors?.['pattern']">Full name must contain 2 words, each at least 3 letters long.</ng-container>
+              <span class="error" *ngIf="contactForm.get('fullname')?.invalid && (contactForm.get('fullName')?.dirty || contactForm.get('fullname')?.touched)">
+                <ng-container *ngIf="contactForm.get('fullname')?.errors?.['required']">Full name is required.</ng-container>
+                <ng-container *ngIf="contactForm.get('fullname')?.errors?.['pattern']">Full name must contain 2 words, each at least 3 letters long.</ng-container>
               </span>
             </div>
             <div class="inputField">
@@ -141,7 +141,6 @@
                 <ng-container *ngIf="contactForm.get('email')?.errors?.['required']">Email is required.</ng-container>
                 <ng-container *ngIf="contactForm.get('email')?.errors?.['email'] || contactForm.get('email')?.errors?.['pattern']" >Email is invalid.</ng-container>
               </span>
-
             </div>
             <div class="inputField">
               <input type="tel" placeholder="Phone" autocomplete="off" formControlName="phone" name="editPhone">

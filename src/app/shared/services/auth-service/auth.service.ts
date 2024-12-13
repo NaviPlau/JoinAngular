@@ -2,6 +2,7 @@ import { inject, Injectable, signal } from '@angular/core';
 import { HttpRequestService } from '../http/http-request.service';
 import { RegisterData } from '../../interfaces/register-data';
 import { Router } from '@angular/router';
+import { ContactsService } from '../contacts-service/contacts.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,8 +13,8 @@ export class AuthService {
 
   httpService = inject(HttpRequestService)
 
-  REGISTER_URL = 'http://127.0.0.1:8000/api/auth/registration/'
-  LOGIN_URL = 'http://127.0.0.1:8000/api/auth/login/'
+  REGISTER_URL = 'http://127.0.0.1:8000/auth/api/register/'
+  LOGIN_URL = 'http://127.0.0.1:8000/auth/api/login/'
   GUEST_LOGIN_URL = 'http://127.0.0.1:8000/api/auth/guestlogin/';
   registerdata = {} as RegisterData
   loginData = {}
@@ -24,34 +25,57 @@ export class AuthService {
   errorMessage = signal('');
   registerSuccess = signal(false);
   userLoggedIn = signal(false);
+  authToken = signal('');
 
 
   async registerUser() {
-    try {
-      await this.httpService.makeHttpRequest(this.REGISTER_URL, 'POST', this.registerdata);
-      this.registerSuccess.set(true);
-      this.redirectAfterRegister();
-    } catch (error: any) {
-      this.errorMessage.set(error.message);
-      this.registerSuccess.set(false);
-    }
+    this.httpService.post(this.REGISTER_URL, this.registerdata).subscribe({
+      next: () => {
+        this.registerSuccess.set(true);
+        this.redirectAfterRegister();
+      },
+      error: (error: any) => {
+        if (error.error && error.error.email) {
+          this.errorMessage.set(error.error.email[0]); 
+        } else {
+          this.errorMessage.set(error.message || 'Registration failed.');
+        }
+        this.registerSuccess.set(false);
+      },
+    });
   }
 
-  async loginUser() {
-    try {
-      const userData = await this.httpService.makeHttpRequest(this.LOGIN_URL, 'POST', this.loginData);
-      console.log('Login response data:', userData);
-      this.setUserData(userData, false);
-      this.userIsLoggedIn.set(true);
-    } catch (error: any) {
-      this.errorMessage.set(error.message || 'Wrong email or password.');
-    }
+  loginUser() {
+    this.httpService.post(this.LOGIN_URL, this.loginData).subscribe({
+      next: (loginResponse: any) => {
+        console.log('User logged in successfully:', loginResponse);
+  
+        const token = loginResponse.token;
+        this.httpService.get('http://127.0.0.1:8000/auth/api/profile/', token).subscribe({
+          next: (userProfile: any) => {
+            this.setUserData(userProfile, false);
+            this.userIsLoggedIn.set(true);
+            console.log('User profile fetched successfully:', userProfile);
+            this.authToken.set(token);
+            localStorage.setItem('authToken', token);
+          },
+          error: (profileError: any) => {
+            console.error('Error fetching user profile:', profileError);
+            this.errorMessage.set(profileError.message || 'Failed to fetch user profile.');
+          },
+        });
+      },
+      error: (loginError: any) => {
+        console.error('Login error:', loginError);
+        this.errorMessage.set(loginError.message || 'Failed to log in.');
+      },
+    });
   }
+
+
 
   async guestLogin() {
     try {
-      const guestData = await this.httpService.makeHttpRequest(this.GUEST_LOGIN_URL, 'POST');
-      this.setUserData(guestData, true);
       this.userIsLoggedIn.set(true);
     } catch (error) {
       console.error('Guest login error:', error);
@@ -116,7 +140,7 @@ export class AuthService {
     const initials = isGuest ? 'GU' : userData.initials || '';
     this.headerInitials.set(initials);
     const tokenKey = isGuest ? 'guestToken' : 'authToken';
-    this.httpService.setAuthToken(userData.token);
+    this.authToken.set(userData.token);
     localStorage.setItem(tokenKey, userData.token);
     localStorage.setItem('userInitials', initials); 
     localStorage.setItem('userData', JSON.stringify(this.userData())); 
@@ -128,7 +152,7 @@ export class AuthService {
     localStorage.removeItem('guestToken');
     localStorage.removeItem('userInitials');
     localStorage.removeItem('userData');
-    this.httpService.setAuthToken(null);
+    this.authToken.set('');
     this.clearState();
   }
 
@@ -141,7 +165,7 @@ export class AuthService {
   }
 
   setTokenAndState(token: string, isGuest: boolean) {
-    this.httpService.setAuthToken(token);
+    this.authToken.set(token);
     this.userIsLoggedIn.set(true);
     this.isGuestUser.set(isGuest);
     this.headerInitials.set(isGuest ? 'GU' : '');

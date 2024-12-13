@@ -1,61 +1,107 @@
-import { inject, Injectable } from '@angular/core';
+import { computed, inject, Injectable, signal } from '@angular/core';
 import { Contact } from '../../interfaces/contact';
 import { Form, FormGroup } from '@angular/forms';
 import { HttpRequestService } from '../http/http-request.service';
+import { AuthService } from '../auth-service/auth.service';
+
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class ContactsService {
-  contacts: Contact[] = [];
+  contacts = signal<Contact[]>([])
   contactForm!: FormGroup;
   httpService = inject(HttpRequestService);
+  authService = inject(AuthService);
   editingContact: boolean = false;
   addingContact: boolean = false;
   newContactAdded: boolean = false;
   contactEdited: boolean = false;
   formIsClosing: boolean = false;
   selectedContact: Contact | null = null;
-  groupedContacts: { letter: string; contacts: Contact[] }[] = [];
-  constructor() {}
+  token = localStorage.getItem('authToken');
   isMobile: boolean = window.innerWidth < 800 ? true : false;
+  
 
-  BASE_URL: string = 'http://127.0.0.1:8000/api/join_app/contacts';
+  BASE_URL: string = 'http://127.0.0.1:8000/join/contacts/';
   async getContacts() {
-    let contacts = await fetch(this.BASE_URL)
-    let response = await contacts.json();
-    this.contacts = response;
+    
+    this.getUserContacts()
   }
+
+  async getUserContacts(): Promise<void> {
+    
+    if (!this.token) {
+      console.error('Token is null or undefined. Unable to fetch contacts.');
+      return; // Exit the function if the token is missing
+    }
+    console.log('Token:', this.token);
+  
+    this.httpService.get(this.BASE_URL, this.token).subscribe({
+      next: (data) => {
+        this.contacts.set((data as Contact[]).map(contact => ({
+          initials: contact.initials,
+          fullname: contact.fullname,
+          email: contact.email,
+          phone: contact.phone,
+          initialsColor: contact.initialsColor,
+          id: contact.id,
+        })));
+        console.log('Contacts fetched successfully:', this.contacts());
+      },
+      error: (error) => {
+        console.error('Error fetching contacts:', error);
+      },
+    });
+  }
+
+  groupedContacts = computed(() => {
+    const groups: { [key: string]: Contact[] } = {};
+
+    // Read the current value of contacts
+    const currentContacts = this.contacts();
+    currentContacts.sort((a, b) => a.fullname.localeCompare(b.fullname));
+
+    currentContacts.forEach(contact => {
+      const firstLetter = contact.fullname[0].toUpperCase();
+      if (!groups[firstLetter]) {
+        groups[firstLetter] = [];
+      }
+      groups[firstLetter].push(contact);
+    });
+
+    return Object.keys(groups)
+      .sort()
+      .map(letter => ({
+        letter,
+        contacts: groups[letter],
+      }));
+  });
+ 
 
   async addContactInDB(): Promise<void> {
-    if (this.contactForm.valid) {
-      const newContact: Contact = this.setDataForNewContactInDb(this.contactForm.value);
-      try {
-        await this.httpService.makeHttpRequest( this.BASE_URL, 'POST', newContact );
-        await this.getContacts(); 
-      } catch (error: any) {
-        console.error('Error adding contact:', error.message);
-      }
+    if (!this.token) {
+      console.error('Token is null or undefined. Unable to add contact.');
+      return; 
     }
-  }
-
-  setDataForNewContactInDb(formValues: any): Contact {
-    return {
-      id: this.contacts.length + 1,
-      fullName: formValues.fullName,
-      email: formValues.email,
-      phone: formValues.phone,
-      initials: this.getInitials(formValues.fullName),
-      initialsColor: this.getRandomColor(),
-      selected: false,
-    };
+    const contactData = this.contactForm.value;
+    console.log('Contact form data:', contactData)
+    this.httpService.post('http://127.0.0.1:8000/join/contacts/', contactData, this.token).subscribe({
+      next: (response) => {
+        console.log('Contact added successfully:', response);
+        this.getUserContacts();
+      },
+      error: (error) => {
+        console.error('Error adding contact:', error);
+      },
+    });
   }
 
   async saveTheNewContact() {
     await this.addContactInDB();
     this.newContactAdded = true;
     await this.getContacts();
-    this.groupContacts();
     setTimeout(() => {
       this.addingContact = false;
       this.newContactAdded = false;
@@ -63,71 +109,64 @@ export class ContactsService {
   }
 
   async deleteContact(): Promise<void> {
-    if (this.selectedContact) {
-      try {
-        await this.httpService.makeHttpRequest( `${this.BASE_URL}/${this.selectedContact.id}`, 'DELETE');
-        await this.getContacts();
-        this.deleteContactUpdateUI();
-      } catch (error: any) {
-        console.error('Error deleting contact:', error.message);
-      }
-    } else {
+    if (!this.selectedContact) {
       console.warn('No contact selected for deletion.');
+      return;
+    }
+  
+    if (!this.token) {
+      console.error('Token is missing. Unable to delete contact.');
+      return;
+    }
+  
+    try {
+      await this.httpService.delete(
+        `${this.BASE_URL}${this.selectedContact.id}/`,
+        this.token
+      ).toPromise();
+      const updatedContacts = this.contacts()
+        .filter(contact => contact.id !== this.selectedContact?.id);
+      this.contacts.set(updatedContacts);
+      this.closeForm();
+      console.log('Contact deleted successfully.');
+    } catch (error: any) {
+      console.error('Error deleting contact:', error.message || error);
     }
   }
 
-  groupContacts(): void {
-    const groups: { [key: string]: Contact[] } = {};
-    this.contacts.sort((a, b) => a.fullName.localeCompare(b.fullName));
-    this.contacts.forEach(contact => {
-      const firstLetter = contact.fullName[0].toUpperCase();
-      if (!groups[firstLetter]) {
-        groups[firstLetter] = [];
-      }
-      groups[firstLetter].push(contact);
-    });
-    this.groupedContacts = Object.keys(groups)
-      .sort()
-      .map(letter => ({
-        letter,
-        contacts: groups[letter]
-      }));
-  }
+  
 
   toggleContactSelection(groupIndex: number, contactIndex: number): void {
-    this.groupedContacts.forEach(group => {
-      group.contacts.forEach(contact => (contact.selected = false));
-    });
-    const contact = this.groupedContacts[groupIndex].contacts[contactIndex];
-    contact.selected = true;
-    this.selectedContact = contact;
+    const updatedContacts = this.contacts().map(contact => ({
+      ...contact,
+      selected: false, 
+    }));
+    const grouped = this.groupedContacts();
+    const selectedContact = grouped[groupIndex].contacts[contactIndex];
+    const contactToUpdate = updatedContacts.find(
+      contact => contact.id === selectedContact.id
+    );
+    if (contactToUpdate) {
+      contactToUpdate.selected = true; 
+    }
+    this.contacts.set(updatedContacts);
     this.contactForm.patchValue({
-      fullName: contact.fullName,
-      email: contact.email,
-      phone: contact.phone,
+      fullname: selectedContact.fullname,
+      email: selectedContact.email,
+      phone: selectedContact.phone,
     });
+    this.selectedContact = selectedContact;
+    console.log('Contact selected:', this.selectedContact);
   }
+  
 
   deleteContactUpdateUI() {
     this.selectedContact = null;
     this.editingContact = false;
-    this.groupContacts();
   }
 
   async deselectAllContacts(): Promise<void> {
-    try {
-      await Promise.all(
-        this.contacts.map(contact => {
-          if (contact.selected) {
-            return this.httpService.makeHttpRequest(this.BASE_URL + `/${contact.id}`, 'PUT', { ...contact, selected: false });
-          }
-          return null;
-        })
-      );
-      this.contacts.forEach(contact => (contact.selected = false));
-    } catch (error) {
-      console.error('Error deselecting contacts:', error);
-    }
+
   }
 
   closeForm(): void {
@@ -158,11 +197,12 @@ export class ContactsService {
       this.editingContact = false;
       this.addingContact = false;
       this.contactEdited = false;
+      this.selectedContact = null;
     }, 3000);
   }
 
   getUpdatedContact(updatedContact: any): void {
-    this.selectedContact!.fullName = updatedContact.fullName;
+    this.selectedContact!.fullname = updatedContact.fullName;
     this.selectedContact!.email = updatedContact.email;
     this.selectedContact!.phone = updatedContact.phone;
     this.selectedContact!.initials = this.getInitials(updatedContact.fullName);
@@ -170,21 +210,38 @@ export class ContactsService {
 
   async refreshContacts(): Promise<void> {
     await this.getContacts();
-    this.groupContacts();
   }
 
   async saveContact(): Promise<void> {
-    if (this.contactForm.valid && this.selectedContact) {
-      const payload = { ...this.contactForm.value, initialsColor: this.selectedContact.initialsColor, initials: this.selectedContact.initials,};
-      this.getUpdatedContact(payload); 
-      try {
-        await this.httpService.makeHttpRequest( `${this.BASE_URL}/${this.selectedContact.id}`, 'PUT',payload);
-        await this.refreshContacts(); 
-      } catch (error: any) {
-        console.error('Error updating contact:', error.message);
-      }
+    if (!this.token) {
+      console.error('Token is missing. Unable to update contact.');
+      return;
     }
-    this.timeOutEditContact(); 
+  
+    if (this.contactForm.valid && this.selectedContact) {
+      const payload = {
+        ...this.contactForm.value,
+        initialsColor: this.selectedContact.initialsColor,
+        initials: this.selectedContact.initials,
+      };
+  
+      try {
+        await this.httpService.put(
+          `${this.BASE_URL}${this.selectedContact.id}/`,
+          payload,
+          this.token
+        ).toPromise();
+  
+        console.log('Contact updated successfully.');
+        await this.refreshContacts();
+      } catch (error: any) {
+        console.error('Error updating contact:', error.message || error);
+      }
+    } else {
+      console.warn('Form is invalid or no contact is selected.');
+    }
+  
+    this.timeOutEditContact();
   }
 
   getRandomColor(): string {

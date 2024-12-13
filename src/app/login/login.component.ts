@@ -6,6 +6,7 @@ import { LinksLoginComponent } from "../links-login/links-login.component";
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../shared/services/auth-service/auth.service';
+import { HttpRequestService } from '../shared/services/http/http-request.service';
 
 @Component({
   selector: 'app-login',
@@ -17,6 +18,7 @@ export class LoginComponent {
   passwordVisible = false;
   isHeightTooSmall: boolean = false;
   authService = inject(AuthService);
+  httpService = inject(HttpRequestService);
   showLogo = true;
 
   get errrormessage() {
