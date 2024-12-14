@@ -47,8 +47,7 @@ export class OpenedTaskComponent implements OnInit {
     if(this.task){
       this.selectedPriority = this.task.priority;
       this.selectedContacts = this.task.assignedTo
-      console.log(this.selectedContacts);
-      
+      this.taskService.getUsersProfileFromDb();
     }
   }
 
@@ -56,7 +55,8 @@ export class OpenedTaskComponent implements OnInit {
     this.isClosing = true;
     setTimeout(() => {
       this.close.emit(); 
-      this.isClosing = false; 
+      this.isClosing = false;
+      this.taskService.getTasksFromDB();
     }, 400); 
   }
 
@@ -142,6 +142,7 @@ export class OpenedTaskComponent implements OnInit {
 
   onSelectContactsChange(selectedContacts: UserProfile[]) {
     this.task.assignedTo = selectedContacts; 
+    this.selectedContacts = selectedContacts;
   }
 
   deleteSubtask(index: number): void {
@@ -158,11 +159,11 @@ export class OpenedTaskComponent implements OnInit {
       const updatedAssignedTo = this.selectedContacts.length? this.selectedContacts : this.task.assignedTo;
       const taskToSave = {
         ...this.task,
-        assignedTo: updatedAssignedTo.map((contact: Contact) => contact.id),
+        assignedTo: updatedAssignedTo.map((contact: UserProfile) => contact.id),
         priority: this.selectedPriority,
         dueDate: this.dueDate
       };
-      // await this.taskService.updateTask(taskToSave);
+      await this.taskService.updateTask(taskToSave);
       await this.taskService.getTasksFromDB();
       this.editingTaskChange.emit(false);
     } catch (error) {
@@ -198,7 +199,7 @@ export class OpenedTaskComponent implements OnInit {
   }
 
   async deleteTask() {
-    // await this.taskService.deleteTask(this.task);
+    await this.taskService.deleteTask(this.task);
     await this.taskService.getTasksFromDB();
     this.closeTask();
   }
@@ -206,7 +207,7 @@ export class OpenedTaskComponent implements OnInit {
   async updateSubtaskCompletion(index: number): Promise<void> {
     try {
       const updatedTask = this.prepareUpdatedTask();
-      // await this.taskService.updateTask(updatedTask);
+      await this.taskService.updateTask(updatedTask);
     } catch (error) {
       console.error('Failed to update subtask completion:', error);
     }
@@ -216,8 +217,6 @@ export class OpenedTaskComponent implements OnInit {
     return {
       ...this.task,
       assignedTo: this.task.assignedTo.map(contact => contact.id),
-
-      
       priority: this.selectedPriority
     };
   }

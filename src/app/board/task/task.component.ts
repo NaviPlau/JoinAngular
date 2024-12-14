@@ -22,10 +22,6 @@ export class TaskComponent {
 
   constructor(private taskService: TaskServiceService) { }
 
-  ngOnInit() {
-    console.log(this.task);
-  }
-
   get completedSubtasks(): number {
     return this.task.subtasks.filter(subtask => subtask.completed).length;
   }

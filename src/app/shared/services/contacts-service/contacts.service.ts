@@ -31,13 +31,10 @@ export class ContactsService {
   }
 
   async getUserContacts(): Promise<void> {
-    
     if (!this.token) {
       console.error('Token is null or undefined. Unable to fetch contacts.');
-      return; // Exit the function if the token is missing
+      return;
     }
-    console.log('Token:', this.token);
-  
     this.httpService.get(this.BASE_URL, this.token).subscribe({
       next: (data) => {
         this.contacts.set((data as Contact[]).map(contact => ({
@@ -58,8 +55,6 @@ export class ContactsService {
 
   groupedContacts = computed(() => {
     const groups: { [key: string]: Contact[] } = {};
-
-    // Read the current value of contacts
     const currentContacts = this.contacts();
     currentContacts.sort((a, b) => a.fullname.localeCompare(b.fullname));
 
@@ -156,7 +151,6 @@ export class ContactsService {
       phone: selectedContact.phone,
     });
     this.selectedContact = selectedContact;
-    console.log('Contact selected:', this.selectedContact);
   }
   
 
@@ -165,9 +159,7 @@ export class ContactsService {
     this.editingContact = false;
   }
 
-  async deselectAllContacts(): Promise<void> {
 
-  }
 
   closeForm(): void {
     this.formIsClosing = true;
@@ -175,7 +167,6 @@ export class ContactsService {
       this.editingContact = false;
       this.addingContact = false;
       this.selectedContact = null;
-      await this.deselectAllContacts();
       this.contactForm.reset();
       this.formIsClosing = false;
     }, 500);
@@ -217,22 +208,11 @@ export class ContactsService {
       console.error('Token is missing. Unable to update contact.');
       return;
     }
-  
     if (this.contactForm.valid && this.selectedContact) {
-      const payload = {
-        ...this.contactForm.value,
-        initialsColor: this.selectedContact.initialsColor,
-        initials: this.selectedContact.initials,
-      };
-  
+      const payload = this.returnPayladSaveContact();
       try {
-        await this.httpService.put(
-          `${this.BASE_URL}${this.selectedContact.id}/`,
-          payload,
-          this.token
+        await this.httpService.put(`${this.BASE_URL}${this.selectedContact.id}/`, payload, this.token
         ).toPromise();
-  
-        console.log('Contact updated successfully.');
         await this.refreshContacts();
       } catch (error: any) {
         console.error('Error updating contact:', error.message || error);
@@ -244,9 +224,15 @@ export class ContactsService {
     this.timeOutEditContact();
   }
 
-  getRandomColor(): string {
-    const colors = ['#00bcd4', '#ff5722', '#9c27b0', '#3f51b5', '#e91e63', '#4caf50', '#ffeb3b', '#673ab7', '#2196f3', '#ff9800', '#009688', '#795548', '#607d8b'];
-    return colors[Math.floor(Math.random() * colors.length)];
+
+  returnPayladSaveContact(){
+    if(this.selectedContact){
+      return {
+        ...this.contactForm.value,
+        initialsColor: this.selectedContact.initialsColor,
+        initials: this.selectedContact.initials,
+      }
+    }
   }
 
   editContact(): void {

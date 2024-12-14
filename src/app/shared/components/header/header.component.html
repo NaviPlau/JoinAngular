@@ -13,4 +13,42 @@
     <a routerLink="/legal-notice">Legal Notice</a>
     <a (click)="authService.logoutUser()">Logout</a>
   </div>
+
+  
 </header>
+<div class="profile">
+  <form [formGroup]="profileForm">
+    <span [ngStyle]="{'background-color': user.initialsColor}" class="user-initials">{{user.initials}}</span>
+    <div class="input-field">
+      <input type="text" value={{user.fullname}} formControlName="fullname">
+      <span class="error" *ngIf="profileForm.get('fullname')?.invalid && (profileForm.get('fullname')?.dirty || profileForm.get('fullname')?.touched)">
+        <ng-container *ngIf="profileForm.get('fullname')?.errors?.['required']">Full name is required.</ng-container>
+        <ng-container *ngIf="profileForm.get('fullname')?.errors?.['pattern']">Min 2 words, John Doe</ng-container>
+      </span>
+      <mat-icon>person</mat-icon>
+    </div>
+    <div class="input-field">
+      <input type="text" value={{user.email}} formControlName="email">
+      <span class="error" *ngIf="profileForm.get('email')?.invalid && (profileForm.get('email')?.dirty || profileForm.get('email')?.touched)">
+        <ng-container *ngIf="profileForm.get('email')?.errors?.['required']">Email is required.</ng-container>
+        <ng-container *ngIf="profileForm.get('email')?.errors?.['email'] || profileForm.get('email')?.errors?.['pattern']">Email is invalid.</ng-container>
+      </span> 
+    </div>
+    <div class="input-field">
+      <input type="text" value={{user.phone}} formControlName="phone">
+      <span class="error" *ngIf="profileForm.get('phone')?.invalid && (profileForm.get('phone')?.dirty || profileForm.get('phone')?.touched)">
+        <ng-container *ngIf="profileForm.get('phone')?.errors?.['required']">Phone is required.</ng-container>
+        <ng-container *ngIf="profileForm.get('phone')?.errors?.['pattern']">Phone is invalid.</ng-container>
+      </span>
+    </div>
+    <div class="buttons-area">
+      <button>
+        <span>Cancel</span>
+        <mat-icon>close</mat-icon>
+      </button 
+      >
+      <button>Save</button>
+    </div>
+    
+  </form>
+</div>

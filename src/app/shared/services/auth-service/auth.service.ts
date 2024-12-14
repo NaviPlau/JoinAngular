@@ -48,14 +48,11 @@ export class AuthService {
   loginUser() {
     this.httpService.post(this.LOGIN_URL, this.loginData).subscribe({
       next: (loginResponse: any) => {
-        console.log('User logged in successfully:', loginResponse);
-  
         const token = loginResponse.token;
         this.httpService.get('http://127.0.0.1:8000/auth/api/profile/', token).subscribe({
           next: (userProfile: any) => {
             this.setUserData(userProfile, false);
             this.userIsLoggedIn.set(true);
-            console.log('User profile fetched successfully:', userProfile);
             this.authToken.set(token);
             localStorage.setItem('authToken', token);
           },

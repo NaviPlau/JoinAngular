@@ -2,11 +2,12 @@ import { inject, Injectable, OnInit, signal } from '@angular/core';
 import { Task } from '../../interfaces/task';
 import { HttpRequestService } from '../http/http-request.service';
 import { UserProfile } from '../../interfaces/user-profile';
+import { lastValueFrom } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
-export class TaskServiceService implements OnInit {
+export class TaskServiceService {
   BASE_URL = 'http://127.0.0.1:8000/api/join_app/tasks';
   httpService = inject(HttpRequestService)
   allTasks = signal<Task[]>([]);
@@ -34,7 +35,8 @@ export class TaskServiceService implements OnInit {
         task.assignedTo = assignedProfiles;
       }
       this.allTasks.set(tasks);
-  
+      console.log(this.allTasks());
+      
       
       return tasks;
     } catch (error: any) {
@@ -47,10 +49,6 @@ export class TaskServiceService implements OnInit {
 
 
 
-  async ngOnInit(): Promise <void> {
-    await this.getTasksFromDB();
-
-  }
 
   async postTask(task: Task | any): Promise<any> {
     const token = localStorage.getItem('authToken');
@@ -104,7 +102,7 @@ export class TaskServiceService implements OnInit {
     
     this.httpService.get('http://127.0.0.1:8000/auth/api/profiles/', token).subscribe({
       next: (userProfile: any) => {
-        this.userProfiles = userProfile
+        this.userProfiles.set(userProfile)
         console.log('User profile fetched successfully:', userProfile);
         
       },
@@ -114,18 +112,41 @@ export class TaskServiceService implements OnInit {
     })
   }
 
-  // async postTask(task: Task | any) {
-  //   this.httpService.makeHttpRequest(this.BASE_URL, 'POST', task).then(() => this.getTasksFromDB());
-  // }
-
   
 
-  // async deleteTask(task: Task | any) {
-  //   this.httpService.makeHttpRequest(this.BASE_URL + `/${task.id}`, 'DELETE').then(() => this.getTasksFromDB());
-  // }
+  async deleteTask(task: Task | any) {
+    const token = localStorage.getItem('authToken');
+    if (!token) {
+      console.error('No auth token found');
+      return;
+    }
+  
+    try {
+      this.httpService.delete(`http://127.0.0.1:8000/join/tasks/${task.id}/`, token);
+      console.log('Task deleted successfully');
+      this.getTasksFromDB();
+    } catch (error: any) {
+      console.error('Error deleting task:', error);
+    }
+  }
 
-  // async updateTask(task: Task | any) {
-  //   this.httpService.makeHttpRequest(this.BASE_URL + `/${task.id}`, 'PUT', task).then(() => this.getTasksFromDB());
-  // }
+
+  async updateTask(task: Task | any) {
+    const token = localStorage.getItem('authToken');
+    if (!token) {
+      console.error('No auth token found');
+      return;
+    }
+  
+    try {
+      await lastValueFrom(
+        this.httpService.patch(`http://127.0.0.1:8000/join/tasks/${task.id}/`, task, token)
+      );
+      console.log('Task updated successfully');
+      await this.getTasksFromDB();
+    } catch (error: any) {
+      console.error('Error updating task:', error);
+    }
+  }
 
 }

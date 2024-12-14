@@ -59,7 +59,8 @@ export class AddTaskTemplateComponent {
 
   constructor(private elementRef: ElementRef, private renderer: Renderer2, private router : Router) {
       const currentDate = new Date();
-      this.today = currentDate.toISOString().split('T')[0]; 
+      this.today = currentDate.toISOString().split('T')[0];
+      this.taskService.getUsersProfileFromDb();
   }
 
   
