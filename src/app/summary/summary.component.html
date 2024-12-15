@@ -11,7 +11,7 @@
       <div class="summary">
       <div>
         <div class="cardArea">
-          <div class="card">
+          <div class="card" routerLink="/board">
             <div class="cardIcon">
               <mat-icon>edit</mat-icon>
             </div>
@@ -20,7 +20,7 @@
               <span>To-do</span>
             </div>
           </div>
-          <div class="card">
+          <div class="card"  routerLink="/board">
             <div class="cardIcon">
               <mat-icon class="done">done</mat-icon>
             </div>
@@ -31,7 +31,7 @@
           </div>
         </div>
         <div class="cardArea">
-          <div class="card middleArea">
+          <div class="card middleArea"  routerLink="/board">
             <div class="middleCardLeft">
               <div class="cardIcon  urgentSummary">
                 <mat-icon>double_arrow_outlined</mat-icon>
@@ -49,15 +49,15 @@
           </div>
         </div>
         <div class="cardArea">
-          <div class="card lastCard">
+          <div class="card lastCard"  routerLink="/board">
             <span>{{allTasksInBoard()}}</span>
             <p>Tasks in <br> Board</p>
           </div>
-          <div class="card lastCard">
+          <div class="card lastCard"  routerLink="/board">
             <span>{{inProgressTasksLength()}}</span>
             <p>Tasks in <br> Progress</p>
           </div>
-          <div class="card lastCard">
+          <div class="card lastCard"  routerLink="/board">
             <span>{{awaitingFeedbackTasksLength()}}</span>
             <p>Awaiting <br> Feedback</p>
           </div>
@@ -69,7 +69,7 @@
           <h1 class="userName">Guest</h1>
         }
         @if(userIsLoggedIn && !isGuestUser){
-          <h1>{{userName}}</h1>
+          <h1 class="userName">{{userName}}</h1>
         }
       </div>
     </div>

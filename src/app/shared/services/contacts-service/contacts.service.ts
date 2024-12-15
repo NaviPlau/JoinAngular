@@ -25,16 +25,10 @@ export class ContactsService {
   
 
   BASE_URL: string = 'http://127.0.0.1:8000/join/contacts/';
-  async getContacts() {
-    
-    this.getUserContacts()
-  }
+
 
   async getUserContacts(): Promise<void> {
-    if (!this.token) {
-      console.error('Token is null or undefined. Unable to fetch contacts.');
-      return;
-    }
+    if (!this.token) { return; }
     this.httpService.get(this.BASE_URL, this.token).subscribe({
       next: (data) => {
         this.contacts.set((data as Contact[]).map(contact => ({
@@ -45,7 +39,6 @@ export class ContactsService {
           initialsColor: contact.initialsColor,
           id: contact.id,
         })));
-        console.log('Contacts fetched successfully:', this.contacts());
       },
       error: (error) => {
         console.error('Error fetching contacts:', error);
@@ -57,7 +50,6 @@ export class ContactsService {
     const groups: { [key: string]: Contact[] } = {};
     const currentContacts = this.contacts();
     currentContacts.sort((a, b) => a.fullname.localeCompare(b.fullname));
-
     currentContacts.forEach(contact => {
       const firstLetter = contact.fullname[0].toUpperCase();
       if (!groups[firstLetter]) {
@@ -65,9 +57,7 @@ export class ContactsService {
       }
       groups[firstLetter].push(contact);
     });
-
-    return Object.keys(groups)
-      .sort()
+    return Object.keys(groups).sort()
       .map(letter => ({
         letter,
         contacts: groups[letter],
@@ -81,10 +71,8 @@ export class ContactsService {
       return; 
     }
     const contactData = this.contactForm.value;
-    console.log('Contact form data:', contactData)
     this.httpService.post('http://127.0.0.1:8000/join/contacts/', contactData, this.token).subscribe({
-      next: (response) => {
-        console.log('Contact added successfully:', response);
+      next: () => {
         this.getUserContacts();
       },
       error: (error) => {
@@ -96,7 +84,7 @@ export class ContactsService {
   async saveTheNewContact() {
     await this.addContactInDB();
     this.newContactAdded = true;
-    await this.getContacts();
+    await this.getUserContacts();
     setTimeout(() => {
       this.addingContact = false;
       this.newContactAdded = false;
@@ -104,26 +92,16 @@ export class ContactsService {
   }
 
   async deleteContact(): Promise<void> {
-    if (!this.selectedContact) {
-      console.warn('No contact selected for deletion.');
-      return;
-    }
-  
-    if (!this.token) {
-      console.error('Token is missing. Unable to delete contact.');
-      return;
-    }
-  
+    if (!this.selectedContact) { return; }
+    if (!this.token) { return; }
     try {
       await this.httpService.delete(
         `${this.BASE_URL}${this.selectedContact.id}/`,
         this.token
       ).toPromise();
-      const updatedContacts = this.contacts()
-        .filter(contact => contact.id !== this.selectedContact?.id);
+      const updatedContacts = this.contacts().filter(contact => contact.id !== this.selectedContact?.id);
       this.contacts.set(updatedContacts);
       this.closeForm();
-      console.log('Contact deleted successfully.');
     } catch (error: any) {
       console.error('Error deleting contact:', error.message || error);
     }
@@ -200,7 +178,7 @@ export class ContactsService {
   }
 
   async refreshContacts(): Promise<void> {
-    await this.getContacts();
+    await this.getUserContacts();
   }
 
   async saveContact(): Promise<void> {

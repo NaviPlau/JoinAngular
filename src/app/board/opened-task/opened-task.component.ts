@@ -198,10 +198,12 @@ export class OpenedTaskComponent implements OnInit {
     }
   }
 
-  async deleteTask() {
-    await this.taskService.deleteTask(this.task);
-    await this.taskService.getTasksFromDB();
-    this.closeTask();
+  deleteTask() {
+    this.taskService.deleteTask(this.task);
+    setTimeout(() => {
+      this.closeTask();
+    }, 300);
+    
   }
 
   async updateSubtaskCompletion(index: number): Promise<void> {

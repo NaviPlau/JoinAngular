@@ -25,7 +25,7 @@ main {
 .left-side {
   width: 456px;
   @include display(flex, column, flex-start, center);
-  gap: 32px;
+  gap: 16px;
   background-color: white;
   height: 100%;
   box-shadow: 0px 3px 4px 0px rgba(0, 0, 0, 0.4);
@@ -55,7 +55,7 @@ main {
   @include display(flex, row, center, center);
   height: 100px;
   width: 456px;
-  padding: 30px 0px;
+  padding: 30px 0px 0px 0px;
 
 }
 

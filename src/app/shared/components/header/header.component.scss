@@ -71,6 +71,7 @@ mat-icon{
   padding: 30px 0px;
   border-radius: 30px;
   border-top-right-radius: 0px;
+  animation: fade-in 0.2s ease-out forwards;
   
   a{
     padding: 10px 0px;
@@ -95,6 +96,17 @@ mat-icon{
   left: 0px;
   right: 0px;
   z-index: 2000;
+  animation: fade-in 0.2s ease-out forwards;
+}
+
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 .user-initials{
@@ -109,7 +121,8 @@ mat-icon{
 
 form{
   @include display(flex, column, center, center);
-  gap: 20px;
+  position: relative;
+  gap: 24px;
   background-color: white;
   padding: 48px 32px;
   border-radius: 30px;
@@ -119,7 +132,6 @@ form{
 
 .input-field{
   @include display(flex, row, center, center);
-  gap: 10px;
   position: relative;
   width: 100%;
   border: 1px solid lightgray;
@@ -129,7 +141,7 @@ form{
     font-size: 20px;
     width: 100%;
     border: none;
-    :focus{
+    &:focus{
       outline: none;
     }
   }
@@ -140,6 +152,57 @@ form{
   font-size: 12px;
   position: absolute;
   bottom: -20px;
+}
+
+.buttons-area{
+  @include display(flex, row, space-between, center);
+  width: 100%;
+}
+
+.form-invalid{
+  font-size: 14px;
+  color: red;
+  position: absolute;
+  bottom: 10px;
+}
+
+.close-button{
+  background-color: white;
+  border: 1px solid $lightgray;
+  color:  $lightgray;
+  padding: 10px 20px;
+  font-size: 20px;
+  &:hover{
+    color: $blue;
+    cursor: pointer;
+    border: 1px solid $blue;
+    mat-icon{
+      color: $blue;
+    }
+  }
+}
+
+.response{
+  @include display(flex, row, center, center);
+  position: absolute;
+  top: 50%;
+  background-color: $lightgray;
+  border-radius: 30px;
+  z-index: 111111;
+  color: white;
+  animation: fade-in-from-bottom 2s ease-out forwards infinite;
+  padding: 20px;
+}
+
+@keyframes fade-in-from-bottom {
+  0% {
+    opacity: 0;
+    transform: translateY(180%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 

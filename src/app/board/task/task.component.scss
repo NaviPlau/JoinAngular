@@ -6,6 +6,7 @@
   padding: 10px;
   gap: 12px;
   border-radius: 30px;
+  position: relative ;
   &:hover{
     cursor: pointer;
     transform: rotate(2deg);
@@ -82,8 +83,55 @@
   white-space: nowrap; 
 }
 
+
+
+.top{
+  @include display(flex, row, space-between, center);
+  width: 100%;
+  mat-icon{
+    cursor: pointer;
+    margin-right: 10px;
+    color: $lightgray;
+    border-radius: 100%;
+    padding: 3px 3px 3px 3px;
+    height: auto;
+    width: auto;
+    &:hover{
+      color: white;
+      background-color: $lightgray;
+    }
+  }
+
+}
+
+.menu{
+  background-color: $lightgray;
+  position: absolute;
+  @include display(flex, column, center, center);
+  top: 30px;
+  left: 0px;
+  z-index: 44;
+  scrollbar-width: none;
+  color: white;
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+  height: fit-content;
+  span{
+    z-index: 55;
+    width: 100%;
+    padding: 10px 10px 5px 18px;
+    border-radius: 20px;
+    &:hover{
+      cursor: pointer;
+      background-color: $darkgray;
+    }
+  }
+
+}
+
 @media (max-width:1050px){
   .task{
-    width: 200px;
+    width: 220px;
   }
 }

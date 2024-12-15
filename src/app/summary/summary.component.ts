@@ -4,11 +4,11 @@ import { HeaderComponent } from "../shared/components/header/header.component";
 import { MaterialModule } from '../material/material.module';
 import { TaskServiceService } from '../shared/services/task-service/task-service.service';
 import { AuthService } from '../shared/services/auth-service/auth.service';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
     selector: 'app-summary',
-    imports: [SidebarComponent, HeaderComponent, MaterialModule],
+    imports: [SidebarComponent, HeaderComponent, MaterialModule, RouterLink],
     templateUrl: './summary.component.html',
     styleUrl: './summary.component.scss'
 })
@@ -34,8 +34,6 @@ export class SummaryComponent  {
 
    
     async ngOnInit(): Promise<void> {
-      console.log(this.authService.userData());
-      
         await this.taskService.getTasksFromDB();
         if (!this.authService.isGuestUser() && !this.authService.userIsLoggedIn()) {	
             this.router.navigate(['/']);

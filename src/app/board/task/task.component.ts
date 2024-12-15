@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Host, HostListener, Input, Output } from '@angular/core';
 import { Task } from '../../shared/interfaces/task';
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from '../../material/material.module';
@@ -19,6 +19,8 @@ export class TaskComponent {
   @Input() task!: Task;
   openedTask: boolean = false;
   editingTask: boolean = false;
+  openedMenu: boolean = false;
+  isMobile: boolean = false;
 
   constructor(private taskService: TaskServiceService) { }
 
@@ -41,16 +43,29 @@ export class TaskComponent {
     this.editingTask = editingTask;
   }
 
+
+  setColumn(column: string) {
+    let assignedTo = this.task.assignedTo.map((contact: any) => contact.id);
+    this.taskService.updateTask({...this.task, column, assignedTo});
+    this.openedMenu = false;
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent): void {
+    if (this.openedMenu) {
+      this.openedMenu = false;
+    }
+  }
+
+  @HostListener('window:touchstart', ['$event'])
   onTouchStart(event: TouchEvent): void {
-    this.touchStart.emit(event); 
+    this.isMobile = true;
+    console.log('Touch event detected, setting isMobile to true.');
   }
 
-  onTouchMove(event: TouchEvent): void {
-    this.touchMove.emit(event); 
-  }
-
+  @HostListener('window:touchend', ['$event'])
   onTouchEnd(event: TouchEvent): void {
-    this.touchEnd.emit(event); 
-    
+    this.isMobile = false;
+    console.log('Touch event ended.');
   }
 }

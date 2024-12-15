@@ -77,7 +77,7 @@ export class LoginComponent {
 
 
   guestLogin() {
-    this.authService.guestLogin();
+    this.authService.guestLoginUser();
   }
 
   @HostListener('window:resize', [])

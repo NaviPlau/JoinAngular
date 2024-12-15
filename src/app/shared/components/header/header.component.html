@@ -4,7 +4,7 @@
   <div class="user">
     <a routerLink="/help"><mat-icon>help_outlined</mat-icon></a>
     <div class="initials" #initials (click)="toggleLinks()">
-      <span>{{headerInitials}}</span>
+      <span>{{user.initials}}</span>
     </div>
   </div>
   <div class="links" *ngIf="showLinks" #links>
@@ -12,10 +12,11 @@
     <a routerLink="/privacy-policy">Privacy Policy</a>
     <a routerLink="/legal-notice">Legal Notice</a>
     <a (click)="authService.logoutUser()">Logout</a>
+    <a (click)="toggleProfile()"> Profile</a>
   </div>
-
-  
 </header>
+
+@if(profileOpen){
 <div class="profile">
   <form [formGroup]="profileForm">
     <span [ngStyle]="{'background-color': user.initialsColor}" class="user-initials">{{user.initials}}</span>
@@ -33,6 +34,7 @@
         <ng-container *ngIf="profileForm.get('email')?.errors?.['required']">Email is required.</ng-container>
         <ng-container *ngIf="profileForm.get('email')?.errors?.['email'] || profileForm.get('email')?.errors?.['pattern']">Email is invalid.</ng-container>
       </span> 
+      <mat-icon>mail_outline</mat-icon>
     </div>
     <div class="input-field">
       <input type="text" value={{user.phone}} formControlName="phone">
@@ -40,15 +42,29 @@
         <ng-container *ngIf="profileForm.get('phone')?.errors?.['required']">Phone is required.</ng-container>
         <ng-container *ngIf="profileForm.get('phone')?.errors?.['pattern']">Phone is invalid.</ng-container>
       </span>
+      <mat-icon>phone</mat-icon>
     </div>
     <div class="buttons-area">
-      <button>
+      <button class="close-button" (click)="toggleProfile()">
         <span>Cancel</span>
         <mat-icon>close</mat-icon>
-      </button 
-      >
-      <button>Save</button>
+      </button>
+      @if(!guestUser){
+        <button class="save" (click)="saveChangedUserData()" [disabled]="profileForm.invalid">Save</button>
+      }
     </div>
-    
+    @if(profileForm.invalid) {
+      <span class="form-invalid">The form is invalid</span>
+    }
   </form>
+  @if(profileUpdated){
+    <div class="response">
+      <span>Profile updated</span>
+    </div>
+  }
+
 </div>
+
+
+
+}

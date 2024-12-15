@@ -1,11 +1,28 @@
 @if(task){
 <div class="task" (click)="openTask(task)">
-  @if(task.category == "Technical Task"){
-  <span class="category technical-task">{{task.category}}</span>
+  <div class="top">
+    @if(task.category == "Technical Task"){
+      <span class="category technical-task">{{task.category}}</span>
+      }
+    @if(task.category == 'User Story'){
+      <span class="category user-story">{{task.category}}</span>
+      }
+      @if(isMobile){
+        <mat-icon (click)="$event.stopPropagation()" (click)="openedMenu = !openedMenu" >more_vert</mat-icon>
+      }
+    
+
+  </div>
+
+  @if(openedMenu){ 
+    <div class="menu" (click)="$event.stopPropagation()">
+      <span (click)="setColumn('toDo')"> To do</span>
+      <span (click)="setColumn('inProgress')"> In progress</span>
+      <span (click)="setColumn('awaitingFeedback')"> Awaiting feedback</span>
+      <span (click)="setColumn('done')"> Done</span>
+    </div>
   }
-  @if(task.category == 'User Story'){
-  <span class="category user-story">{{task.category}}</span>
-  }
+
 
   <p class="title elipsis">{{task.title}}</p>
   @if(task.description){

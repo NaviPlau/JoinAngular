@@ -3,6 +3,7 @@ import { HttpRequestService } from '../http/http-request.service';
 import { RegisterData } from '../../interfaces/register-data';
 import { Router } from '@angular/router';
 import { ContactsService } from '../contacts-service/contacts.service';
+import { getLocaleMonthNames } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +21,6 @@ export class AuthService {
   loginData = {}
   userIsLoggedIn = signal(false); 
   isGuestUser = signal(false); 
-  headerInitials = signal(''); 
   userData = signal<any>(null);
   errorMessage = signal('');
   registerSuccess = signal(false);
@@ -51,7 +51,7 @@ export class AuthService {
         const token = loginResponse.token;
         this.httpService.get('http://127.0.0.1:8000/auth/api/profile/', token).subscribe({
           next: (userProfile: any) => {
-            this.setUserData(userProfile, false);
+            this.setUserData(userProfile);
             this.userIsLoggedIn.set(true);
             this.authToken.set(token);
             localStorage.setItem('authToken', token);
@@ -63,21 +63,25 @@ export class AuthService {
         });
       },
       error: (loginError: any) => {
-        console.error('Login error:', loginError);
-        this.errorMessage.set(loginError.message || 'Failed to log in.');
+        console.error('Login error: invalid email or password');
+        this.errorMessage.set('Invalid email or password');
       },
     });
   }
 
-
-
-  async guestLogin() {
-    try {
-      this.userIsLoggedIn.set(true);
-    } catch (error) {
-      console.error('Guest login error:', error);
+  guestLoginUser() {
+    this.loginData = {};
+    this.loginData = {
+      email: 'guest@user.com',
+      password: 'guest123',
     }
+    this.loginUser ();
+    this.isGuestUser.set(true);
+    localStorage.setItem('isGuest', 'true');
   }
+
+
+
 
   logoutUser() {
     this.userIsLoggedIn.set(false);
@@ -103,13 +107,11 @@ export class AuthService {
     const storedUserData = localStorage.getItem('userData');
     if (authToken) {
       this.setTokenAndState(authToken, false);
-      this.headerInitials.set(storedInitials);
       if (storedUserData) {
         this.userData.set(JSON.parse(storedUserData));
       }
     } else if (guestToken) {
       this.setTokenAndState(guestToken, true);
-      this.headerInitials.set('GU');
       if (storedUserData) {
         const userData = JSON.parse(storedUserData);
         this.userData.set({
@@ -127,16 +129,14 @@ export class AuthService {
     this.router.navigate(['/summary']);
   }
 
-  setUserData(userData: any, isGuest: boolean) {
+  setUserData(userData: any) {
     this.userData.set({
       ...userData,
-      name: isGuest ? 'Guest User' : userData.name, 
+      name: userData.name, 
     });
     this.userIsLoggedIn.set(true);
-    this.isGuestUser.set(isGuest);
-    const initials = isGuest ? 'GU' : userData.initials || '';
-    this.headerInitials.set(initials);
-    const tokenKey = isGuest ? 'guestToken' : 'authToken';
+    const initials =  userData.initials || '';
+    const tokenKey =  'authToken';
     this.authToken.set(userData.token);
     localStorage.setItem(tokenKey, userData.token);
     localStorage.setItem('userInitials', initials); 
@@ -157,16 +157,32 @@ export class AuthService {
   clearState() {
     this.userIsLoggedIn.set(false);
     this.isGuestUser.set(false);
-    this.headerInitials.set('');
     this.userData.set(null);
   }
 
   setTokenAndState(token: string, isGuest: boolean) {
     this.authToken.set(token);
     this.userIsLoggedIn.set(true);
-    this.isGuestUser.set(isGuest);
-    this.headerInitials.set(isGuest ? 'GU' : '');
+    this.isGuestUser.set(isGuest)
   }
+
+
+  updateUserData(userData: any, userId: number) {
+    const authToken = localStorage.getItem('authToken');
+    if (authToken) {
+    this.httpService.patch(`http://127.0.0.1:8000/auth/api/profile/${userId}/`, userData, authToken).subscribe({
+      next: () => {
+        this.userData.set({
+          ...this.userData(),
+          ...userData,
+        });
+      },
+      error: (error: any) => {
+        console.error('Error updating user data:', error);
+        this.errorMessage.set(error.message || 'Failed to update user data.');  
+      } ,
+    });
+  }}
 
 }
 
