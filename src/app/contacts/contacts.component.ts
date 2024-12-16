@@ -25,10 +25,16 @@ export class ContactsComponent implements OnInit {
   router: Router = inject(Router);
   
 
+  /**
+   * Retrieves the data of the currently logged-in user from the authentication service.
+   */
   get loggedInUserData(){
     return this.authService.userData();
   }
 
+  /**
+   * @returns true if the user is logged in, false otherwise
+   */
   get userIsLoggedIn() {
     return this.authService.userIsLoggedIn();
   }
@@ -46,6 +52,11 @@ export class ContactsComponent implements OnInit {
     });
   }
 
+  /**
+   * Lifecycle hook that is called after Angular has initialized all data-bound properties of a directive.
+   * Checks if the user is logged in and if not, redirects to the login page.
+   * Retrieves the user's contacts from the database.
+   */
   ngOnInit() {
     if (!this.userIsLoggedIn) {
       this.router.navigate(['']);
@@ -57,6 +68,10 @@ export class ContactsComponent implements OnInit {
 
 
   @HostListener('document:keydown.escape', ['$event'])
+  /**
+   * Closes the contact form when the 'Escape' key is pressed.
+   * @param event The KeyboardEvent that triggered this method.
+   */
   handleEscKey(event: KeyboardEvent): void {
     if (this.contactsService.editingContact || this.contactsService.addingContact) {
       this.contactsService.closeForm();
@@ -64,6 +79,10 @@ export class ContactsComponent implements OnInit {
   }
 
   @HostListener('document:mousedown', ['$event'])
+  /**
+   * Closes the contact form when a click event occurs outside of it.
+   * @param event The MouseEvent that triggered this method.
+   */
   handleClickOutside(event: MouseEvent): void {
     const targetElement = event.target as HTMLElement;
     if (!this.elRef.nativeElement.querySelector('.form')?.contains(targetElement)) {

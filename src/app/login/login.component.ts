@@ -20,12 +20,6 @@ export class LoginComponent {
   authService = inject(AuthService);
   httpService = inject(HttpRequestService);
   showLogo = true;
-
-  get errrormessage() {
-    return this.authService.errorMessage();
-  }
-
-
   loginForm = new FormGroup({
     email: new FormControl('', [
       Validators.required,
@@ -37,6 +31,18 @@ export class LoginComponent {
     ]),
   });
 
+  /**
+   * Retrieves the error message from the authentication service.
+   * This message is typically displayed when login errors occur.
+   */
+  get errrormessage() {
+    return this.authService.errorMessage();
+  }
+
+  /**
+   * Lifecycle hook that is called after Angular has initialized all data-bound properties of a directive.
+   * Resets the error message of the authentication service when the user starts typing in the login form.
+   */
   constructor() {
     this.loginForm.valueChanges.subscribe(() => {
       this.authService.errorMessage.set('');
@@ -44,6 +50,11 @@ export class LoginComponent {
   }
 
 
+  /**
+   * Lifecycle hook that is called after Angular has initialized all data-bound properties of a directive.
+   * Initializes the state of the authentication service, checks if the device is a mobile device (based on its height)
+   * and shows the logo during the first visit of the user.
+   */
   ngOnInit(){
     this.authService.initializeState();
     this.checkDeviceHeight();
@@ -60,10 +71,18 @@ export class LoginComponent {
   
 
 
+  /**
+   * Toggles the visibility of the password input field.
+   * This function is used to let the user see the password while typing it.
+   */
   togglePasswordVisibility() {
     this.passwordVisible = !this.passwordVisible;
   }
 
+  /**
+   * Submits the login form and logs the user in if the form is valid.
+   * If the form is invalid, an error message is printed to the console.
+   */
   async login() {
     if (this.loginForm.valid) {
       const email = this.loginForm.get('email')?.value;
@@ -76,15 +95,27 @@ export class LoginComponent {
   }
 
 
+  /**
+   * Logs in the user as a guest.
+   * This function is used in the login form to let the user log in as a guest.
+   */
   guestLogin() {
     this.authService.guestLoginUser();
   }
 
   @HostListener('window:resize', [])
+  /**
+   * Checks if the window height is less than 600px after a resize event
+   * and sets the isHeightTooSmall flag accordingly.
+   */
   onResize() {
     this.checkDeviceHeight();
   }
 
+  /**
+   * Checks if the window height is less than 600px and sets the isHeightTooSmall flag accordingly.
+   * This function is used to show a warning if the window height is too small to display the login form properly.
+   */
   checkDeviceHeight() {
     this.isHeightTooSmall = window.innerHeight < 600;
   }

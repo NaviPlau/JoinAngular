@@ -14,12 +14,20 @@ import { Router } from '@angular/router';
 export class AddtaskComponent {
     authService = inject(AuthService);
     router: Router = inject(Router)
+
+    /**
+     * @returns true if the user is logged in, false otherwise
+     */
     get userLoggedIn() {
         return this.authService.userIsLoggedIn();
     }
 
-    ngOnInit(){
-        if(!this.userLoggedIn){
+    /**
+     * Initializes the component and checks if the user is logged in.
+     * If the user is not logged in, it redirects to the home page.
+     */
+    ngOnInit() {
+        if (!this.userLoggedIn) {
             this.router.navigate(['']);
         }
     }

@@ -250,3 +250,7 @@ h1{
   text-align: center;
   font-size: 1.2rem;
 }
+
+textarea:focus {
+  border-radius: 0;
+}
