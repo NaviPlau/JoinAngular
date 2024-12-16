@@ -4,6 +4,7 @@ import { SidebarComponent } from "../shared/components/sidebar/sidebar.component
 import { AddTaskTemplateComponent } from "../shared/components/templates/add-task-template/add-task-template.component";
 import { AuthService } from '../shared/services/auth-service/auth.service';
 import { Router } from '@angular/router';
+import { TaskServiceService } from '../shared/services/task-service/task-service.service';
 
 @Component({
     selector: 'app-addtask',
@@ -13,7 +14,9 @@ import { Router } from '@angular/router';
 })
 export class AddtaskComponent {
     authService = inject(AuthService);
+    taskService = inject(TaskServiceService)
     router: Router = inject(Router)
+
 
     /**
      * @returns true if the user is logged in, false otherwise
@@ -30,5 +33,6 @@ export class AddtaskComponent {
         if (!this.userLoggedIn) {
             this.router.navigate(['']);
         }
+        this.taskService.getUsersProfileFromDb();
     }
 }
