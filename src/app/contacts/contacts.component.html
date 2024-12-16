@@ -151,9 +151,9 @@
               </span>
             </div>
             <div class="buttons-area">
-              <button class="delete" (click)="contactsService.deleteContact()">
-                <span>Delete</span>
-                <mat-icon>delete</mat-icon>
+              <button class="delete" (click)="contactsService.closeForm()">
+                <span>Close</span>
+                <mat-icon>close</mat-icon>
               </button>
               @if(contactsService.editingContact){
                 <button class="save" [disabled]="contactForm.invalid || contactsService.contactEdited" (click)="contactsService.saveContact()">
