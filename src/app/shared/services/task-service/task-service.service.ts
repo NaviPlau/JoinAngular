@@ -8,7 +8,7 @@ import { lastValueFrom } from 'rxjs';
   providedIn: 'root'
 })
 export class TaskServiceService {
-  BASE_URL = 'http://127.0.0.1:8000/api/join_app/tasks';
+  BASE_URL = 'http://vm.paul-ivan.com/join/tasks/';
   httpService = inject(HttpRequestService)
   allTasks = signal<Task[]>([]);
   assignedTo: UserProfile[] = []
@@ -25,7 +25,7 @@ export class TaskServiceService {
     const token = localStorage.getItem('authToken');
     if (!token) { return []; }
     try {
-      const tasks = await this.httpService.get('http://127.0.0.1:8000/join/tasks/', token).toPromise() as Task[];
+      const tasks = await this.httpService.get(this.BASE_URL, token).toPromise() as Task[];
       for (const task of tasks) {
         const assignedProfiles = await this.getTasksAssignedUsers(task);
         task.assignedTo = assignedProfiles;
@@ -52,7 +52,7 @@ export class TaskServiceService {
     task.assignedTo = task.assignedTo.map((user: any) => user.id);
     if (!token) { throw new Error('Authentication token is required') }
     try {
-      const response = await this.httpService.post('http://127.0.0.1:8000/join/tasks/', task, token).toPromise();
+      const response = await this.httpService.post(this.BASE_URL, task, token).toPromise();
       return response;
     } catch (error: any) {
       throw error;
@@ -75,7 +75,7 @@ export class TaskServiceService {
     if (!token) { throw new Error('Authentication token is required') }
     try {
       const profileFetchPromises = task.assignedTo.map((userId: number) =>
-        this.httpService.get(`http://127.0.0.1:8000/auth/api/profile/${userId}/`, token).toPromise()
+        this.httpService.get(`http://vm.paul-ivan.com/join/auth/api/profile/${userId}/`, token).toPromise()
       );
       const profiles = await Promise.all(profileFetchPromises);
       return profiles;
@@ -100,7 +100,7 @@ export class TaskServiceService {
   getUsersProfileFromDb() {
     let token = localStorage.getItem('authToken');
     if (!token) { return }
-    this.httpService.get('http://127.0.0.1:8000/auth/api/profiles/', token).subscribe({
+    this.httpService.get('http://vm.paul-ivan.com/join/auth/api/profiles/', token).subscribe({
       next: (userProfile: any) => {
         this.userProfiles.set(userProfile)
       },
@@ -121,7 +121,7 @@ export class TaskServiceService {
   deleteTask(task: Task | any) {
     const token = localStorage.getItem('authToken');
     if (!token) { return }
-    this.httpService.delete(`http://127.0.0.1:8000/join/tasks/${task.id}/`, token)
+    this.httpService.delete(`http://vm.paul-ivan.com/join/tasks/${task.id}/`, token)
       .subscribe({
         error: (err) => console.error('Error deleting task:', err),
       });
@@ -139,7 +139,7 @@ export class TaskServiceService {
     const token = localStorage.getItem('authToken');
     if (!token) { return; }
     try {
-      await lastValueFrom(this.httpService.patch(`http://127.0.0.1:8000/join/tasks/${task.id}/`, task, token));
+      await lastValueFrom(this.httpService.patch(`http://vm.paul-ivan.com/join/tasks/${task.id}/`, task, token));
       await this.getTasksFromDB();
     } catch (error: any) {
       console.error('Error updating task:', error);

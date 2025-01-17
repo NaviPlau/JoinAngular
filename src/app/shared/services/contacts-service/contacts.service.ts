@@ -24,7 +24,7 @@ export class ContactsService {
   isMobile: boolean = window.innerWidth < 800 ? true : false;
 
 
-  BASE_URL: string = 'http://127.0.0.1:8000/join/contacts/';
+  BASE_URL: string = 'http://vm.paul-ivan.com/join/contacts/';
 
 
   /**
@@ -87,7 +87,7 @@ export class ContactsService {
   async addContactInDB(): Promise<void> {
     if (!this.token) { return }
     const contactData = this.contactForm.value;
-    this.httpService.post('http://127.0.0.1:8000/join/contacts/', contactData, this.token).subscribe({
+    this.httpService.post(this.BASE_URL, contactData, this.token).subscribe({
       next: () => {
         this.getUserContacts();
       },
