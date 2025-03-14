@@ -24,7 +24,7 @@ export class ContactsService {
   isMobile: boolean = window.innerWidth < 800 ? true : false;
 
 
-  BASE_URL: string = 'http://vm.paul-ivan.com/join/contacts/';
+  BASE_URL: string = 'https://vm.paul-ivan.com/join/contacts/';
 
 
   /**

@@ -14,9 +14,9 @@ export class AuthService {
 
   httpService = inject(HttpRequestService)
 
-  REGISTER_URL = 'http://vm.paul-ivan.com/join/auth/api/register/'
-  LOGIN_URL = 'http://vm.paul-ivan.com/join/auth/api/login/'
-  GUEST_LOGIN_URL = 'http://vm.paul-ivan.com/join/api/auth/guestlogin/';
+  REGISTER_URL = 'https://vm.paul-ivan.com/join/auth/api/register/'
+  LOGIN_URL = 'https://vm.paul-ivan.com/join/auth/api/login/'
+  GUEST_LOGIN_URL = 'https://vm.paul-ivan.com/join/api/auth/guestlogin/';
   registerdata = {} as RegisterData
   loginData = {}
   userIsLoggedIn = signal(false);
@@ -58,7 +58,7 @@ export class AuthService {
     this.httpService.post(this.LOGIN_URL, this.loginData).subscribe({
       next: (loginResponse: any) => {
         const token = loginResponse.token;
-        this.httpService.get('http://vm.paul-ivan.com/join/auth/api/profile/', token).subscribe({
+        this.httpService.get('https://vm.paul-ivan.com/join/auth/api/profile/', token).subscribe({
           next: (userProfile: any) => { this.setUserData(userProfile); this.setLoginUserStateAndToken(token); },
           error: (profileError: any) => { this.errorMessage.set(profileError.message || 'Failed to fetch user profile.'); },
         });
@@ -225,7 +225,7 @@ export class AuthService {
   updateUserData(userData: any, userId: number) {
     const authToken = localStorage.getItem('authToken');
     if (authToken) {
-      this.httpService.patch(`http://vm.paul-ivan.com/join/auth/api/profile/${userId}/`, userData, authToken).subscribe({
+      this.httpService.patch(`https://vm.paul-ivan.com/join/auth/api/profile/${userId}/`, userData, authToken).subscribe({
         next: () => {this.userData.set({...this.userData(), ...userData, });},
         error: (error: any) => { this.errorMessage.set(error.message || 'Failed to update user data.');},
       });

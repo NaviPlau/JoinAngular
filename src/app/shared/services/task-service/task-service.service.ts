@@ -2,13 +2,13 @@ import { inject, Injectable, OnInit, signal } from '@angular/core';
 import { Task } from '../../interfaces/task';
 import { HttpRequestService } from '../http/http-request.service';
 import { UserProfile } from '../../interfaces/user-profile';
-import { lastValueFrom } from 'rxjs';
+import { lastValueFrom, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TaskServiceService {
-  BASE_URL = 'http://vm.paul-ivan.com/join/tasks/';
+  BASE_URL = 'https://vm.paul-ivan.com/join/tasks/';
   httpService = inject(HttpRequestService)
   allTasks = signal<Task[]>([]);
   assignedTo: UserProfile[] = []
@@ -75,7 +75,7 @@ export class TaskServiceService {
     if (!token) { throw new Error('Authentication token is required') }
     try {
       const profileFetchPromises = task.assignedTo.map((userId: number) =>
-        this.httpService.get(`http://vm.paul-ivan.com/join/auth/api/profile/${userId}/`, token).toPromise()
+        this.httpService.get(`https://vm.paul-ivan.com/join/auth/api/profile/${userId}/`, token).toPromise()
       );
       const profiles = await Promise.all(profileFetchPromises);
       return profiles;
@@ -100,7 +100,7 @@ export class TaskServiceService {
   getUsersProfileFromDb() {
     let token = localStorage.getItem('authToken');
     if (!token) { return }
-    this.httpService.get('http://vm.paul-ivan.com/join/auth/api/profiles/', token).subscribe({
+    this.httpService.get('https://vm.paul-ivan.com/join/auth/api/profiles/', token).subscribe({
       next: (userProfile: any) => {
         this.userProfiles.set(userProfile)
       },
@@ -121,7 +121,7 @@ export class TaskServiceService {
   deleteTask(task: Task | any) {
     const token = localStorage.getItem('authToken');
     if (!token) { return }
-    this.httpService.delete(`http://vm.paul-ivan.com/join/tasks/${task.id}/`, token)
+    this.httpService.delete(`https://vm.paul-ivan.com/join/tasks/${task.id}/`, token)
       .subscribe({
         error: (err) => console.error('Error deleting task:', err),
       });
@@ -139,7 +139,7 @@ export class TaskServiceService {
     const token = localStorage.getItem('authToken');
     if (!token) { return; }
     try {
-      await lastValueFrom(this.httpService.patch(`http://vm.paul-ivan.com/join/tasks/${task.id}/`, task, token));
+      await lastValueFrom(this.httpService.patch(`https://vm.paul-ivan.com/join/tasks/${task.id}/`, task, token));
       await this.getTasksFromDB();
     } catch (error: any) {
       console.error('Error updating task:', error);
